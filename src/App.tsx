@@ -9,6 +9,7 @@ import SkillsBento from './components/SkillsBento';
 import ServicesAndCompanies from './components/ServicesAndCompanies';
 import GithubAndBlogs from './components/GithubAndBlogs';
 import ContactForm from './components/ContactForm';
+import SearchOverlay from './components/SearchOverlay';
 import QuickChat from './components/QuickChat';
 import SEOMetadata from './components/SEOMetadata';
 import AIOrbit3D from './components/AIOrbit3D';
@@ -260,6 +261,7 @@ export default function App() {
         {/* Floating Quick Chat Co-pilot */}
         <QuickChat />
 
+        <SearchOverlay />
       </div>
     </div>
   );

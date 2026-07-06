@@ -253,10 +253,12 @@ export default function ServicesAndCompanies() {
               return (
                 <div
                   key={index}
-                  className={`flex items-center space-x-2.5 text-zinc-400/80 dark:text-zinc-500/85 ${company.hoverColor} transition-all duration-200 cursor-pointer`}
+                  className={`group flex items-center space-x-2.5 text-zinc-400/80 dark:text-zinc-500/85 ${company.hoverColor} transition-all duration-300 cursor-pointer`}
                 >
                   {LogoComponent ? (
-                    <LogoComponent />
+                    <div className="grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                      <LogoComponent />
+                    </div>
                   ) : (
                     <div className="h-2 w-2 rounded-full bg-indigo-500/25 dark:bg-indigo-500/40" />
                   )}

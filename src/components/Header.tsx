@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO } from '../data';
-import { Mail, Linkedin, Github, MapPin, Phone, Briefcase, Award, ArrowUpRight, Globe2, ChevronRight, FileText, Settings, ShieldAlert, Sun, Moon, Sparkles, Palette, Calendar } from 'lucide-react';
+import { Mail, Linkedin, Github, MapPin, Phone, Briefcase, Award, ArrowUpRight, Globe2, ChevronRight, FileText, Settings, ShieldAlert, Sun, Moon, Sparkles, Palette, Calendar, Search } from 'lucide-react';
 import { motion } from 'motion/react';
 import NeuralNetworkBackground from './NeuralNetworkBackground';
 import LazyImage from './LazyImage';
@@ -179,6 +179,19 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 </>
               )}
             </div>
+
+            {/* Global Search Button */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-search'))}
+              className="cursor-pointer inline-flex h-8 items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
+              title="Search Portfolio (Ctrl+K)"
+            >
+              <Search size={11} className="text-zinc-400" />
+              <span className="hidden sm:inline">Search</span>
+              <kbd className="hidden sm:inline-flex h-4 items-center justify-center rounded bg-zinc-200/50 dark:bg-zinc-800 px-1 font-sans text-[8px] font-bold text-zinc-500 dark:text-zinc-400">
+                ⌘K
+              </kbd>
+            </button>
 
             {/* Dark Mode Toggle Switch */}
             <button

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { KEY_METRICS } from '../data';
 import { ShieldCheck, Users, Zap, TrendingUp, Activity, CheckCircle2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 
 const metricContexts: Record<string, { icon: any; title: string; desc: string; detail: string; chartType: 'uptime' | 'users' | 'perf' | 'revenue' }> = {
   uptime: {
@@ -33,6 +33,68 @@ const metricContexts: Record<string, { icon: any; title: string; desc: string; d
     chartType: 'revenue'
   }
 };
+
+function AnimatedCounter({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [displayValue, setDisplayValue] = useState("0");
+  
+  useEffect(() => {
+    if (!isInView) {
+      // Show 0 initially if a number is expected, to make the animation obvious
+      const numMatch = value.match(/[\d.]+/);
+      if (numMatch) {
+        const prefix = value.substring(0, numMatch.index);
+        const suffix = value.substring(numMatch.index! + numMatch[0].length);
+        const isFloat = value.includes('.');
+        setDisplayValue(`${prefix}${isFloat ? "0.0" : "0"}${suffix}`);
+      } else {
+        setDisplayValue(value);
+      }
+      return;
+    }
+    
+    // Parse the value to find the number
+    const numMatch = value.match(/[\d.]+/);
+    if (!numMatch) {
+      setDisplayValue(value);
+      return;
+    }
+    
+    const targetNum = parseFloat(numMatch[0]);
+    const isFloat = value.includes('.');
+    const prefix = value.substring(0, numMatch.index);
+    const suffix = value.substring(numMatch.index! + numMatch[0].length);
+    
+    let startTime: number;
+    const duration = 2000; // 2 seconds animation
+    
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      
+      // easeOutQuart
+      const ease = 1 - Math.pow(1 - progress, 4);
+      const currentNum = targetNum * ease;
+      
+      const formattedNum = isFloat 
+        ? currentNum.toFixed(1) 
+        : Math.floor(currentNum).toString();
+        
+      setDisplayValue(`${prefix}${formattedNum}${suffix}`);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value); // Ensure exact final value
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }, [isInView, value]);
+
+  return <span ref={ref}>{displayValue}</span>;
+}
 
 export default function Metrics() {
   const containerVariants = {
@@ -148,7 +210,7 @@ export default function Metrics() {
               {/* Big Core Values */}
               <div className="mt-6 space-y-1">
                 <div className="font-mono text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-all">
-                  {metric.value}
+                  <AnimatedCounter value={metric.value} />
                 </div>
                 <div className="font-display text-[10px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
                   {metric.label}
