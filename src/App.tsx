@@ -6,6 +6,7 @@ import ExperienceTimeline from './components/ExperienceTimeline';
 import SkillsBento from './components/SkillsBento';
 import GithubAndBlogs from './components/GithubAndBlogs';
 import ContactForm from './components/ContactForm';
+import QuickChat from './components/QuickChat';
 import { PERSONAL_INFO } from './data';
 import { Mail, Linkedin, Github, FileText, ArrowUp, Milestone } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -172,6 +173,9 @@ export default function App() {
 
           </div>
         </footer>
+
+        {/* Floating Quick Chat Co-pilot */}
+        <QuickChat />
 
       </div>
     </div>

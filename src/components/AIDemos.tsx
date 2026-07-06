@@ -241,36 +241,48 @@ export default function AIDemos() {
         <div className="flex rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 p-1 select-none font-mono">
           <button
             onClick={() => setActiveTab('chat')}
-            className={`cursor-pointer flex items-center gap-1.5 px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
               activeTab === 'chat' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
                 : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Brain size={13} />
-            <span>AI Resume Advisor</span>
+            <span className="whitespace-nowrap">AI Resume Advisor</span>
+            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-900/40 normal-case">
+              <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="hidden sm:inline">Active</span>
+            </span>
           </button>
           <button
             onClick={() => setActiveTab('summarizer')}
-            className={`cursor-pointer flex items-center gap-1.5 px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
               activeTab === 'summarizer' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
                 : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Layers size={13} />
-            <span>Chunking Service</span>
+            <span className="whitespace-nowrap">Chunking Service</span>
+            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/40 dark:border-blue-900/40 normal-case">
+              <span className="h-1 w-1 rounded-full bg-blue-500" />
+              <span className="hidden sm:inline">Open Source</span>
+            </span>
           </button>
           <button
             onClick={() => setActiveTab('yolo')}
-            className={`cursor-pointer flex items-center gap-1.5 px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
               activeTab === 'yolo' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
                 : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Eye size={13} />
-            <span>Computer Vision</span>
+            <span className="whitespace-nowrap">Computer Vision</span>
+            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/40 dark:border-amber-900/40 normal-case">
+              <span className="h-1 w-1 rounded-full bg-amber-500" />
+              <span className="hidden sm:inline">Beta</span>
+            </span>
           </button>
         </div>
       </div>
@@ -296,8 +308,18 @@ export default function AIDemos() {
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-[9px] text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">Status: Live</span>
+            <span className={`inline-flex h-1.5 w-1.5 rounded-full animate-pulse ${
+              activeTab === 'chat' ? 'bg-emerald-500' :
+              activeTab === 'summarizer' ? 'bg-blue-500' :
+              'bg-amber-500'
+            }`} />
+            <span className="font-mono text-[9px] text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">
+              Status: {
+                activeTab === 'chat' ? 'Active' :
+                activeTab === 'summarizer' ? 'Open Source' :
+                'Beta'
+              }
+            </span>
           </div>
         </div>
 
