@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Metrics from './components/Metrics';
 import AIDemos from './components/AIDemos';
+import AIAgentsShowcase from './components/AIAgentsShowcase';
+import InteractiveGraphs from './components/InteractiveGraphs';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import SkillsBento from './components/SkillsBento';
+import ServicesAndCompanies from './components/ServicesAndCompanies';
 import GithubAndBlogs from './components/GithubAndBlogs';
 import ContactForm from './components/ContactForm';
 import QuickChat from './components/QuickChat';
+import SEOMetadata from './components/SEOMetadata';
+import AIOrbit3D from './components/AIOrbit3D';
 import { PERSONAL_INFO } from './data';
-import { Mail, Linkedin, Github, FileText, ArrowUp, Milestone } from 'lucide-react';
+import { Mail, Linkedin, Github, FileText, ArrowUp, Milestone, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function App() {
@@ -21,6 +26,13 @@ export default function App() {
     return false;
   });
 
+  const [activeTheme, setActiveTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('activeTheme') || 'ai-dark';
+    }
+    return 'ai-dark';
+  });
+
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
@@ -31,6 +43,10 @@ export default function App() {
     }
   }, [isDark]);
 
+  useEffect(() => {
+    localStorage.setItem('activeTheme', activeTheme);
+  }, [activeTheme]);
+
   const toggleDarkMode = () => {
     setIsDark(prev => !prev);
   };
@@ -39,14 +55,50 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Determine ambient colors based on selected theme
+  const getThemeGlows = () => {
+    const glows = {
+      'ai-dark': {
+        glow1: 'bg-indigo-500/[0.04] dark:bg-indigo-500/[0.08]',
+        glow2: 'bg-emerald-500/[0.03] dark:bg-emerald-500/[0.05]'
+      },
+      'aurora': {
+        glow1: 'bg-emerald-500/[0.06] dark:bg-emerald-400/[0.09]',
+        glow2: 'bg-purple-500/[0.05] dark:bg-purple-500/[0.07]'
+      },
+      'cyber-blue': {
+        glow1: 'bg-cyan-500/[0.07] dark:bg-cyan-450/[0.11]',
+        glow2: 'bg-blue-600/[0.05] dark:bg-blue-500/[0.07]'
+      },
+      'glass-purple': {
+        glow1: 'bg-fuchsia-500/[0.06] dark:bg-fuchsia-400/[0.09]',
+        glow2: 'bg-indigo-600/[0.05] dark:bg-indigo-500/[0.07]'
+      },
+      'emerald-ai': {
+        glow1: 'bg-teal-500/[0.07] dark:bg-teal-400/[0.10]',
+        glow2: 'bg-emerald-600/[0.05] dark:bg-emerald-500/[0.07]'
+      },
+      'neon-gradient': {
+        glow1: 'bg-pink-500/[0.06] dark:bg-pink-400/[0.09]',
+        glow2: 'bg-orange-500/[0.05] dark:bg-orange-500/[0.07]'
+      }
+    };
+    return glows[activeTheme as keyof typeof glows] || glows['ai-dark'];
+  };
+
+  const currentGlows = getThemeGlows();
+
   return (
-    <div className="min-h-screen bg-[#fafbfc] dark:bg-zinc-950 font-sans text-zinc-850 dark:text-zinc-200 selection:bg-indigo-500/20 selection:text-indigo-900 transition-colors duration-300">
+    <div className={`min-h-screen bg-[#fafbfc] dark:bg-zinc-950 font-sans text-zinc-850 dark:text-zinc-200 selection:bg-indigo-500/20 selection:text-indigo-900 transition-colors duration-300 theme-${activeTheme}`}>
       
+      {/* Dynamic programmatic SEO meta manager */}
+      <SEOMetadata activeTheme={activeTheme} isDark={isDark} />
+
       {/* Premium subtle light grid background overlay */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-15 bg-grid-mask" />
-        <div className="absolute -top-[30%] -left-[10%] h-[70%] w-[70%] rounded-full bg-indigo-500/[0.03] dark:bg-indigo-500/[0.05] blur-[140px]" />
-        <div className="absolute -bottom-[30%] -right-[10%] h-[70%] w-[70%] rounded-full bg-emerald-500/[0.02] dark:bg-emerald-500/[0.04] blur-[140px]" />
+        <div className={`absolute -top-[30%] -left-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow1}`} />
+        <div className={`absolute -bottom-[30%] -right-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow2}`} />
       </div>
 
       <div className="relative flex flex-col min-h-screen z-10">
@@ -59,19 +111,50 @@ export default function App() {
           className="flex-1"
         >
           {/* 1. Header & Bio Hero Summary */}
-          <Header isDark={isDark} toggleDarkMode={toggleDarkMode} />
+          <Header
+            isDark={isDark}
+            toggleDarkMode={toggleDarkMode}
+            activeTheme={activeTheme}
+            setActiveTheme={setActiveTheme}
+          />
 
           {/* 2. Core Quantitative Impact Metrics */}
           <Metrics />
 
+          {/* 2.5. Interactive WebGL AI Specialization Orbit */}
+          <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
+            <div className="mb-10">
+              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest animate-pulse">
+                <Sparkles size={10} />
+                <span>01.5 / Cognitive Visualization</span>
+              </div>
+              <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                3D AI Specialization <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Orbit</span>
+              </h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                Interact with the dynamic WebGL orbital system to inspect Karim's production specializations, engineering stacks, and quantifiable industrial impact metrics.
+              </p>
+            </div>
+            <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
+          </section>
+
           {/* 3. Rich Interactive Sandboxes */}
           <AIDemos />
+
+          {/* 3.5. Dedicated AI Agents & Workflows Showcase */}
+          <AIAgentsShowcase />
+
+          {/* 3.6. Interactive Performance & Cost Matrices */}
+          <InteractiveGraphs />
 
           {/* 4. Experience & Careers Timeline */}
           <ExperienceTimeline />
 
           {/* 5. Categorized Bento Skills Matrix */}
           <SkillsBento />
+
+          {/* 5.5. Enterprise Services & Client Sectors Marquee */}
+          <ServicesAndCompanies />
 
           {/* 6. GitHub Repositories & Publication split-pane */}
           <GithubAndBlogs />

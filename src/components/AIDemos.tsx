@@ -1,7 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Message } from '../types';
-import { Send, FileText, Sliders, Play, Brain, RefreshCw, Layers, CheckCircle, AlertTriangle, Eye, Terminal, Sparkles, User, Info, Cpu } from 'lucide-react';
+import { 
+  Send, FileText, Sliders, Play, Brain, RefreshCw, Layers, CheckCircle, 
+  AlertTriangle, Eye, Terminal, Sparkles, User, Info, Cpu, Mic, MicOff, 
+  Phone, PhoneOff, Search, MapPin, Radio, Image, Video, Music, X, Volume2 
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+
+// Modular Subcomponents
+import AIPaintbox from './AIPaintbox';
+import AICinematic from './AICinematic';
+import AISoundstage from './AISoundstage';
+import AIMediaAnalyzer from './AIMediaAnalyzer';
+import LazyImage from './LazyImage';
 
 // Example texts for Summarizer Demo
 const PRESEEDED_TEXTS = {
@@ -61,10 +72,58 @@ const YOLO_PARTS: VisualPart[] = [
   }
 ];
 
-export default function AIDemos() {
-  const [activeTab, setActiveTab] = useState<'chat' | 'summarizer' | 'yolo'>('chat');
+// Audio conversion helper functions for Live Voice API
+function floatTo16BitPCM(input: Float32Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(input.length * 2);
+  const view = new DataView(buffer);
+  let offset = 0;
+  for (let i = 0; i < input.length; i++, offset += 2) {
+    let s = Math.max(-1, Math.min(1, input[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+  }
+  return buffer;
+}
 
-  // --- TAB 1: Chat State ---
+function base64ToArrayBuffer(base64: string): ArrayBuffer {
+  const binaryString = window.atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
+function playPCM16Bit24kHz(audioCtx: AudioContext, base64Data: string, scheduledTimeRef: React.MutableRefObject<number>) {
+  const arrayBuf = base64ToArrayBuffer(base64Data);
+  const pcm16 = new Int16Array(arrayBuf);
+  const float32 = new Float32Array(pcm16.length);
+  for (let i = 0; i < pcm16.length; i++) {
+    float32[i] = pcm16[i] / 32768.0;
+  }
+  
+  const buffer = audioCtx.createBuffer(1, float32.length, 24000);
+  buffer.copyToChannel(float32, 0);
+  
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  
+  let startTime = scheduledTimeRef.current;
+  const now = audioCtx.currentTime;
+  if (startTime < now) {
+    startTime = now + 0.05; // safe buffer
+  }
+  source.start(startTime);
+  scheduledTimeRef.current = startTime + buffer.duration;
+  
+  return source;
+}
+
+export default function AIDemos() {
+  const [activeTab, setActiveTab] = useState<'chat' | 'paintbox' | 'veo' | 'soundstage' | 'multimodal' | 'summarizer' | 'yolo'>('chat');
+
+  // --- TAB 1: Chat State & Grounding configs ---
   const [chatMessages, setChatMessages] = useState<Message[]>([
     {
       sender: 'assistant',
@@ -76,6 +135,24 @@ export default function AIDemos() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  // Advanced grounded parameters
+  const [searchGrounding, setSearchGrounding] = useState(false);
+  const [mapsGrounding, setMapsGrounding] = useState(false);
+  const [thinkingMode, setThinkingMode] = useState(false);
+  const [advisorRole, setAdvisorRole] = useState<'advisor' | 'interviewer' | 'architect'>('advisor');
+
+  // Voice Call state (WebSocket Live API)
+  const [isVoiceActive, setIsVoiceActive] = useState(false);
+  const [voiceError, setVoiceError] = useState("");
+  const wsRef = useRef<WebSocket | null>(null);
+  const inputAudioCtxRef = useRef<AudioContext | null>(null);
+  const outputAudioCtxRef = useRef<AudioContext | null>(null);
+  const audioProcessorRef = useRef<ScriptProcessorNode | null>(null);
+  const micStreamRef = useRef<MediaStream | null>(null);
+  const scheduledTimeRef = useRef<number>(0);
+  const activeSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const [isVoiceModelTalking, setIsVoiceModelTalking] = useState(false);
+
   const SUGGESTED_QUESTIONS = [
     "What did Karim build for Baker Hughes?",
     "Can you detail his LoRA LLM fine-tuning?",
@@ -86,6 +163,144 @@ export default function AIDemos() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages]);
+
+  const pcmToBase64 = (float32Array: Float32Array): string => {
+    const buffer = floatTo16BitPCM(float32Array);
+    const bytes = new Uint8Array(buffer);
+    let binary = "";
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
+  const stopAllPlayback = () => {
+    activeSourcesRef.current.forEach(source => {
+      try { source.stop(); } catch (e) {}
+    });
+    activeSourcesRef.current = [];
+    if (outputAudioCtxRef.current) {
+      scheduledTimeRef.current = outputAudioCtxRef.current.currentTime;
+    }
+    setIsVoiceModelTalking(false);
+  };
+
+  const stopVoiceSession = () => {
+    try {
+      stopAllPlayback();
+      if (wsRef.current) {
+        wsRef.current.close();
+        wsRef.current = null;
+      }
+      if (audioProcessorRef.current) {
+        audioProcessorRef.current.disconnect();
+        audioProcessorRef.current = null;
+      }
+      if (micStreamRef.current) {
+        micStreamRef.current.getTracks().forEach(track => track.stop());
+        micStreamRef.current = null;
+      }
+      if (inputAudioCtxRef.current) {
+        inputAudioCtxRef.current.close();
+        inputAudioCtxRef.current = null;
+      }
+      if (outputAudioCtxRef.current) {
+        outputAudioCtxRef.current.close();
+        outputAudioCtxRef.current = null;
+      }
+    } catch (e) {
+      console.error("Error stopping voice session gracefully:", e);
+    }
+    setIsVoiceActive(false);
+  };
+
+  const startVoiceSession = async () => {
+    try {
+      setVoiceError("");
+      setIsVoiceActive(true);
+
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) {
+        throw new Error("Web Audio API is not supported in this browser.");
+      }
+
+      const inputCtx = new AudioCtx({ sampleRate: 16000 });
+      const outputCtx = new AudioCtx({ sampleRate: 24000 });
+      
+      inputAudioCtxRef.current = inputCtx;
+      outputAudioCtxRef.current = outputCtx;
+      scheduledTimeRef.current = outputCtx.currentTime;
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStreamRef.current = stream;
+
+      const source = inputCtx.createMediaStreamSource(stream);
+      const processor = inputCtx.createScriptProcessor(4096, 1, 1);
+      
+      source.connect(processor);
+      processor.connect(inputCtx.destination);
+      audioProcessorRef.current = processor;
+
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const wsUrl = `${protocol}//${window.location.host}/api/live`;
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
+
+      processor.onaudioprocess = (e) => {
+        const inputData = e.inputBuffer.getChannelData(0);
+        const base64 = pcmToBase64(inputData);
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ audio: base64 }));
+        }
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.audio) {
+            setIsVoiceModelTalking(true);
+            const playSource = playPCM16Bit24kHz(outputCtx, msg.audio, scheduledTimeRef);
+            activeSourcesRef.current.push(playSource);
+            playSource.onended = () => {
+              activeSourcesRef.current = activeSourcesRef.current.filter(s => s !== playSource);
+              if (activeSourcesRef.current.length === 0) {
+                setIsVoiceModelTalking(false);
+              }
+            };
+          }
+          if (msg.interrupted) {
+            stopAllPlayback();
+          }
+          if (msg.error) {
+            setVoiceError(msg.error);
+            stopVoiceSession();
+          }
+        } catch (err) {
+          console.error("Error decoding audio stream:", err);
+        }
+      };
+
+      ws.onclose = () => {
+        stopVoiceSession();
+      };
+
+      ws.onerror = () => {
+        setVoiceError("WebSocket connection aborted.");
+        stopVoiceSession();
+      };
+
+    } catch (err: any) {
+      console.error(err);
+      setVoiceError(err.message || "Failed to start live speech.");
+      setIsVoiceActive(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      stopVoiceSession();
+    };
+  }, []);
 
   const handleSendChat = async (textToSend?: string) => {
     const queryText = textToSend || chatInput;
@@ -102,10 +317,16 @@ export default function AIDemos() {
     setIsChatLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/api/gemini/grounded-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...chatMessages, userMsg] })
+        body: JSON.stringify({
+          messages: [...chatMessages, userMsg],
+          searchGrounding,
+          mapsGrounding,
+          thinkingMode,
+          role: advisorRole
+        })
       });
       const data = await response.json();
       
@@ -122,7 +343,7 @@ export default function AIDemos() {
       console.error(err);
       setChatMessages(prev => [...prev, {
         sender: 'assistant',
-        text: `Error calling virtual advisor: ${err.message}. Please make sure the GEMINI_API_KEY is configured correctly in the environment.`,
+        text: `Error calling virtual advisor: ${err.message}. Please check GEMINI_API_KEY.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     } finally {
@@ -233,56 +454,88 @@ export default function AIDemos() {
             Production Pipeline <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Simulators</span>
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Test and evaluate real-time pipelines and visual models illustrating the depth of my AI architectures.
+            Test and evaluate real-time pipelines, visual models, and cutting-edge Gemini voice &amp; video synthesis.
           </p>
         </div>
 
         {/* Tab Controls - Premium Minimal Slider style */}
-        <div className="flex rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 p-1 select-none font-mono">
+        <div className="flex flex-wrap rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-950 p-1 select-none font-mono gap-1">
           <button
             onClick={() => setActiveTab('chat')}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
               activeTab === 'chat' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Brain size={13} />
-            <span className="whitespace-nowrap">AI Resume Advisor</span>
-            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/40 dark:border-emerald-900/40 normal-case">
-              <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="hidden sm:inline">Active</span>
-            </span>
+            <span className="whitespace-nowrap">AI Advisor</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('paintbox')}
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+              activeTab === 'paintbox' 
+                ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
+                : 'text-zinc-500 hover:text-zinc-900'
+            }`}
+          >
+            <Image size={13} />
+            <span className="whitespace-nowrap">Paintbox</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('veo')}
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+              activeTab === 'veo' 
+                ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
+                : 'text-zinc-500 hover:text-zinc-900'
+            }`}
+          >
+            <Video size={13} />
+            <span className="whitespace-nowrap">Cinematic</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('soundstage')}
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+              activeTab === 'soundstage' 
+                ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
+                : 'text-zinc-500 hover:text-zinc-900'
+            }`}
+          >
+            <Music size={13} />
+            <span className="whitespace-nowrap">Soundstage</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('multimodal')}
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+              activeTab === 'multimodal' 
+                ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
+                : 'text-zinc-500 hover:text-zinc-900'
+            }`}
+          >
+            <Radio size={13} />
+            <span className="whitespace-nowrap">Media</span>
           </button>
           <button
             onClick={() => setActiveTab('summarizer')}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
               activeTab === 'summarizer' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-500 hover:text-zinc-900'
             }`}
           >
             <Layers size={13} />
-            <span className="whitespace-nowrap">Chunking Service</span>
-            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/40 dark:border-blue-900/40 normal-case">
-              <span className="h-1 w-1 rounded-full bg-blue-500" />
-              <span className="hidden sm:inline">Open Source</span>
-            </span>
+            <span className="whitespace-nowrap">Chunker</span>
           </button>
           <button
             onClick={() => setActiveTab('yolo')}
-            className={`cursor-pointer flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-250 ${
+            className={`cursor-pointer flex items-center gap-1.5 px-3 py-2 rounded text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
               activeTab === 'yolo' 
                 ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/60 dark:border-zinc-800 font-bold shadow-sm' 
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-500 hover:text-zinc-900'
             }`}
           >
             <Eye size={13} />
-            <span className="whitespace-nowrap">Computer Vision</span>
-            <span className="inline-flex items-center gap-1 ml-1.5 px-1 py-0.5 sm:px-1.5 rounded-[3px] text-[8px] font-bold tracking-tight bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200/40 dark:border-amber-900/40 normal-case">
-              <span className="h-1 w-1 rounded-full bg-amber-500" />
-              <span className="hidden sm:inline">Beta</span>
-            </span>
+            <span className="whitespace-nowrap">YOLO CV</span>
           </button>
         </div>
       </div>
@@ -299,49 +552,153 @@ export default function AIDemos() {
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
             </div>
             <span className="text-zinc-350 dark:text-zinc-700 mx-2">|</span>
-            <span className="font-mono text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5">
+            <span className="font-mono text-[10px] text-zinc-600 dark:text-zinc-400 flex items-center gap-1.5 animate-fade-in">
               <Terminal size={12} className="text-indigo-600 dark:text-indigo-400" />
-              {activeTab === 'chat' && 'portfolio_agent_sandbox.py'}
+              {activeTab === 'chat' && 'portfolio_advisor_agent.py'}
+              {activeTab === 'paintbox' && 'diffusion_paintbox_canvas.py'}
+              {activeTab === 'veo' && 'veo_cinematic_renderer.py'}
+              {activeTab === 'soundstage' && 'lyria_soundstage_deck.py'}
+              {activeTab === 'multimodal' && 'multimodal_acoustic_transcribe.py'}
               {activeTab === 'summarizer' && 'rag_document_chunker.go'}
               {activeTab === 'yolo' && 'yolo_anomaly_detector.cpp'}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className={`inline-flex h-1.5 w-1.5 rounded-full animate-pulse ${
-              activeTab === 'chat' ? 'bg-emerald-500' :
-              activeTab === 'summarizer' ? 'bg-blue-500' :
-              'bg-amber-500'
-            }`} />
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span className="font-mono text-[9px] text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">
-              Status: {
-                activeTab === 'chat' ? 'Active' :
-                activeTab === 'summarizer' ? 'Open Source' :
-                'Beta'
-              }
+              COMPILER: LIVE
             </span>
           </div>
         </div>
 
-        {/* TAB 1: ASK MY CV */}
+        {/* TAB 1: ASK MY CV / ADVANCED ADVISOR */}
         {activeTab === 'chat' && (
-          <div className="flex flex-col flex-1 h-[520px]">
+          <div className="flex flex-col flex-1 h-[540px]">
             {/* Thread Header Banner */}
-            <div className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 px-6 py-3.5 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Cpu size={14} className="text-indigo-600 dark:text-indigo-400" />
-                <span className="text-xs font-semibold text-zinc-650 dark:text-zinc-300 font-mono">Grounding: Gemini Integration with CV Corpus</span>
+            <div className="border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 px-5 py-2 flex flex-col md:flex-row gap-3 md:items-center justify-between">
+              
+              {/* Left grounding configuration tools */}
+              <div className="flex flex-wrap items-center gap-3 text-xs">
+                <div className="flex items-center gap-1">
+                  <Cpu size={13} className="text-indigo-600 shrink-0" />
+                  <span className="font-mono font-bold text-[10px] text-zinc-550 mr-1.5">Model Tiers:</span>
+                </div>
+                <label className="flex items-center gap-1 cursor-pointer font-mono text-[10px]">
+                  <input
+                    type="checkbox"
+                    checked={searchGrounding}
+                    onChange={(e) => {
+                      setSearchGrounding(e.target.checked);
+                      if (e.target.checked) setMapsGrounding(false);
+                    }}
+                    className="rounded text-indigo-600 focus:ring-0"
+                  />
+                  <Search size={11} className="text-blue-500" />
+                  <span>Google Search</span>
+                </label>
+                <label className="flex items-center gap-1 cursor-pointer font-mono text-[10px]">
+                  <input
+                    type="checkbox"
+                    checked={mapsGrounding}
+                    onChange={(e) => {
+                      setMapsGrounding(e.target.checked);
+                      if (e.target.checked) setSearchGrounding(false);
+                    }}
+                    className="rounded text-indigo-600 focus:ring-0"
+                  />
+                  <MapPin size={11} className="text-rose-500" />
+                  <span>Google Maps</span>
+                </label>
+                <label className="flex items-center gap-1 cursor-pointer font-mono text-[10px]">
+                  <input
+                    type="checkbox"
+                    checked={thinkingMode}
+                    onChange={(e) => setThinkingMode(e.target.checked)}
+                    className="rounded text-indigo-600 focus:ring-0"
+                  />
+                  <Sparkles size={11} className="text-purple-500" />
+                  <span className="font-bold text-indigo-700 dark:text-indigo-400">High Thinking</span>
+                </label>
               </div>
-              <button
-                onClick={handleResetChat}
-                className="cursor-pointer text-[9px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white flex items-center gap-1 px-2.5 py-1 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition"
-              >
-                <RefreshCw size={10} /> Reset Session
-              </button>
+
+              {/* Persona and Voice buttons */}
+              <div className="flex items-center gap-2">
+                <select
+                  value={advisorRole}
+                  onChange={(e) => setAdvisorRole(e.target.value as any)}
+                  className="rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[10px] font-mono p-1 text-zinc-650"
+                >
+                  <option value="advisor">Profile Career Advisor</option>
+                  <option value="interviewer">ML Technical Interviewer</option>
+                  <option value="architect">Enterprise AI Architect</option>
+                </select>
+
+                <button
+                  onClick={isVoiceActive ? stopVoiceSession : startVoiceSession}
+                  className={`cursor-pointer text-[10px] font-mono uppercase tracking-wider flex items-center gap-1 px-3 py-1.5 rounded transition font-bold shadow-xs ${
+                    isVoiceActive 
+                      ? "bg-rose-600 hover:bg-rose-700 text-white animate-pulse" 
+                      : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                  }`}
+                >
+                  {isVoiceActive ? <PhoneOff size={11} /> : <Phone size={11} />}
+                  {isVoiceActive ? "End Voice Call" : "Voice Session"}
+                </button>
+              </div>
             </div>
 
             {/* Conversation Stream */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-zinc-50/10 dark:bg-zinc-950/10">
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-zinc-50/10 dark:bg-zinc-950/10 relative">
+              
+              {/* Voice Pulse Overlay when Voice active */}
+              <AnimatePresence>
+                {isVoiceActive && (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md z-30 flex flex-col items-center justify-center p-6 text-center text-white"
+                  >
+                    <div className="relative mb-6">
+                      <motion.div 
+                        animate={{ scale: isVoiceModelTalking ? [1, 1.4, 1] : [1, 1.15, 1] }}
+                        transition={{ repeat: Infinity, duration: isVoiceModelTalking ? 0.8 : 2.5 }}
+                        className={`h-24 w-24 rounded-full flex items-center justify-center border-4 ${isVoiceModelTalking ? 'bg-indigo-600/30 border-indigo-500 shadow-[0_0_20px_rgba(99,102,241,0.5)]' : 'bg-emerald-600/20 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]'}`}
+                      >
+                        {isVoiceModelTalking ? <Volume2 size={32} className="text-indigo-400 animate-pulse" /> : <Mic size={32} className="text-emerald-400" />}
+                      </motion.div>
+                      {isVoiceModelTalking && (
+                        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-4 w-4 bg-indigo-500"></span>
+                        </span>
+                      )}
+                    </div>
+
+                    <h4 className="text-sm font-bold font-mono tracking-wide uppercase">
+                      {isVoiceModelTalking ? "Advisor Speaking..." : "Speech Live Connection Active"}
+                    </h4>
+                    <p className="text-xs text-zinc-400 max-w-sm mt-1 leading-relaxed font-light font-mono">
+                      {isVoiceModelTalking ? "Karim's Virtual assistant is formulating and speaking real-time voice packets." : "Your microphone is hot. Talk conversationally about Karim's expertise (e.g. at Baker Hughes, Siena) to get responses."}
+                    </p>
+
+                    {voiceError && (
+                      <div className="mt-4 text-[11px] font-mono text-rose-400 bg-rose-950/30 border border-rose-900/60 p-2 rounded max-w-xs">
+                        {voiceError}
+                      </div>
+                    )}
+
+                    <button
+                      onClick={stopVoiceSession}
+                      className="cursor-pointer mt-6 rounded bg-rose-600 hover:bg-rose-700 text-white px-5 py-2 text-xs font-bold uppercase font-mono tracking-wider transition"
+                    >
+                      Disconnect Voice Stream
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {chatMessages.map((msg, idx) => (
                 <div
                   key={idx}
@@ -382,13 +739,15 @@ export default function AIDemos() {
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-zinc-100 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 text-indigo-600 dark:text-indigo-400 text-xs font-bold font-mono animate-pulse">
                       AI
                     </div>
-                    <div className="bg-zinc-50 dark:bg-zinc-950/60 text-zinc-500 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800 rounded px-4 py-3 text-xs flex items-center gap-2">
-                      <span className="flex gap-1">
+                    <div className="bg-white dark:bg-zinc-950 text-zinc-500 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800 rounded px-4 py-3 text-xs flex items-center gap-2 shadow-sm">
+                      <span className="flex gap-1 shrink-0">
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-bounce" style={{ animationDelay: '0ms' }}></span>
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-bounce" style={{ animationDelay: '150ms' }}></span>
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-bounce" style={{ animationDelay: '300ms' }}></span>
                       </span>
-                      <span>Retrieving profile information...</span>
+                      <span className="font-mono text-[10px]">
+                        {thinkingMode ? "Model is thinking deeply (High-Thinking Mode activated)..." : "Retrieving profile grounding vectors..."}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -397,14 +756,14 @@ export default function AIDemos() {
             </div>
 
             {/* Suggested Chips Row */}
-            <div className="px-6 py-2.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-wrap gap-1.5 items-center">
+            <div className="px-5 py-2 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 flex flex-wrap gap-1.5 items-center">
               <span className="text-[10px] font-mono font-bold text-zinc-500 dark:text-zinc-450 uppercase tracking-wider mr-1.5">Direct Queries:</span>
               {SUGGESTED_QUESTIONS.map((q) => (
                 <button
                   key={q}
                   disabled={isChatLoading}
                   onClick={() => handleSendChat(q)}
-                  className="cursor-pointer text-[10px] font-semibold rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3.5 py-1 text-zinc-600 dark:text-zinc-355 hover:border-indigo-500/30 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition disabled:opacity-50 shadow-xs"
+                  className="cursor-pointer text-[10px] font-semibold rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-0.5 text-zinc-600 dark:text-zinc-355 hover:border-indigo-500/30 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition disabled:opacity-50 shadow-xs"
                 >
                   {q}
                 </button>
@@ -433,7 +792,19 @@ export default function AIDemos() {
           </div>
         )}
 
-        {/* TAB 2: SUMMARIZER & CHUNKING */}
+        {/* TAB 2: PAINTBOX */}
+        {activeTab === 'paintbox' && <AIPaintbox />}
+
+        {/* TAB 3: VEO CINEMATIC */}
+        {activeTab === 'veo' && <AICinematic />}
+
+        {/* TAB 4: LYRIA SOUNDSTAGE */}
+        {activeTab === 'soundstage' && <AISoundstage />}
+
+        {/* TAB 5: MULTIMODAL ANALYZER */}
+        {activeTab === 'multimodal' && <AIMediaAnalyzer />}
+
+        {/* TAB 6: SUMMARIZER & CHUNKING */}
         {activeTab === 'summarizer' && (
           <div className="p-6 space-y-6 flex-1 flex flex-col lg:flex-row gap-6 h-[520px] overflow-y-auto bg-zinc-50/10 dark:bg-zinc-950/10">
             
@@ -464,7 +835,7 @@ export default function AIDemos() {
 
                 <div className="space-y-4 text-xs">
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                    <div className="flex justify-between text-zinc-500 dark:text-zinc-450">
                       <span>Chunk Token Limit (Chars):</span>
                       <span className="font-mono text-indigo-600 dark:text-indigo-455 font-bold">{chunkSize}</span>
                     </div>
@@ -480,7 +851,7 @@ export default function AIDemos() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
+                    <div className="flex justify-between text-zinc-500 dark:text-zinc-450">
                       <span>Chunk Overlap Boundary:</span>
                       <span className="font-mono text-indigo-600 dark:text-indigo-455 font-bold">{chunkOverlap}</span>
                     </div>
@@ -536,9 +907,9 @@ export default function AIDemos() {
                   <div className="rounded border border-indigo-100/50 dark:border-indigo-950 bg-indigo-50/40 dark:bg-indigo-950/20 p-4.5 space-y-2">
                     <div className="flex justify-between items-center border-b border-zinc-200/60 dark:border-zinc-800/60 pb-2">
                       <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
-                        <CheckCircle size={13} className="text-indigo-600 dark:text-indigo-400" /> Pipeline Output: LLM Summary
+                        <CheckCircle size={13} className="text-indigo-600" /> Pipeline Output: LLM Summary
                       </span>
-                      <span className="text-[9px] font-mono text-zinc-450 dark:text-zinc-550">Latency: 142ms</span>
+                      <span className="text-[9px] font-mono text-zinc-450 dark:text-zinc-555">Latency: 142ms</span>
                     </div>
                     <p className="text-zinc-700 dark:text-zinc-300 text-xs leading-relaxed whitespace-pre-line font-light">
                       {textResults.summary}
@@ -549,13 +920,13 @@ export default function AIDemos() {
                   <div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded p-4.5">
                     <div className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-2 mb-3 text-xs">
                       <span className="font-bold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5 font-display">
-                        <Layers size={13} className="text-indigo-600 dark:text-indigo-400" /> Chunk Segment Vectors ({textResults.metadata.numChunks})
+                        <Layers size={13} className="text-indigo-600" /> Chunk Segment Vectors ({textResults.metadata.numChunks})
                       </span>
                     </div>
 
                     <div className="flex-1 overflow-y-auto space-y-3.5 max-h-[190px] pr-2">
                       {textResults.chunks.map((chunk) => (
-                        <div key={chunk.id} className="rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 hover:border-indigo-200 dark:hover:border-indigo-550 transition">
+                        <div key={chunk.id} className="rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 hover:border-indigo-205 transition">
                           <div className="flex justify-between text-zinc-455 dark:text-zinc-500 font-mono text-[9px] mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1.5">
                             <span className="text-indigo-600 dark:text-indigo-400 font-bold uppercase">Chunk ID: {chunk.id}</span>
                             <span>Char Indices: [{chunk.start} - {chunk.end}]</span>
@@ -581,7 +952,7 @@ export default function AIDemos() {
           </div>
         )}
 
-        {/* TAB 3: YOLO VISION */}
+        {/* TAB 7: YOLO VISION */}
         {activeTab === 'yolo' && (
           <div className="p-6 space-y-6 flex-1 flex flex-col lg:flex-row gap-6 h-[520px] overflow-y-auto bg-zinc-50/10 dark:bg-zinc-950/10">
             
@@ -601,7 +972,7 @@ export default function AIDemos() {
                       className={`cursor-pointer w-full text-left p-2.5 rounded border text-xs transition-all duration-200 ${
                         selectedPartId === part.id 
                           ? 'border-indigo-500 dark:border-indigo-600 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 font-bold shadow-xs' 
-                          : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-350 dark:hover:border-zinc-700'
+                          : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
                       }`}
                     >
                       <div>{part.name}</div>
@@ -647,9 +1018,9 @@ export default function AIDemos() {
             <div className="flex-1 flex flex-col bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded p-4.5">
               <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5 mb-4 text-xs">
                 <span className="font-bold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5 font-display">
-                  <Eye size={13} className="text-indigo-600 dark:text-indigo-400" /> YOLO Optical Spectrogram Analyzer Overlay
+                  <Eye size={13} className="text-indigo-600" /> YOLO Optical Spectrogram Analyzer Overlay
                 </span>
-                <span className="font-mono text-[10px] text-zinc-500 dark:text-zinc-450">{selectedPart.name}</span>
+                <span className="font-mono text-[10px] text-zinc-550">{selectedPart.name}</span>
               </div>
 
               {/* The visual box */}
@@ -659,11 +1030,11 @@ export default function AIDemos() {
                 <div className="absolute inset-0 bg-grid-pattern opacity-15 bg-grid-mask pointer-events-none" />
 
                 {/* Component Blueprint Scan Background */}
-                <img
+                <LazyImage
                   src={selectedPart.imageUrl}
                   alt={selectedPart.name}
-                  className="absolute inset-0 w-full h-full object-cover opacity-60 dark:opacity-40 group-hover:opacity-75 transition-opacity duration-300 mix-blend-multiply dark:mix-blend-overlay"
-                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full"
+                  imgClassName="opacity-60 dark:opacity-40 group-hover:opacity-75 transition-opacity duration-300 mix-blend-multiply dark:mix-blend-overlay"
                 />
 
                 {/* Simulated Glass Target Reticle (Architectural HUD feel) */}
@@ -673,7 +1044,7 @@ export default function AIDemos() {
                   <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-indigo-500/40" />
                   <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-indigo-500/40" />
                   
-                  {/* Subtle reticle circles */}
+                  {/* Reticle circle */}
                   <div className="w-12 h-12 rounded-full border border-indigo-500/10 flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-indigo-500/20" />
                   </div>
@@ -735,7 +1106,7 @@ export default function AIDemos() {
               {hasScanned && !isScanning && (
                 <div className="mt-4 border-t border-zinc-200 dark:border-zinc-800 pt-3 space-y-2.5">
                   <h5 className="text-[10px] uppercase font-bold tracking-wider text-zinc-500 dark:text-zinc-450 flex items-center gap-1 font-mono">
-                    <AlertTriangle size={12} className="text-yellow-600 dark:text-yellow-500" /> Detection Logs: anomalies detected
+                    <AlertTriangle size={12} className="text-yellow-600" /> Detection Logs: anomalies detected
                   </h5>
                   
                   {visibleIssues.length > 0 ? (
@@ -747,7 +1118,7 @@ export default function AIDemos() {
                               <span className="font-bold text-zinc-800 dark:text-zinc-200">{issue.label}</span>
                               <span className="font-mono text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">conf: {(issue.conf * 100).toFixed(0)}%</span>
                             </div>
-                            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed font-light">{issue.desc}</p>
+                            <p className="text-[10px] text-zinc-500 dark:text-zinc-450 leading-relaxed font-light">{issue.desc}</p>
                           </div>
                           <span className={`shrink-0 inline-block px-2 py-0.5 rounded text-[9px] font-mono font-bold ${
                             issue.severity === 'High' 
@@ -761,7 +1132,7 @@ export default function AIDemos() {
                     </div>
                   ) : (
                     <div className="rounded bg-emerald-50 dark:bg-emerald-950/35 border border-emerald-100 dark:border-emerald-800 p-2.5 text-center text-[10px] text-emerald-850 dark:text-emerald-400 flex items-center justify-center gap-1.5 font-light">
-                      <CheckCircle size={12} className="text-emerald-600 dark:text-emerald-400 animate-pulse" />
+                      <CheckCircle size={12} className="text-emerald-600 animate-pulse" />
                       <span>Defects not found above confidence parameters. Component certified healthy.</span>
                     </div>
                   )}

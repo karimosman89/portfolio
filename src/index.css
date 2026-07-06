@@ -95,3 +95,277 @@ body {
   background: radial-gradient(circle, rgba(79, 70, 229, 0.04) 0%, transparent 70%);
 }
 
+/* Infinite scrolling marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes laserScan {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 98%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Theme-specific accent volumetric blurs and effects */
+@keyframes float-ambient {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.15);
+  }
+}
+
+.animate-float-slow {
+  animation: float-ambient 18s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-ambient 24s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Custom dynamic grid & background styles according to selected Theme */
+.grid-mesh {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+}
+
+/* ==========================================
+   PRINT SPECIFICATION & PDF EXPORT UTILITY
+   ========================================== */
+@media print {
+  /* 1. Page & Layout Reset */
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm;
+  }
+
+  body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force light mode variables and override dark mode styles in print */
+  html, body, #root, [class*="theme-"], .dark {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* 2. Global Resets for Print Legibility */
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  p, span, li, a, th, td {
+    color: #222222 !important;
+  }
+
+  /* Ensure all text selections or accent styles look clean */
+  .text-transparent {
+    color: #111111 !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    background-image: none !important;
+  }
+
+  /* Force borders to be a clean, solid, thin gray */
+  *, *::before, *::after {
+    border-color: #e4e4e7 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Disable any custom laser scan effects, glowing borders, or background blurs */
+  .architectural-line-x, .architectural-line-y {
+    background: #e4e4e7 !important;
+    opacity: 0.5 !important;
+  }
+
+  /* 3. Hide Unnecessary Interactive and Layout Elements */
+  nav,
+  footer .flex-wrap, /* Hide scroll-to-top and resume buttons in footer */
+  button,
+  input,
+  textarea,
+  select,
+  iframe,
+  [title="Select Theme Presets"],
+  #dark-mode-toggle,
+  #nav-email-btn,
+  #nav-linkedin-btn,
+  #nav-github-btn,
+  #hero-recruitment-linkedin,
+  #quick-chat-bubble,
+  #quick-chat-container,
+  .quick-chat,
+  .laser-scan,
+  .sys-led,
+  /* Hide interactive, widget-heavy panels that don't print cleanly */
+  #interactive-ai-playground,
+  #ai-agents-showcase,
+  #interactive-ai-graphs,
+  /* Hide background grids and absolute volumetric blurs */
+  .bg-grid-pattern,
+  .bg-grid-mask,
+  .pointer-events-none.fixed,
+  /* Hide the inputs/buttons of the contact form */
+  #business-inquiry-desk form,
+  #business-inquiry-desk .space-y-4,
+  #business-inquiry-desk button,
+  /* Custom utility classes to manually hide things */
+  .no-print {
+    display: none !important;
+  }
+
+  /* 4. Formatting Remaining Sections for Executive Presentation */
+  
+  /* Split contact card container into a beautifully clean, non-floating layout */
+  .lg\:col-span-5 {
+    width: 100% !important;
+    margin-top: 1.5rem !important;
+    page-break-inside: avoid;
+  }
+
+  .lg\:col-span-7 {
+    width: 100% !important;
+  }
+
+  /* Force single column layout during print or adjust grid columns */
+  .grid {
+    display: block !important;
+  }
+
+  /* Ensure flex rows wrap cleanly and remain visible */
+  .flex {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Reset alignment helper column widths */
+  .md\:grid-cols-2, .lg\:grid-cols-12, .grid-cols-2 {
+    display: block !important;
+  }
+
+  /* Metric cards display */
+  #metrics-dashboard {
+    page-break-inside: avoid;
+  }
+
+  #metrics-dashboard .grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+  }
+
+  #metrics-dashboard .grid > div {
+    flex: 1 1 45% !important;
+    margin-bottom: 1rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Experience timeline formatting */
+  #career-and-education {
+    page-break-inside: auto !important;
+  }
+
+  #career-and-education .relative {
+    page-break-inside: auto !important;
+  }
+
+  /* Prevent timeline events from breaking across pages */
+  #career-and-education .group\/timeline {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 2rem !important;
+    position: relative !important;
+  }
+
+  /* Skills Bento formatting */
+  #skills-stack {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  #skills-stack .grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+  }
+
+  #skills-stack .grid > div {
+    flex: 1 1 30% !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Publications and Github block */
+  #github-and-technical-blogs {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  #github-and-technical-blogs .grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+  }
+
+  #github-and-technical-blogs .grid > div {
+    flex: 1 1 45% !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Services & sectors list */
+  #business-inquiry-desk {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Make sure links are displayed textually if they are anchors */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")" !important;
+    font-size: 85% !important;
+    color: #666666 !important;
+  }
+
+  /* Don't show mailto: and tel: links textually */
+  a[href^="mailto:"]:after, a[href^="tel:"]:after {
+    content: "" !important;
+  }
+}
+
+

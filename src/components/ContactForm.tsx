@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Mail, Briefcase, Building2, Send, CheckCircle2, MessageSquare, Sparkles, Cpu, AlertCircle, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Briefcase, Building2, Send, CheckCircle2, MessageSquare, Sparkles, Cpu, AlertCircle, RefreshCw, Settings, Calendar, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import BookingWidget from './BookingWidget';
+import HostAdminPanel from './HostAdminPanel';
+import CalendlyWidget from './CalendlyWidget';
 
 interface ContactFormData {
   name: string;
@@ -12,12 +15,56 @@ interface ContactFormData {
 }
 
 export default function ContactForm() {
+  const [activeTab, setActiveTab] = useState<'message' | 'booking' | 'calendly' | 'host'>('calendly'); // default to calendly tab so the requested widget is immediately highlighted!
+  const [calendlyUrl, setCalendlyUrl] = useState<string>('https://calendly.com/karim-programmer2020');
+
+  // Fetch host's actual Calendly link from backend on mount
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch('/api/booking/config');
+        const data = await res.json();
+        if (data && data.calendlyUrl) {
+          setCalendlyUrl(data.calendlyUrl);
+        }
+      } catch (err) {
+        console.error('Failed to fetch booking config for Calendly:', err);
+      }
+    };
+    fetchConfig();
+  }, []);
+
+  // Listen for tab trigger events from the header or other parts of the application
+  useEffect(() => {
+    const handleSetTab = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const tab = customEvent.detail;
+      if (tab === 'booking' || tab === 'calendly' || tab === 'message' || tab === 'host') {
+        setActiveTab(tab);
+      }
+    };
+    window.addEventListener('set-contact-tab', handleSetTab);
+    return () => window.removeEventListener('set-contact-tab', handleSetTab);
+  }, []);
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     company: '',
     projectType: 'B2B Consulting',
     budget: 'Not Specified',
+    message: ''
+  });
+
+  const [touched, setTouched] = useState<Record<string, boolean>>({
+    name: false,
+    email: false,
+    message: false
+  });
+
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({
+    name: '',
+    email: '',
     message: ''
   });
 
@@ -40,9 +87,46 @@ export default function ContactForm() {
     '€50,000+ / Enterprise'
   ];
 
+  const validateField = (name: string, value: string) => {
+    let errorMsg = '';
+    if (name === 'name') {
+      if (!value.trim()) {
+        errorMsg = 'Full name is required.';
+      } else if (value.trim().length < 2) {
+        errorMsg = 'Name must be at least 2 characters.';
+      }
+    } else if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value.trim()) {
+        errorMsg = 'Contact email is required.';
+      } else if (!emailRegex.test(value.trim())) {
+        errorMsg = 'Please enter a valid email address.';
+      }
+    } else if (name === 'message') {
+      if (!value.trim()) {
+        errorMsg = 'Project description is required.';
+      } else if (value.trim().length < 15) {
+        errorMsg = 'Please provide a more descriptive project outline (min 15 chars).';
+      }
+    }
+    return errorMsg;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (touched[name]) {
+      const errorMsg = validateField(name, value);
+      setFormErrors(prev => ({ ...prev, [name]: errorMsg }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const errorMsg = validateField(name, value);
+    setFormErrors(prev => ({ ...prev, [name]: errorMsg }));
   };
 
   const handleTypeSelect = (type: string) => {
@@ -51,8 +135,23 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      setError('Please fill out all required fields (Name, Email, and Message).');
+
+    // Mark all fields as touched for final submission audit
+    const finalTouched = { name: true, email: true, message: true };
+    setTouched(finalTouched);
+
+    const nameErr = validateField('name', formData.name);
+    const emailErr = validateField('email', formData.email);
+    const messageErr = validateField('message', formData.message);
+
+    setFormErrors({
+      name: nameErr,
+      email: emailErr,
+      message: messageErr
+    });
+
+    if (nameErr || emailErr || messageErr) {
+      setError('Please resolve all validation errors in the form before submitting.');
       return;
     }
 
@@ -95,6 +194,16 @@ export default function ContactForm() {
       company: '',
       projectType: 'B2B Consulting',
       budget: 'Not Specified',
+      message: ''
+    });
+    setTouched({
+      name: false,
+      email: false,
+      message: false
+    });
+    setFormErrors({
+      name: '',
+      email: '',
       message: ''
     });
     setSuccessData(null);
@@ -177,13 +286,107 @@ export default function ContactForm() {
         {/* Dynamic Interactive Desk (Right 8 Columns) */}
         <div className="lg:col-span-8 bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-850 p-6 md:p-8 relative overflow-hidden shadow-sm dark:shadow-none">
           
+          {/* Booking / Inquiry Tab Bar */}
+          <div className="flex border-b border-zinc-200/80 dark:border-zinc-850 pb-4 mb-6 justify-between items-center relative z-10">
+            <div className="flex flex-wrap gap-1 bg-zinc-50 dark:bg-zinc-900 p-1 rounded-lg border border-zinc-200/60 dark:border-zinc-800">
+              <button
+                type="button"
+                onClick={() => setActiveTab('calendly')}
+                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'calendly'
+                    ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                }`}
+              >
+                <Sparkles size={11} className="text-amber-500 shrink-0" />
+                Book a Call (Calendly)
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('booking')}
+                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                  activeTab === 'booking'
+                    ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                }`}
+              >
+                <Calendar size={11} className="text-indigo-500 shrink-0" />
+                Native Booking
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('message')}
+                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all cursor-pointer ${
+                  activeTab === 'message'
+                    ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                }`}
+              >
+                Inquiry Desk
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab('host')}
+              className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
+                activeTab === 'host'
+                  ? 'border-indigo-500 text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40'
+                  : 'border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-350 hover:bg-zinc-50 dark:hover:bg-zinc-900'
+              }`}
+              title="Host Settings / Admin Console"
+            >
+              <Settings size={14} />
+            </button>
+          </div>
+
           <AnimatePresence mode="wait">
-            {!successData ? (
+            {activeTab === 'calendly' ? (
+              <motion.div
+                key="calendly-widget"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-4"
+              >
+                <div className="rounded border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/20 px-4 py-3 flex items-start gap-3">
+                  <Video size={16} className="text-indigo-600 dark:text-indigo-400 mt-0.5 shrink-0" />
+                  <div>
+                    <h4 className="text-xs font-bold text-indigo-900 dark:text-indigo-300 font-mono tracking-wider uppercase mb-1">Automated Google Meet Video Conferencing</h4>
+                    <p className="text-[10px] text-indigo-700/80 dark:text-indigo-400/80 leading-relaxed font-mono">
+                      Upon booking confirmation via the Calendly API, a Google Meet video conferencing link will be automatically generated and included directly in your calendar event invitation metadata.
+                    </p>
+                  </div>
+                </div>
+                <CalendlyWidget url={calendlyUrl} />
+              </motion.div>
+            ) : activeTab === 'booking' ? (
+              <motion.div
+                key="booking-widget"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <BookingWidget />
+              </motion.div>
+            ) : activeTab === 'host' ? (
+              <motion.div
+                key="host-admin-panel"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                <HostAdminPanel />
+              </motion.div>
+            ) : !successData ? (
               <motion.form
                 key="contact-form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
                 onSubmit={handleSubmit}
                 className="space-y-6 font-sans text-xs"
               >
@@ -224,9 +427,20 @@ export default function ContactForm() {
                         required
                         value={formData.name}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         placeholder="John Doe"
-                        className="w-full rounded border border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900 focus:outline-none transition font-sans text-xs"
+                        className={`w-full rounded border px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none transition font-sans text-xs ${
+                          touched.name && formErrors.name
+                            ? 'border-rose-500/80 bg-rose-50/5 dark:bg-rose-950/10 focus:border-rose-500'
+                            : 'border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900'
+                        }`}
                       />
+                      {touched.name && formErrors.name && (
+                        <span className="text-[10px] text-rose-600 dark:text-rose-450 font-mono mt-1 flex items-center gap-1">
+                          <AlertCircle size={10} />
+                          {formErrors.name}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -243,9 +457,20 @@ export default function ContactForm() {
                         required
                         value={formData.email}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         placeholder="john@company.com"
-                        className="w-full rounded border border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900 focus:outline-none transition font-sans text-xs"
+                        className={`w-full rounded border px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none transition font-sans text-xs ${
+                          touched.email && formErrors.email
+                            ? 'border-rose-500/80 bg-rose-50/5 dark:bg-rose-950/10 focus:border-rose-500'
+                            : 'border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900'
+                        }`}
                       />
+                      {touched.email && formErrors.email && (
+                        <span className="text-[10px] text-rose-600 dark:text-rose-450 font-mono mt-1 flex items-center gap-1">
+                          <AlertCircle size={10} />
+                          {formErrors.email}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -307,9 +532,20 @@ export default function ContactForm() {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder="Describe your project, objectives, tech stack, timeline, or key consulting issues you need resolved..."
-                    className="w-full rounded border border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900 focus:outline-none transition font-sans text-xs leading-relaxed"
+                    className={`w-full rounded border px-3.5 py-2.5 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none transition font-sans text-xs leading-relaxed ${
+                      touched.message && formErrors.message
+                        ? 'border-rose-500/80 bg-rose-50/5 dark:bg-rose-950/10 focus:border-rose-500'
+                        : 'border-zinc-200 dark:border-zinc-850 bg-zinc-50/30 dark:bg-zinc-950/30 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-900'
+                    }`}
                   />
+                  {touched.message && formErrors.message && (
+                    <span className="text-[10px] text-rose-600 dark:text-rose-450 font-mono mt-1 flex items-center gap-1">
+                      <AlertCircle size={10} />
+                      {formErrors.message}
+                    </span>
+                  )}
                 </div>
 
                 {error && (

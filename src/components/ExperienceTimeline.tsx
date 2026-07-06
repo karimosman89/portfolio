@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import { EXPERIENCES, EDUCATION, CERTIFICATIONS, LANGUAGES } from '../data';
 import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, Cpu, Award, BookOpen, Languages, Sparkles, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import ProjectModal from './ProjectModal';
+import { Experience } from '../types';
 
 export default function ExperienceTimeline() {
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Experience | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openProjectModal = (project: Experience) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -96,13 +105,22 @@ export default function ExperienceTimeline() {
                   </div>
 
                   {/* Header Titles */}
-                  <div>
-                    <h3 className="font-display text-lg font-extrabold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                      {exp.role}
-                    </h3>
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
-                      {exp.company}
-                    </h4>
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div>
+                      <h3 className="font-display text-lg font-extrabold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                        {exp.role}
+                      </h3>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
+                        {exp.company}
+                      </h4>
+                    </div>
+                    <button
+                      onClick={() => openProjectModal(exp)}
+                      className="cursor-pointer shrink-0 font-mono text-[9px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-zinc-950 px-3 py-1.5 rounded transition-all duration-300 flex items-center gap-1 self-start sm:self-center"
+                    >
+                      <span>Case Study Blueprint</span>
+                      <Cpu size={11} />
+                    </button>
                   </div>
 
                   {/* Short description */}
@@ -317,6 +335,13 @@ export default function ExperienceTimeline() {
         </motion.div>
 
       </div>
+
+      {/* Case Study Project Modal */}
+      <ProjectModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        project={selectedProject}
+      />
     </motion.section>
   );
 }

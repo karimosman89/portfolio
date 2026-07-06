@@ -1,9 +1,12 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, GenerateVideosOperation, Modality } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
+import { google } from "googleapis";
 
 // Load environment variables
 dotenv.config();
@@ -113,6 +116,534 @@ LANGUAGES:
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", time: new Date().toISOString() });
 });
+
+// ==========================================
+// GOOGLE CALENDAR & MEETING BOOKING SYSTEM Backend
+// ==========================================
+
+const DATA_DIR = path.join(process.cwd(), "data");
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR);
+}
+
+const CONFIG_FILE = path.join(DATA_DIR, "host_config.json");
+const MEETINGS_FILE = path.join(DATA_DIR, "meetings.json");
+
+// Default availability configuration
+const DEFAULT_CONFIG = {
+  weeklyAvailability: {
+    1: { start: "09:00", end: "12:00", active: true }, // Mon
+    2: { start: "09:00", end: "17:00", active: true }, // Tue
+    3: { start: "09:00", end: "17:00", active: true }, // Wed
+    4: { start: "09:00", end: "17:00", active: true }, // Thu
+    5: { start: "09:00", end: "16:00", active: true }, // Fri
+    6: { start: "10:00", end: "14:00", active: false }, // Sat
+    0: { start: "10:00", end: "14:00", active: false }, // Sun
+  },
+  slotDuration: 30, // in minutes
+  timezone: "Europe/Rome",
+  isGoogleConnected: false,
+  googleTokens: null as any,
+  hostEmail: "karim.programmer2020@gmail.com",
+  calendlyUrl: "https://calendly.com/karim-programmer2020",
+};
+
+// Helper functions for file persistence
+function readHostConfig() {
+  try {
+    if (fs.existsSync(CONFIG_FILE)) {
+      const data = JSON.parse(fs.readFileSync(CONFIG_FILE, "utf8"));
+      return { ...DEFAULT_CONFIG, ...data };
+    }
+  } catch (err) {
+    console.error("Error reading host config:", err);
+  }
+  return { ...DEFAULT_CONFIG };
+}
+
+function writeHostConfig(config: any) {
+  try {
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), "utf8");
+  } catch (err) {
+    console.error("Error writing host config:", err);
+  }
+}
+
+function readMeetings() {
+  try {
+    if (fs.existsSync(MEETINGS_FILE)) {
+      return JSON.parse(fs.readFileSync(MEETINGS_FILE, "utf8"));
+    }
+  } catch (err) {
+    console.error("Error reading meetings:", err);
+  }
+  return [];
+}
+
+function writeMeetings(meetings: any[]) {
+  try {
+    fs.writeFileSync(MEETINGS_FILE, JSON.stringify(meetings, null, 2), "utf8");
+  } catch (err) {
+    console.error("Error writing meetings:", err);
+  }
+}
+
+// Google OAuth Client helper
+function getOAuth2Client() {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  
+  if (!clientId || !clientSecret) {
+    console.warn("GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET is missing. Running in Google Calendar Simulation Mode.");
+    return null;
+  }
+  
+  const appUrl = (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const redirectUri = `${appUrl}/api/auth/google/callback`;
+  
+  return new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+}
+
+// Host Admin Password Verification
+app.post("/api/booking/host-login", (req, res) => {
+  const { passcode } = req.body;
+  const hostPasscode = process.env.HOST_ADMIN_PASSCODE || "karim-ai-2026";
+  
+  if (passcode === hostPasscode) {
+    res.json({ success: true, token: "karim-authenticated-session-token" });
+  } else {
+    res.status(401).json({ success: false, error: "Invalid passcode. Please try again." });
+  }
+});
+
+// Fetch Host Configuration
+app.get("/api/booking/config", (req, res) => {
+  const config = readHostConfig();
+  // Strip tokens from public output for security
+  const publicConfig = {
+    weeklyAvailability: config.weeklyAvailability,
+    slotDuration: config.slotDuration,
+    timezone: config.timezone,
+    isGoogleConnected: !!(config.googleTokens && config.googleTokens.refresh_token),
+    hostEmail: config.hostEmail,
+    calendlyUrl: config.calendlyUrl || "https://calendly.com/karim-programmer2020",
+  };
+  res.json(publicConfig);
+});
+
+// Update Host Configuration
+app.post("/api/booking/config", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader !== "Bearer karim-authenticated-session-token") {
+    res.status(403).json({ error: "Unauthorized access." });
+    return;
+  }
+
+  const { weeklyAvailability, slotDuration, timezone, hostEmail, calendlyUrl } = req.body;
+  const config = readHostConfig();
+  
+  if (weeklyAvailability) config.weeklyAvailability = weeklyAvailability;
+  if (slotDuration) config.slotDuration = Number(slotDuration);
+  if (timezone) config.timezone = timezone;
+  if (hostEmail) config.hostEmail = hostEmail;
+  if (calendlyUrl !== undefined) config.calendlyUrl = calendlyUrl;
+  
+  writeHostConfig(config);
+  res.json({ success: true, config });
+});
+
+// Generate Google Consent URL
+app.get("/api/auth/google/url", (req, res) => {
+  const oauth2Client = getOAuth2Client();
+  
+  if (!oauth2Client) {
+    res.json({ 
+      simulation: true, 
+      message: "OAuth credentials are not set in environment variables. Google Calendar API is running in high-fidelity simulation mode." 
+    });
+    return;
+  }
+  
+  const scopes = [
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile"
+  ];
+  
+  const url = oauth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: scopes,
+    prompt: "consent",
+  });
+  
+  res.json({ url });
+});
+
+// OAuth Callback handler
+app.get("/api/auth/google/callback", async (req, res) => {
+  const { code } = req.query;
+  if (!code) {
+    res.status(400).send("Authorization code is missing.");
+    return;
+  }
+  
+  const oauth2Client = getOAuth2Client();
+  if (!oauth2Client) {
+    res.status(500).send("OAuth client is not configured on the server.");
+    return;
+  }
+  
+  try {
+    const { tokens } = await oauth2Client.getToken(code as string);
+    oauth2Client.setCredentials(tokens);
+    
+    // Fetch host email
+    const oauth2 = google.oauth2({ version: "v2", auth: oauth2Client });
+    const userInfo = await oauth2.userinfo.get();
+    
+    const config = readHostConfig();
+    config.googleTokens = tokens;
+    config.isGoogleConnected = true;
+    if (userInfo.data.email) {
+      config.hostEmail = userInfo.data.email;
+    }
+    
+    writeHostConfig(config);
+    
+    // Redirect back to client app with success query param
+    const appUrl = (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+    res.redirect(`${appUrl}?google_connected=true`);
+  } catch (error: any) {
+    console.error("Error exchanging OAuth code:", error);
+    res.status(500).send(`Failed to authenticate with Google: ${error.message}`);
+  }
+});
+
+// Disconnect Google Calendar
+app.post("/api/auth/google/disconnect", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader !== "Bearer karim-authenticated-session-token") {
+    res.status(403).json({ error: "Unauthorized access." });
+    return;
+  }
+  
+  const config = readHostConfig();
+  config.googleTokens = null;
+  config.isGoogleConnected = false;
+  writeHostConfig(config);
+  
+  res.json({ success: true, message: "Google Calendar successfully disconnected." });
+});
+
+// Calculate Available Slots
+app.get("/api/booking/slots", async (req, res) => {
+  try {
+    const { date } = req.query; // date in format YYYY-MM-DD
+    if (!date || typeof date !== "string") {
+      res.status(400).json({ error: "Missing or invalid 'date' query parameter." });
+      return;
+    }
+    
+    const config = readHostConfig();
+    const targetDate = new Date(date);
+    const dayOfWeek = targetDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
+    
+    const dayConfig = config.weeklyAvailability[dayOfWeek];
+    if (!dayConfig || !dayConfig.active) {
+      res.json({ slots: [], message: "The host is not accepting meetings on this day of the week." });
+      return;
+    }
+    
+    // Parse working hours
+    const [startHour, startMin] = dayConfig.start.split(":").map(Number);
+    const [endHour, endMin] = dayConfig.end.split(":").map(Number);
+    const slotDuration = config.slotDuration || 30;
+    
+    // Generate potential slots
+    const slots: string[] = [];
+    let currentSlot = new Date(`${date}T${dayConfig.start}:00`);
+    const dayEnd = new Date(`${date}T${dayConfig.end}:00`);
+    
+    const now = new Date();
+    
+    while (currentSlot.getTime() + slotDuration * 60 * 1000 <= dayEnd.getTime()) {
+      const timeStr = currentSlot.toTimeString().substring(0, 5); // "HH:MM"
+      
+      // Skip if slot is in the past
+      if (currentSlot.getTime() > now.getTime()) {
+        slots.push(timeStr);
+      }
+      
+      currentSlot = new Date(currentSlot.getTime() + slotDuration * 60 * 1000);
+    }
+    
+    // Filter local bookings
+    const localMeetings = readMeetings();
+    let availableSlots = slots.filter(slot => {
+      // Check if slot overlaps with any local meeting on that date
+      const slotStart = new Date(`${date}T${slot}:00`);
+      const slotEnd = new Date(slotStart.getTime() + slotDuration * 60 * 1000);
+      
+      return !localMeetings.some((m: any) => {
+        if (m.dateTime.substring(0, 10) !== date) return false;
+        
+        const mStart = new Date(m.dateTime);
+        const mEnd = new Date(mStart.getTime() + m.duration * 60 * 1000);
+        
+        // Overlap check
+        return slotStart.getTime() < mEnd.getTime() && slotEnd.getTime() > mStart.getTime();
+      });
+    });
+    
+    // Filter live Google Calendar events if connected
+    if (config.googleTokens && config.googleTokens.refresh_token) {
+      const oauth2Client = getOAuth2Client();
+      if (oauth2Client) {
+        oauth2Client.setCredentials(config.googleTokens);
+        const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+        
+        try {
+          // Fetch calendar events for the entire day
+          const timeMin = `${date}T00:00:00Z`;
+          const timeMax = `${date}T23:59:59Z`;
+          
+          const eventsRes = await calendar.events.list({
+            calendarId: "primary",
+            timeMin,
+            timeMax,
+            singleEvents: true,
+            orderBy: "startTime",
+          });
+          
+          const events = eventsRes.data.items || [];
+          
+          availableSlots = availableSlots.filter(slot => {
+            const slotStart = new Date(`${date}T${slot}:00`);
+            const slotEnd = new Date(slotStart.getTime() + slotDuration * 60 * 1000);
+            
+            return !events.some((event: any) => {
+              const startStr = event.start?.dateTime || event.start?.date;
+              const endStr = event.end?.dateTime || event.end?.date;
+              if (!startStr || !endStr) return false;
+              
+              const eventStart = new Date(startStr);
+              const eventEnd = new Date(endStr);
+              
+              // Overlap check
+              return slotStart.getTime() < eventEnd.getTime() && slotEnd.getTime() > eventStart.getTime();
+            });
+          });
+        } catch (calErr) {
+          console.error("Error fetching Google Calendar events for slots filtering:", calErr);
+          // Fall back to local filtering to keep app fully functional
+        }
+      }
+    }
+    
+    res.json({ slots: availableSlots });
+  } catch (error: any) {
+    console.error("Error calculating booking slots:", error);
+    res.status(500).json({ error: error.message || "Failed to retrieve available slots." });
+  }
+});
+
+// Book a Meeting (With Auto-Google-Meet generation)
+app.post("/api/booking/book", async (req, res) => {
+  try {
+    const { date, time, clientName, clientEmail, clientLinkedIn, subject, description } = req.body;
+    
+    if (!date || !time || !clientName || !clientEmail || !clientLinkedIn || !subject) {
+      res.status(400).json({ error: "Missing required booking details." });
+      return;
+    }
+    
+    const config = readHostConfig();
+    const slotDuration = config.slotDuration || 30;
+    const meetingDateTime = `${date}T${time}:00`;
+    
+    // Check conflicts in local bookings first
+    const localMeetings = readMeetings();
+    const reqStart = new Date(meetingDateTime);
+    const reqEnd = new Date(reqStart.getTime() + slotDuration * 60 * 1000);
+    
+    const hasConflict = localMeetings.some((m: any) => {
+      const mStart = new Date(m.dateTime);
+      const mEnd = new Date(mStart.getTime() + m.duration * 60 * 1000);
+      return reqStart.getTime() < mEnd.getTime() && reqEnd.getTime() > mStart.getTime();
+    });
+    
+    if (hasConflict) {
+      res.status(409).json({ error: "This slot is no longer available. Please select another time slot." });
+      return;
+    }
+    
+    let googleEventId = undefined;
+    let googleMeetLink = `https://meet.google.com/sim-${Math.random().toString(36).substring(2, 5)}-${Math.random().toString(36).substring(2, 6)}-${Math.random().toString(36).substring(2, 5)}`; // default simulation link
+    
+    const meetingId = `meet-${Date.now()}`;
+    
+    // Call Google Calendar API if authenticated
+    if (config.googleTokens && config.googleTokens.refresh_token) {
+      const oauth2Client = getOAuth2Client();
+      if (oauth2Client) {
+        oauth2Client.setCredentials(config.googleTokens);
+        const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+        
+        try {
+          // Construct calendar event
+          const eventDescription = `
+Full Meeting Details:
+---------------------
+Client Name: ${clientName}
+Client Email: ${clientEmail}
+Client LinkedIn Profile: ${clientLinkedIn}
+Meeting Purpose: ${subject}
+
+Description / Agenda:
+${description || "No description provided."}
+
+Meeting booked via Karim's Portfolio AI Meeting Desk.
+          `.trim();
+          
+          const event = {
+            summary: `Karim Osman & ${clientName} | AI Consultation`,
+            description: eventDescription,
+            start: {
+              dateTime: reqStart.toISOString(),
+              timeZone: config.timezone,
+            },
+            end: {
+              dateTime: reqEnd.toISOString(),
+              timeZone: config.timezone,
+            },
+            attendees: [
+              { email: config.hostEmail || "karim.programmer2020@gmail.com" },
+              { email: clientEmail },
+            ],
+            conferenceData: {
+              createRequest: {
+                requestId: `meet-${meetingId}`,
+                conferenceSolutionKey: {
+                  type: "hangoutsMeet",
+                },
+              },
+            },
+          };
+          
+          const calResponse = await calendar.events.insert({
+            calendarId: "primary",
+            requestBody: event,
+            conferenceDataVersion: 1, // Crucial to trigger Google Meet creation!
+            sendUpdates: "all", // Notify attendees!
+          });
+          
+          googleEventId = calResponse.data.id || undefined;
+          
+          // Extract meeting link from conference details
+          const meetUri = calResponse.data.conferenceData?.entryPoints?.find(
+            ep => ep.entryPointType === "video"
+          )?.uri;
+          
+          if (meetUri) {
+            googleMeetLink = meetUri;
+          } else if (calResponse.data.htmlLink) {
+            googleMeetLink = calResponse.data.htmlLink;
+          }
+        } catch (calErr: any) {
+          console.error("Error creating Google Calendar event:", calErr);
+          // Don't crash! Let client book successfully in our local storage as fallback.
+        }
+      }
+    }
+    
+    // Save to local database
+    const newMeeting = {
+      id: meetingId,
+      clientName,
+      clientEmail,
+      clientLinkedIn,
+      dateTime: reqStart.toISOString(),
+      duration: slotDuration,
+      subject,
+      description,
+      googleEventId,
+      googleMeetLink,
+      createdAt: new Date().toISOString(),
+    };
+    
+    localMeetings.push(newMeeting);
+    writeMeetings(localMeetings);
+    
+    res.json({ success: true, meeting: newMeeting });
+  } catch (error: any) {
+    console.error("Error booking meeting:", error);
+    res.status(500).json({ error: error.message || "Failed to finalize meeting booking." });
+  }
+});
+
+// View Booked Meetings (Admin only)
+app.get("/api/booking/meetings", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader !== "Bearer karim-authenticated-session-token") {
+    res.status(403).json({ error: "Unauthorized access." });
+    return;
+  }
+  
+  const meetings = readMeetings();
+  // Sort by date ascending (soonest first)
+  meetings.sort((a: any, b: any) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
+  res.json(meetings);
+});
+
+// Delete/Cancel Meeting
+app.post("/api/booking/meetings/delete", async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader !== "Bearer karim-authenticated-session-token") {
+    res.status(403).json({ error: "Unauthorized access." });
+    return;
+  }
+  
+  const { id } = req.body;
+  if (!id) {
+    res.status(400).json({ error: "Missing meeting ID." });
+    return;
+  }
+  
+  const meetings = readMeetings();
+  const meetingIndex = meetings.findIndex((m: any) => m.id === id);
+  if (meetingIndex === -1) {
+    res.status(404).json({ error: "Meeting not found." });
+    return;
+  }
+  
+  const meeting = meetings[meetingIndex];
+  
+  // Try to remove from Google Calendar if connected
+  const config = readHostConfig();
+  if (meeting.googleEventId && config.googleTokens && config.googleTokens.refresh_token) {
+    const oauth2Client = getOAuth2Client();
+    if (oauth2Client) {
+      oauth2Client.setCredentials(config.googleTokens);
+      const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+      try {
+        await calendar.events.delete({
+          calendarId: "primary",
+          eventId: meeting.googleEventId,
+          sendUpdates: "all",
+        });
+      } catch (calErr) {
+        console.error("Failed to delete Google Calendar event:", calErr);
+      }
+    }
+  }
+  
+  meetings.splice(meetingIndex, 1);
+  writeMeetings(meetings);
+  
+  res.json({ success: true, message: "Meeting successfully cancelled." });
+});
+
 
 // CV Q&A Chat Assistant Route
 app.post("/api/chat", async (req, res) => {
@@ -315,6 +846,404 @@ Keep the response strictly formatted in markdown, under 180 words, using bullet 
   }
 });
 
+// ---------------------------------------------------------
+// NEW ADVANCED AI CAPABILITIES ENDPOINTS
+// ---------------------------------------------------------
+
+// Grounded and High-Thinking Chat Route
+app.post("/api/gemini/grounded-chat", async (req, res) => {
+  try {
+    const { messages, model = "flash", searchGrounding, mapsGrounding, thinkingMode, role = "advisor" } = req.body;
+    
+    if (!messages || !Array.isArray(messages)) {
+      res.status(400).json({ error: "Missing or invalid 'messages' array." });
+      return;
+    }
+
+    const ai = getGeminiClient();
+
+    // Map model selection
+    let modelName = "gemini-3.5-flash";
+    if (model === "lite") modelName = "gemini-3.1-flash-lite";
+    else if (model === "pro") modelName = "gemini-3.1-pro-preview";
+
+    let config: any = {
+      temperature: 0.7,
+    };
+
+    if (thinkingMode) {
+      modelName = "gemini-3.1-pro-preview";
+      config.thinkingConfig = {
+        thinkingLevel: "HIGH"
+      };
+    } else {
+      config.maxOutputTokens = 2045;
+    }
+
+    // Set grounding tools
+    if (searchGrounding) {
+      config.tools = [{ googleSearch: {} }];
+    } else if (mapsGrounding) {
+      config.tools = [{ googleMaps: {} }];
+    }
+
+    const contents = messages.map((m: any) => ({
+      role: m.sender === "user" ? "user" : "model",
+      parts: [{ text: m.text }]
+    }));
+
+    // Select system instruction
+    let systemInstruction = `You are a helpful assistant.`;
+    if (role === "advisor") {
+      systemInstruction = `
+You are the Virtual AI Career Advisor for Karim Osman, a Senior AI Engineer.
+Your goal is to represent Karim to recruiters, hiring managers, and technical leaders in an extremely professional, polite, and technically accurate manner.
+
+GUIDELINES:
+1. Speak confidently and objectively. Do NOT make up facts. Only represent facts present in the GROUNDING DATA below.
+2. Always refer to the key metrics (99.9% uptime, 500+ global users, 40% latency reduction, €2M+ revenue impact) when discussing his achievements.
+3. Keep answers concise, highly structured, and readable. Use markdown formatting appropriately.
+4. Promote Karim's availability for roles as a Senior AI Engineer, ML Engineer, LLM Specialist, or MLOps Architect. Mention his location in Siena, Italy, and his willingness to relocate or work remotely.
+5. Remind the recruiter to check out his prominent LinkedIn (https://www.linkedin.com/in/karimosman89/) and GitHub (https://github.com/karimosman89) links or contact him directly via email (karim.programmer2020@gmail.com).
+6. Ground your answers ONLY in the following details:
+--- START GROUNDING DATA ---
+${CV_GROUNDING_DATA}
+--- END GROUNDING DATA ---
+`;
+    } else if (role === "interviewer") {
+      systemInstruction = "You are a demanding technical interviewer grilling the user about MLOps, quantization, model pruning, low-latency scaling, and full-stack integration. Be professional, technical, and challenge their assumptions.";
+    } else if (role === "architect") {
+      systemInstruction = "You are an Enterprise AI Architect designed to draft robust, scalable RAG platforms, vector ingestion pipelines, and multi-node GPU deployment designs.";
+    }
+
+    config.systemInstruction = systemInstruction;
+
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents,
+      config
+    });
+
+    res.json({ text: response.text || "I apologize, but I could not formulate a response at this time." });
+  } catch (error: any) {
+    console.error("Error in grounded-chat:", error);
+    res.status(500).json({ error: error.message || "An error occurred during chat processing." });
+  }
+});
+
+// Advanced Multimodal Analysis Endpoint (Images, Video, Audio)
+app.post("/api/gemini/analyze-multimodal", async (req, res) => {
+  try {
+    const { file, mimeType, prompt } = req.body;
+    if (!file || !mimeType) {
+      res.status(400).json({ error: "Missing required file (base64) or mimeType" });
+      return;
+    }
+    const ai = getGeminiClient();
+
+    const isAudio = mimeType.startsWith("audio/");
+    
+    // Choose model: gemini-3.5-flash for audio transcription, gemini-3.1-pro-preview for images/videos
+    const model = isAudio ? "gemini-3.5-flash" : "gemini-3.1-pro-preview";
+
+    const contentPart = {
+      inlineData: {
+        mimeType: mimeType,
+        data: file
+      }
+    };
+
+    const textPart = {
+      text: prompt || (isAudio ? "Please transcribe this audio recording word-for-word." : "Please analyze this media content in detail.")
+    };
+
+    const response = await ai.models.generateContent({
+      model: model,
+      contents: {
+        parts: [contentPart, textPart]
+      }
+    });
+
+    res.json({ text: response.text || "No analysis results generated." });
+  } catch (error: any) {
+    console.error("Error in analyze-multimodal:", error);
+    res.status(500).json({ error: error.message || "Failed to analyze media content." });
+  }
+});
+
+// AI Paintbox: Image Generation & Editing
+app.post("/api/gemini/generate-image", async (req, res) => {
+  try {
+    const { prompt, model = "pro", aspectRatio = "1:1", size = "1K", editingImage, mimeType } = req.body;
+    const ai = getGeminiClient();
+
+    let response;
+    
+    if (editingImage) {
+      // Create & Edit Images using gemini-3.1-flash-lite-image
+      response = await ai.models.generateContent({
+        model: 'gemini-3.1-flash-lite-image',
+        contents: {
+          parts: [
+            {
+              inlineData: {
+                data: editingImage, // base64
+                mimeType: mimeType || "image/png"
+              }
+            },
+            {
+              text: prompt
+            }
+          ]
+        }
+      });
+    } else {
+      // From-scratch Image Generation
+      response = await ai.models.generateContent({
+        model: model === 'pro' ? 'gemini-3-pro-image' : 'gemini-3.1-flash-image',
+        contents: {
+          parts: [
+            {
+              text: prompt
+            }
+          ]
+        },
+        config: {
+          imageConfig: {
+            aspectRatio: aspectRatio,
+            imageSize: size
+          }
+        }
+      });
+    }
+
+    let base64Image = "";
+    let extractedText = "";
+
+    const parts = response.candidates?.[0]?.content?.parts || [];
+    for (const part of parts) {
+      if (part.inlineData) {
+        base64Image = part.inlineData.data;
+      } else if (part.text) {
+        extractedText += part.text;
+      }
+    }
+
+    res.json({
+      success: true,
+      image: base64Image ? `data:image/png;base64,${base64Image}` : null,
+      text: extractedText
+    });
+  } catch (error: any) {
+    console.error("Error in generate-image:", error);
+    res.status(500).json({ error: error.message || "Failed to generate image." });
+  }
+});
+
+// Aura Soundstage: Music Composer
+app.post("/api/gemini/generate-music", async (req, res) => {
+  try {
+    const { prompt, model = "clip", imageBytes, mimeType } = req.body;
+    const ai = getGeminiClient();
+
+    const selectedModel = model === "pro" ? "lyria-3-pro-preview" : "lyria-3-clip-preview";
+
+    let contents: any = prompt || "Generate a short musical track.";
+    if (imageBytes && mimeType) {
+      contents = {
+        parts: [
+          { text: prompt || "Generate music inspired by this image." },
+          { inlineData: { data: imageBytes, mimeType } }
+        ]
+      };
+    }
+
+    const stream = await ai.models.generateContentStream({
+      model: selectedModel,
+      contents: contents,
+    });
+
+    let audioBase64 = "";
+    let lyrics = "";
+    let outMimeType = "audio/wav";
+
+    for await (const chunk of stream) {
+      const parts = chunk.candidates?.[0]?.content?.parts;
+      if (!parts) continue;
+      for (const part of parts) {
+        if (part.inlineData?.data) {
+          if (!audioBase64 && part.inlineData.mimeType) {
+            outMimeType = part.inlineData.mimeType;
+          }
+          audioBase64 += part.inlineData.data;
+        }
+        if (part.text && !lyrics) {
+          lyrics = part.text;
+        }
+      }
+    }
+
+    res.json({
+      success: true,
+      audio: audioBase64 ? `data:${outMimeType};base64,${audioBase64}` : null,
+      lyrics
+    });
+  } catch (error: any) {
+    console.error("Error in generate-music:", error);
+    res.status(500).json({ error: error.message || "Failed to compose music." });
+  }
+});
+
+// Veo Cinematic Studio - Video Generation (Start)
+app.post("/api/generate-video", async (req, res) => {
+  try {
+    const { prompt, aspectRatio = "16:9", imageBytes, mimeType } = req.body;
+    const ai = getGeminiClient();
+
+    let payload: any = {
+      model: "veo-3.1-lite-generate-preview",
+      config: {
+        numberOfVideos: 1,
+        resolution: "720p",
+        aspectRatio: aspectRatio,
+      }
+    };
+
+    if (prompt) {
+      payload.prompt = prompt;
+    }
+
+    if (imageBytes && mimeType) {
+      payload.image = {
+        imageBytes: imageBytes,
+        mimeType: mimeType
+      };
+    }
+
+    const operation = await ai.models.generateVideos(payload);
+    res.json({ operationName: operation.name });
+  } catch (error: any) {
+    console.error("Error starting video generation:", error);
+    res.status(500).json({ error: error.message || "Failed to start video generation." });
+  }
+});
+
+// Veo Cinematic Studio - Video Generation (Poll)
+app.post("/api/video-status", async (req, res) => {
+  try {
+    const { operationName } = req.body;
+    if (!operationName) {
+      res.status(400).json({ error: "Missing operationName" });
+      return;
+    }
+    const ai = getGeminiClient();
+    const op = new GenerateVideosOperation();
+    op.name = operationName;
+    const updated = await ai.operations.getVideosOperation({ operation: op });
+    res.json({ done: updated.done });
+  } catch (error: any) {
+    console.error("Error polling video operation:", error);
+    res.status(500).json({ error: error.message || "Failed to poll video generation status." });
+  }
+});
+
+// Veo Cinematic Studio - Video Generation (Download and Stream)
+app.post("/api/video-download", async (req, res) => {
+  try {
+    const { operationName } = req.body;
+    if (!operationName) {
+      res.status(400).json({ error: "Missing operationName" });
+      return;
+    }
+    const ai = getGeminiClient();
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is not defined in the environment.");
+    }
+
+    const op = new GenerateVideosOperation();
+    op.name = operationName;
+    const updated = await ai.operations.getVideosOperation({ operation: op });
+    const uri = updated.response?.generatedVideos?.[0]?.video?.uri;
+    if (!uri) {
+      res.status(400).json({ error: "No video URI found. Generation might have failed or is not finished." });
+      return;
+    }
+
+    const videoRes = await fetch(uri, {
+      headers: { "x-goog-api-key": apiKey },
+    });
+
+    res.setHeader("Content-Type", "video/mp4");
+    
+    if (videoRes.body) {
+      const arrayBuffer = await videoRes.arrayBuffer();
+      res.send(Buffer.from(arrayBuffer));
+    } else {
+      res.status(500).json({ error: "Could not stream video body." });
+    }
+  } catch (error: any) {
+    console.error("Error downloading video:", error);
+    res.status(500).json({ error: error.message || "Failed to download and stream video." });
+  }
+});
+
+// Create HTTP server
+const server = createServer(app);
+
+// Setup WebSocket server for Real-time Voice (Live API)
+const wss = new WebSocketServer({ server, path: "/api/live" });
+
+wss.on("connection", async (clientWs) => {
+  console.log("New Live API WebSocket connection established");
+  let session: any = null;
+  try {
+    const ai = getGeminiClient();
+    session = await ai.live.connect({
+      model: "gemini-3.1-flash-live-preview",
+      config: {
+        responseModalities: [Modality.AUDIO],
+        speechConfig: {
+          voiceConfig: { prebuiltVoiceConfig: { voiceName: "Zephyr" } },
+        },
+        systemInstruction: "You are Karim Osman's Virtual AI Career Advisor. Speak warmly, concisely, and professionally. Highlight his experience at Baker Hughes and Configuratori, keeping answers technically precise.",
+      },
+      callbacks: {
+        onmessage: (message: any) => {
+          const audio = message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
+          if (audio) {
+            clientWs.send(JSON.stringify({ audio }));
+          }
+          if (message.serverContent?.interrupted) {
+            clientWs.send(JSON.stringify({ interrupted: true }));
+          }
+        },
+      },
+    });
+
+    clientWs.on("message", (data) => {
+      try {
+        const { audio } = JSON.parse(data.toString());
+        if (audio && session) {
+          session.sendRealtimeInput({
+            audio: { data: audio, mimeType: "audio/pcm;rate=16000" },
+          });
+        }
+      } catch (err) {
+        console.error("Error processing client live voice chunk:", err);
+      }
+    });
+
+    clientWs.on("close", () => {
+      console.log("Client closed live voice connection");
+    });
+  } catch (err: any) {
+    console.error("Failed to establish Live API connection:", err);
+    clientWs.send(JSON.stringify({ error: err.message || "Failed to establish live session" }));
+    clientWs.close();
+  }
+});
+
 // Setup Vite Dev server or production static serving
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
@@ -333,7 +1262,7 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
 }

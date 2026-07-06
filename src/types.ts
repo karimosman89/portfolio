@@ -53,3 +53,29 @@ export interface Message {
   text: string;
   timestamp: string;
 }
+
+export interface HostConfig {
+  weeklyAvailability: {
+    [dayOfWeek: number]: { start: string; end: string; active: boolean };
+  };
+  slotDuration: number;
+  timezone: string;
+  isGoogleConnected: boolean;
+  googleCalendarId?: string;
+  hostEmail?: string;
+  calendlyUrl?: string;
+}
+
+export interface Meeting {
+  id: string;
+  clientName: string;
+  clientEmail: string;
+  clientLinkedIn: string;
+  dateTime: string;
+  duration: number;
+  subject: string;
+  description: string;
+  googleEventId?: string;
+  googleMeetLink?: string;
+  createdAt: string;
+}
