@@ -1,0 +1,6 @@
+{
+  "name": "Karim Osman Portfolio",
+  "description": "Interactive portfolio and ML demo dashboard for Karim Osman, Senior AI Engineer. Features live LLM-powered CV Q&A, Summarization & Chunking playground, and YOLO v8 defect detection simulators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

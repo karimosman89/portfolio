@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Newsreader", Georgia, serif;
+}
+
+/* Base custom resets */
+body {
+  background-color: #fafbfc;
+  color: #1c1c1e;
+  overflow-x: hidden;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Beautiful custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #fafbfc;
+}
+::-webkit-scrollbar-thumb {
+  background: #e4e4e7; /* Zinc 200 */
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d8; /* Zinc 300 */
+}
+
+/* Blueprint Grid background helper */
+.bg-grid-pattern {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(9, 9, 11, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(9, 9, 11, 0.02) 1px, transparent 1px);
+}
+
+/* Radial dark gradient mask for the grid */
+.bg-grid-mask {
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* Premium Editorial Border & Accent Line */
+.architectural-border {
+  border-color: rgba(9, 9, 11, 0.06);
+}
+
+.architectural-line-x {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(9, 9, 11, 0.05) 20%, rgba(9, 9, 11, 0.05) 80%, transparent);
+}
+
+.architectural-line-y {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(9, 9, 11, 0.05) 10%, rgba(9, 9, 11, 0.05) 90%, transparent);
+}
+
+/* Premium Linear Border Glow */
+.border-glow-teal {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.border-glow-teal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(79, 70, 229, 0.15), transparent 50%, rgba(79, 70, 229, 0.02));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.border-glow-teal:hover::before {
+  background: linear-gradient(to bottom right, rgba(79, 70, 229, 0.3), rgba(79, 70, 229, 0.1), transparent);
+}
+
+/* Glassmorphism card helper */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(9, 9, 11, 0.05);
+}
+
+/* Custom glow element */
+.bg-glow-spot {
+  background: radial-gradient(circle, rgba(79, 70, 229, 0.04) 0%, transparent 70%);
+}
+
