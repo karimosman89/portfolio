@@ -212,7 +212,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
           <div className="flex items-center gap-3">
             <div className="relative flex h-8 w-8 items-center justify-center rounded overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
               <LazyImage
-                src="/src/assets/images/karim_personal_avatar_1783292406420.jpg"
+                src="/src/assets/images/karim_personal_avatar_1783292406420.png"
                 alt="Karim Osman"
                 className="w-full h-full"
               />
@@ -503,7 +503,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.06)_0%,transparent_70%)] pointer-events-none" />
 
                     <LazyImage
-                      src="/src/assets/images/karim_personal_avatar_1783292406420.jpg"
+                      src="/src/assets/images/karim_personal_avatar_1783292406420.png"
                       alt="Karim Osman - Senior AI Engineer"
                       className="w-full h-full"
                       imgClassName="grayscale brightness-110 contrast-105 group-hover/avatar:scale-105 group-hover/avatar:grayscale-0 transition-all duration-700"
