@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Cpu, Database, MessageSquare, Terminal, RefreshCw, Volume2, Globe, Sparkles, Milestone, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ServiceItem {
   icon: React.ReactNode;
@@ -10,6 +11,42 @@ interface ServiceItem {
   impact: string;
   metrics: string;
 }
+
+const localTranslations = {
+  en: {
+    sectionNum: "04 / Enterprise Solutions",
+    targetSectors: "Target Sectors & Collaborator Ecosystem",
+    compliance: "Built with production compliance standards",
+    ctaTitle: "Secure an AI Architectural Assessment",
+    ctaDesc: "Discuss your system metrics, model limitations, or agentic automation roadmap. Let's design a high-ROI blueprint.",
+    ctaBtn: "Book Assessment Call",
+    valueAdd: "Value Add:",
+    proven: "Metrics Proven",
+    impactSpec: "Business Impact Spec"
+  },
+  it: {
+    sectionNum: "04 / Soluzioni Aziendali",
+    targetSectors: "Settori Target ed Ecosistema di Collaboratori",
+    compliance: "Costruito secondo gli standard di conformità di produzione",
+    ctaTitle: "Richiedi una Valutazione dell'Architettura AI",
+    ctaDesc: "Discuti le metriche del tuo sistema, i limiti dei modelli o la roadmap dell'automazione agentica. Progettiamo un piano ad alto ROI.",
+    ctaBtn: "Prenota una Sessione di Valutazione",
+    valueAdd: "Valore Aggiunto:",
+    proven: "Metriche Convalidate",
+    impactSpec: "Specifica dell'Impatto Commerciale"
+  },
+  fr: {
+    sectionNum: "04 / Solutions d'Entreprise",
+    targetSectors: "Secteurs Cibles & Écosystème de Collaborateurs",
+    compliance: "Conçu selon les normes de conformité de production",
+    ctaTitle: "Sécurisez une évaluation d'architecture IA",
+    ctaDesc: "Discutez des métriques de vos systèmes, des limites des modèles ou de votre feuille de route d'automatisation agentielle. Concevons un plan à fort ROI.",
+    ctaBtn: "Réserver un appel d'évaluation",
+    valueAdd: "Valeur Ajoutée :",
+    proven: "Métriques Prouvées",
+    impactSpec: "Spécifications de l'Impact Commercial"
+  }
+};
 
 // Stylized Brand Vector SVGs for Ecosystem Partners
 const OpenAILogo = () => (
@@ -114,38 +151,40 @@ const COMPANY_LOGOS: Record<string, React.ComponentType> = {
 };
 
 export default function ServicesAndCompanies() {
+  const { lang, t } = useLanguage();
+
   const services: ServiceItem[] = [
     {
       icon: <Cpu className="text-indigo-600 dark:text-indigo-400" size={20} />,
-      title: "Agentic Workflow Systems",
-      badge: "Enterprise Grade",
-      desc: "Architecting multi-agent orchestrations with LangGraph and CrewAI to replace brittle monolithic single-shot prompts. Supporting stateful graphs, persistent memory, and automated error-correcting loops.",
-      impact: "Reduces manual operation, automates complex sequence execution with context awareness.",
-      metrics: "Average 65% improvement in process completion rates vs traditional scripts."
+      title: t('services.0.title'),
+      badge: t('services.0.badge'),
+      desc: t('services.0.desc'),
+      impact: t('services.0.impact'),
+      metrics: t('services.0.metrics')
     },
     {
       icon: <Database className="text-emerald-600 dark:text-emerald-400" size={20} />,
-      title: "Semantic Search & Production RAG",
-      badge: "High Recall",
-      desc: "Deploying Pgvector, Qdrant, or Pinecone instances. Orchestrating hybrid search (sparse BM25 + dense neural vectors) coupled with Cohere or BGE re-rankers and custom parent-document chunkers.",
-      impact: "Mitigates hallucinations, enforces strict internal policy grounding, and optimizes context windows.",
-      metrics: "Under 18ms re-ranking latency, 98% relevant recall on custom corporate corpuses."
+      title: t('services.1.title'),
+      badge: t('services.1.badge'),
+      desc: t('services.1.desc'),
+      impact: t('services.1.impact'),
+      metrics: t('services.1.metrics')
     },
     {
       icon: <MessageSquare className="text-blue-600 dark:text-blue-400" size={20} />,
-      title: "LLM-As-A-Service & MCP Servers",
-      badge: "Scale Architecture",
-      desc: "Creating robust API layers and Model Context Protocol (MCP) servers allowing models to securely interact with private enterprise schemas, files, and developer environments.",
-      impact: "Allows standard models to safely read, write, and execute database queries with fine-grained RBAC.",
-      metrics: "Enterprise-grade authorization and sandboxed command enclaves."
+      title: t('services.2.title'),
+      badge: t('services.2.badge'),
+      desc: t('services.2.desc'),
+      impact: t('services.2.impact'),
+      metrics: t('services.2.metrics')
     },
     {
       icon: <RefreshCw className="text-amber-600 dark:text-amber-400" size={20} />,
-      title: "Fine-Tuning & Parameter Optimization",
-      badge: "PEFT / LoRA",
-      desc: "Adapting specialized open models (Llama-3, Mistral, Qwen) using Hugging Face PEFT/LoRA adapters, QLoRA quantization, and customized dataset curation for specific business jargon.",
-      impact: "Unlocks highly specialized logic, mimics company tone, and reduces reliance on expensive proprietary APIs.",
-      metrics: "Up to 40% inference latency reductions and 60% host hardware cost savings."
+      title: t('services.3.title'),
+      badge: t('services.3.badge'),
+      desc: t('services.3.desc'),
+      impact: t('services.3.impact'),
+      metrics: t('services.3.metrics')
     }
   ];
 
@@ -171,13 +210,13 @@ export default function ServicesAndCompanies() {
       <div className="max-w-3xl mb-14">
         <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
           <Sparkles size={10} />
-          <span>04 / Enterprise Solutions</span>
+          <span>{localTranslations[lang]?.sectionNum || localTranslations.en.sectionNum}</span>
         </div>
         <h2 className="font-display text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-          Consulting Services &amp; <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">ROI-Driven Delivery</span>
+          {t('services.main.title')} <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">{t('services.main.title_italic')}</span>
         </h2>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">
-          I provide professional B2B contract consulting, systems design, and custom machine learning pipelines for corporations looking to integrate artificial intelligence safely and predictably.
+          {t('services.main.subtitle')}
         </p>
       </div>
 
@@ -215,15 +254,15 @@ export default function ServicesAndCompanies() {
               </div>
 
               <div className="border-t border-zinc-100 dark:border-zinc-800/80 pt-3 space-y-2.5 font-sans text-xs">
-                <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono font-bold uppercase tracking-wider">Business Impact Spec</div>
+                <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono font-bold uppercase tracking-wider">{localTranslations[lang]?.impactSpec || localTranslations.en.impactSpec}</div>
                 <div className="text-zinc-650 dark:text-zinc-350 leading-relaxed font-light">
-                  <strong className="font-semibold text-zinc-850 dark:text-zinc-200">Value Add: </strong>{svc.impact}
+                  <strong className="font-semibold text-zinc-850 dark:text-zinc-200">{localTranslations[lang]?.valueAdd || localTranslations.en.valueAdd} </strong>{svc.impact}
                 </div>
               </div>
             </div>
 
             <div className="border-t border-zinc-100 dark:border-zinc-800/80 pt-3 mt-4 relative z-10 flex justify-between items-center text-[10px] font-mono">
-              <span className="text-zinc-450 dark:text-zinc-550 uppercase tracking-widest font-bold">Metrics Proven</span>
+              <span className="text-zinc-450 dark:text-zinc-550 uppercase tracking-widest font-bold">{localTranslations[lang]?.proven || localTranslations.en.proven}</span>
               <span className="text-indigo-600 dark:text-indigo-400 font-bold uppercase">{svc.metrics}</span>
             </div>
           </motion.div>
@@ -235,9 +274,9 @@ export default function ServicesAndCompanies() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-455 dark:text-zinc-500 font-bold">
             <Milestone size={11} className="text-indigo-500" />
-            <span>Target Sectors &amp; Collaborator Ecosystem</span>
+            <span>{localTranslations[lang]?.targetSectors || localTranslations.en.targetSectors}</span>
           </div>
-          <span className="text-[9px] text-zinc-400 font-light italic">Built with production compliance standards</span>
+          <span className="text-[9px] text-zinc-400 font-light italic">{localTranslations[lang]?.compliance || localTranslations.en.compliance}</span>
         </div>
 
         {/* Marquee Container */}
@@ -275,10 +314,10 @@ export default function ServicesAndCompanies() {
       <div className="mt-12 rounded-xl border border-indigo-150/40 dark:border-indigo-950/40 bg-indigo-50/[0.15] dark:bg-indigo-950/[0.08] p-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1 text-center md:text-left">
           <h4 className="font-display text-sm font-extrabold text-zinc-900 dark:text-white uppercase tracking-wider font-mono">
-            Secure an AI Architectural Assessment
+            {localTranslations[lang]?.ctaTitle || localTranslations.en.ctaTitle}
           </h4>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">
-            Discuss your system metrics, model limitations, or agentic automation roadmap. Let's design a high-ROI blueprint.
+            {localTranslations[lang]?.ctaDesc || localTranslations.en.ctaDesc}
           </p>
         </div>
 
@@ -293,7 +332,7 @@ export default function ServicesAndCompanies() {
           }}
           className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-5 py-3 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition group"
         >
-          <span>Book Assessment Call</span>
+          <span>{localTranslations[lang]?.ctaBtn || localTranslations.en.ctaBtn}</span>
           <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
         </button>
       </div>

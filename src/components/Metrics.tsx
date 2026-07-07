@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { KEY_METRICS } from '../data';
 import { ShieldCheck, Users, Zap, TrendingUp, Activity, CheckCircle2 } from 'lucide-react';
 import { motion, useInView } from 'motion/react';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const metricContexts: Record<string, { icon: any; title: string; desc: string; detail: string; chartType: 'uptime' | 'users' | 'perf' | 'revenue' }> = {
   uptime: {
@@ -97,6 +98,7 @@ function AnimatedCounter({ value }: { value: string }) {
 }
 
 export default function Metrics() {
+  const { t } = useLanguage();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -126,20 +128,20 @@ export default function Metrics() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
         <div>
           <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
-            <Activity size={10} className="animate-pulse text-indigo-600 dark:text-indigo-450" />
+            <Activity size={10} className="animate-pulse text-indigo-600 dark:text-indigo-455" />
             <span>01 / Production Telemetry</span>
           </div>
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-            Engineering Impact <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">&amp; Metrics</span>
+            {t('section.metrics.title')}
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Validated commercial performance milestones built and sustained over my professional career.
+            {t('section.metrics.subtitle')}
           </p>
         </div>
         
         <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-widest">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-500" />
-          <span>Last audited: July 2026</span>
+          <span>{t('section.metrics.audited')}</span>
         </div>
       </div>
 
@@ -154,6 +156,18 @@ export default function Metrics() {
         {KEY_METRICS.map((metric) => {
           const context = metricContexts[metric.id];
           const IconComponent = context?.icon || ShieldCheck;
+
+          const translatedLabel = t(`metric.${metric.id}.label`);
+          const displayLabel = translatedLabel !== `metric.${metric.id}.label` ? translatedLabel : metric.label;
+
+          const translatedSublabel = t(`metric.${metric.id}.sublabel`);
+          const displaySublabel = translatedSublabel !== `metric.${metric.id}.sublabel` ? translatedSublabel : metric.sublabel;
+
+          const translatedTitle = t(`metric.${metric.id}.title`);
+          const displayTitle = translatedTitle !== `metric.${metric.id}.title` ? translatedTitle : (context?.title || '');
+
+          const translatedDetail = t(`metric.${metric.id}.detail`);
+          const displayDetail = translatedDetail !== `metric.${metric.id}.detail` ? translatedDetail : (context?.detail || '');
 
           return (
             <motion.div
@@ -213,10 +227,10 @@ export default function Metrics() {
                   <AnimatedCounter value={metric.value} />
                 </div>
                 <div className="font-display text-[10px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
-                  {metric.label}
+                  {displayLabel}
                 </div>
                 <div className="text-[10px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-widest">
-                  {metric.sublabel}
+                  {displaySublabel}
                 </div>
               </div>
 
@@ -224,8 +238,8 @@ export default function Metrics() {
               <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/80 flex items-start gap-2 text-xs text-zinc-500 dark:text-zinc-400">
                 <CheckCircle2 size={13} className="text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
                 <p className="leading-relaxed font-light">
-                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">{context?.title}: </span>
-                  {context?.detail}
+                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">{displayTitle}: </span>
+                  {displayDetail}
                 </p>
               </div>
 

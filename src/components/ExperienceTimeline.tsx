@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { EXPERIENCES, EDUCATION, CERTIFICATIONS } from '../data';
+import { useLanguage } from '../i18n/LanguageContext';
 import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, Cpu, Award, BookOpen, Sparkles, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ProjectModal from './ProjectModal';
 import { Experience } from '../types';
 
 export default function ExperienceTimeline() {
+  const { t } = useLanguage();
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<Experience | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,10 +75,10 @@ export default function ExperienceTimeline() {
               <span>03 / Professional Milestones</span>
             </div>
             <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-              Career Experience <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">&amp; Contracts</span>
+              {t('section.experience.title')}
             </h2>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-              Detailed tracking of engineered AI models, production system rollouts, and quantitative value added.
+              {t('section.experience.subtitle')}
             </p>
           </div>
 
@@ -87,65 +89,74 @@ export default function ExperienceTimeline() {
             viewport={{ once: true, margin: "-100px" }}
             className="relative border-l border-zinc-200 dark:border-zinc-800 ml-3 pl-6 space-y-12"
           >
-            {EXPERIENCES.map((exp, index) => (
-              <motion.div key={exp.company} variants={itemVariants} className="relative group">
-                
-                {/* Timeline node connection */}
-                <div className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-600 dark:border-indigo-400 group-hover:bg-indigo-600 transition-all duration-300" />
+            {EXPERIENCES.map((exp, index) => {
+              const baseKey = exp.company.toLowerCase().replace(/[^a-z0-9]/g, '');
+              const translatedRole = t(`experience.${baseKey}.role`);
+              const displayRole = translatedRole !== `experience.${baseKey}.role` ? translatedRole : exp.role;
+              const translatedDesc = t(`experience.${baseKey}.description`);
+              const displayDesc = translatedDesc !== `experience.${baseKey}.description` ? translatedDesc : exp.description;
 
-                <div className="space-y-4">
-                  {/* Meta tag details */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-                    <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 border border-indigo-100 dark:border-indigo-900/40 px-2.5 py-1 rounded flex items-center gap-1.5">
-                      <Calendar size={11} /> {exp.period}
-                    </span>
-                    <span className="font-mono text-zinc-455 dark:text-zinc-500 flex items-center gap-1.5">
-                      <MapPin size={11} /> {exp.location}
-                    </span>
-                  </div>
+              return (
+                <motion.div key={exp.company} variants={itemVariants} className="relative group">
+                  
+                  {/* Timeline node connection */}
+                  <div className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-600 dark:border-indigo-400 group-hover:bg-indigo-600 transition-all duration-300" />
 
-                  {/* Header Titles */}
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                    <div>
-                      <h3 className="font-display text-lg font-extrabold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                        {exp.role}
-                      </h3>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
-                        {exp.company}
-                      </h4>
+                  <div className="space-y-4">
+                    {/* Meta tag details */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+                      <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 border border-indigo-100 dark:border-indigo-900/40 px-2.5 py-1 rounded flex items-center gap-1.5">
+                        <Calendar size={11} /> {exp.period}
+                      </span>
+                      <span className="font-mono text-zinc-455 dark:text-zinc-500 flex items-center gap-1.5">
+                        <MapPin size={11} /> {exp.location}
+                      </span>
                     </div>
-                    <button
-                      onClick={() => openProjectModal(exp)}
-                      className="cursor-pointer shrink-0 font-mono text-[9px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-zinc-950 px-3 py-1.5 rounded transition-all duration-300 flex items-center gap-1 self-start sm:self-center"
-                    >
-                      <span>Case Study Blueprint</span>
-                      <Cpu size={11} />
-                    </button>
-                  </div>
 
-                  {/* Short description */}
-                  <p className="text-sm text-zinc-600 dark:text-zinc-350 font-light leading-relaxed">
-                    {exp.description}
-                  </p>
+                    {/* Header Titles */}
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                      <div>
+                        <h3 className="font-display text-lg font-extrabold text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                          {displayRole}
+                        </h3>
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
+                          {exp.company}
+                        </h4>
+                      </div>
+                      <button
+                        onClick={() => openProjectModal(exp)}
+                        className="cursor-pointer shrink-0 font-mono text-[9px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-zinc-950 px-3 py-1.5 rounded transition-all duration-300 flex items-center gap-1 self-start sm:self-center"
+                      >
+                        <span>Case Study Blueprint</span>
+                        <Cpu size={11} />
+                      </button>
+                    </div>
 
-                  {/* Accomplishment bullet points */}
-                  <ul className="space-y-2.5 font-sans">
-                    {exp.bulletPoints.map((bullet, idx) => {
-                      const parts = bullet.split(':');
-                      const label = parts[0];
-                      const details = parts.slice(1).join(':');
+                    {/* Short description */}
+                    <p className="text-sm text-zinc-600 dark:text-zinc-350 font-light leading-relaxed">
+                      {displayDesc}
+                    </p>
 
-                      return (
-                        <li key={idx} className="text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed flex items-start gap-2.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 shrink-0 mt-1.5" />
-                          <div>
-                            <span className="font-bold text-zinc-850 dark:text-zinc-200">{label}:</span>
-                            <span className="font-light text-zinc-550 dark:text-zinc-400"> {details}</span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                    {/* Accomplishment bullet points */}
+                    <ul className="space-y-2.5 font-sans">
+                      {exp.bulletPoints.map((bullet, idx) => {
+                        const translatedBullet = t(`experience.${baseKey}.bullet.${idx}`);
+                        const displayBullet = translatedBullet !== `experience.${baseKey}.bullet.${idx}` ? translatedBullet : bullet;
+                        const parts = displayBullet.split(':');
+                        const label = parts[0];
+                        const details = parts.slice(1).join(':');
+
+                        return (
+                          <li key={idx} className="text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed flex items-start gap-2.5">
+                            <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 shrink-0 mt-1.5" />
+                            <div>
+                              <span className="font-bold text-zinc-850 dark:text-zinc-200">{label}:</span>
+                              <span className="font-light text-zinc-550 dark:text-zinc-400"> {details}</span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
 
                   {/* Technology Tag Badge Grid */}
                   {exp.modelsUsed && exp.modelsUsed.length > 0 && (
@@ -234,7 +245,7 @@ export default function ExperienceTimeline() {
 
                 </div>
               </motion.div>
-            ))}
+            ); })}
           </motion.div>
         </div>
 
@@ -252,34 +263,43 @@ export default function ExperienceTimeline() {
             <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
               <h2 className="font-display text-base font-extrabold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
                 <BookOpen size={15} className="text-indigo-600 dark:text-indigo-400" />
-                Education &amp; Credentials
+                {t('section.education.title')}
               </h2>
             </div>
             
             <div className="space-y-4">
-              {EDUCATION.map((edu) => (
-                <div key={edu.degree} className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-5 space-y-3.5">
-                  <div className="flex justify-between items-start gap-2">
-                    <span className="font-mono text-[9px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 px-2.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900/40">
-                      {edu.period}
-                    </span>
-                    <span className="text-[10px] text-zinc-500 dark:text-zinc-500 font-mono">{edu.location}</span>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-display text-sm font-bold text-zinc-800 dark:text-zinc-200 leading-snug font-sans">
-                      {edu.degree}
-                    </h4>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold mt-1">
-                      {edu.institution}
+              {EDUCATION.map((edu, idx) => {
+                const translatedDegree = t(`education.${idx}.degree`);
+                const displayDegree = translatedDegree !== `education.${idx}.degree` ? translatedDegree : edu.degree;
+                const translatedInstitution = t(`education.${idx}.institution`);
+                const displayInstitution = translatedInstitution !== `education.${idx}.institution` ? translatedInstitution : edu.institution;
+                const translatedDetails = t(`education.${idx}.details`);
+                const displayDetails = translatedDetails !== `education.${idx}.details` ? translatedDetails : edu.details;
+
+                return (
+                  <div key={edu.degree} className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-5 space-y-3.5">
+                    <div className="flex justify-between items-start gap-2">
+                      <span className="font-mono text-[9px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 px-2.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900/40">
+                        {edu.period}
+                      </span>
+                      <span className="text-[10px] text-zinc-500 dark:text-zinc-500 font-mono">{edu.location}</span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-display text-sm font-bold text-zinc-800 dark:text-zinc-200 leading-snug font-sans">
+                        {displayDegree}
+                      </h4>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold mt-1">
+                        {displayInstitution}
+                      </p>
+                    </div>
+
+                    <p className="text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed font-light font-sans">
+                      {displayDetails}
                     </p>
                   </div>
-
-                  <p className="text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed font-light font-sans">
-                    {edu.details}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -288,7 +308,7 @@ export default function ExperienceTimeline() {
             <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
               <h2 className="font-display text-base font-extrabold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
                 <Award size={15} className="text-indigo-600 dark:text-indigo-400" />
-                Certifications
+                {t('section.certifications.title')}
               </h2>
             </div>
             

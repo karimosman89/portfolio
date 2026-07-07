@@ -4,7 +4,8 @@ import { Mail, Linkedin, Github, MapPin, Phone, Briefcase, Award, ArrowUpRight, 
 import { motion } from 'motion/react';
 import NeuralNetworkBackground from './NeuralNetworkBackground';
 import LazyImage from './LazyImage';
-import { useLanguage } from '../i18n/LanguageContext';
+import { useLanguage, Language } from '../i18n/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface HeaderProps {
   isDark: boolean;
@@ -12,6 +13,114 @@ interface HeaderProps {
   activeTheme: string;
   setActiveTheme: (theme: string) => void;
 }
+
+const typewriterPhrasesMap: Record<Language, string[]> = {
+  en: [
+    "I Build Enterprise AI Systems",
+    "Generative AI Engineer",
+    "LLM Architect",
+    "AI Automation Architect",
+    "Multi-Agent Systems Developer",
+    "Turning AI Ideas into Production"
+  ],
+  it: [
+    "Costruisco Sistemi IA Aziendali",
+    "Ingegnere di IA Generativa",
+    "Architetto di LLM",
+    "Architetto di Automazione IA",
+    "Sviluppatore di Sistemi Multi-Agente",
+    "Trasformo Idee IA in Produzione"
+  ],
+  fr: [
+    "Je construis des systèmes IA d'entreprise",
+    "Ingénieur en IA Générative",
+    "Architecte LLM",
+    "Architecte d'Automatisation IA",
+    "Développeur de Systèmes Multi-Agents",
+    "Transformer les Idées IA en Production"
+  ]
+};
+
+const localTranslations: Record<Language, Record<string, string>> = {
+  en: {
+    availability: "Available for Freelance Projects, B2B Contracts & Senior AI Roles",
+    engineering: "Engineering",
+    reliable: "reliable",
+    subTitle: "Senior Machine Learning Architect with 5+ years of production experience. I design custom LLM-as-a-Service layers, optimize RAG databases, and adapt specialized parameters using Hugging Face PEFT/LoRA.",
+    location: "Siena, Italy & Global (Remote)",
+    experience: "5+ Years Industry Practice",
+    latencyBadge: "⚡ -40% Latency / -25% Host Cost",
+    deskHeader: "Contractor Desk",
+    deskTitle: "Freelance & B2B",
+    deskDesc: "Open to B2B consultations, contracts, and senior technical roles. Fully insured & VAT registered.",
+    engagementStyle: "ENGAGEMENT STYLE",
+    engagementVal: "B2B / Freelance / Contract",
+    vatStatus: "VAT / TAX STATUS",
+    vatVal: "Registered Business Entity",
+    availabilityWeekly: "AVAILABILITY WEEKLY",
+    availabilityVal: "UP TO 40 HOURS / FLEXIBLE",
+    citizenshipRegion: "CITIZENSHIP / REGION",
+    citizenshipVal: "EUROPEAN UNION / GLOBAL REMOTE",
+    bookCall: "Book a Call",
+    hireMe: "Hire Me",
+    disclaimer: "SECURE CHANNELS • GLOBAL SERVICE PROVISION • Siena / Florence Remote",
+    corporateMailbox: "Corporate Mailbox",
+    directBusinessLines: "Direct Business Lines",
+    search: "Search"
+  },
+  it: {
+    availability: "Disponibile per Progetti Freelance, Contratti B2B e Ruoli IA Senior",
+    engineering: "Ingegneria di",
+    reliable: "affidabile",
+    subTitle: "Senior Machine Learning Architect con oltre 5 anni di esperienza in produzione. Progetto layer LLM-as-a-Service personalizzati, ottimizzo database RAG e adatto parametri specializzati tramite Hugging Face PEFT/LoRA.",
+    location: "Siena, Italia e Globale (Remoto)",
+    experience: "Oltre 5 Anni di Pratica Industriale",
+    latencyBadge: "⚡ -40% Latenza / -25% Costi Host",
+    deskHeader: "Scrivania del Consulente",
+    deskTitle: "Freelance e B2B",
+    deskDesc: "Aperto a consulenze B2B, contratti e ruoli tecnici senior. P.IVA registrata e assicurazione completa.",
+    engagementStyle: "STILE DI ENGAGEMENT",
+    engagementVal: "B2B / Freelance / Contratto",
+    vatStatus: "STATO IVA / TASSE",
+    vatVal: "Partita IVA Registrata",
+    availabilityWeekly: "DISPONIBILITÀ SETTIMANALE",
+    availabilityVal: "FINO A 40 ORE / FLESSIBILE",
+    citizenshipRegion: "CITTADINANZA / REGIONE",
+    citizenshipVal: "UNIONE EUROPEA / REMOTO GLOBALE",
+    bookCall: "Prenota una Chiamata",
+    hireMe: "Assumimi",
+    disclaimer: "CANALI SICURI • FORNITURA DI SERVIZI GLOBALE • Siena / Firenze Remoto",
+    corporateMailbox: "Casella Postale Aziendale",
+    directBusinessLines: "Linee Commerciali Dirette",
+    search: "Cerca"
+  },
+  fr: {
+    availability: "Disponible pour projets freelance, contrats B2B et rôles IA senior",
+    engineering: "Ingénierie de l'",
+    reliable: "fiable",
+    subTitle: "Architecte Senior en Machine Learning avec plus de 5 ans d'expérience en production. Je conçois des couches LLM-as-a-Service personnalisées, j'optimise les bases de données RAG et j'adapte des paramètres spécialisés avec Hugging Face PEFT/LoRA.",
+    location: "Sienne, Italie & Global (Télétravail)",
+    experience: "Plus de 5 ans de pratique industrielle",
+    latencyBadge: "⚡ -40% de latence / -25% de coût d'hébergement",
+    deskHeader: "Bureau de Consultation",
+    deskTitle: "Freelance & B2B",
+    deskDesc: "Ouvert aux consultations B2B, contrats et rôles techniques de haut niveau. Entièrement assuré et enregistré pour la TVA.",
+    engagementStyle: "STYLE D'ENGAGEMENT",
+    engagementVal: "B2B / Freelance / Contrat",
+    vatStatus: "STATUT TVA / FISCAL",
+    vatVal: "Entité commerciale enregistrée",
+    availabilityWeekly: "DISPONIBILITÉ HEBDOMADAIRE",
+    availabilityVal: "JUSQU'À 40 HEURES / FLEXIBLE",
+    citizenshipRegion: "CITOYENNETÉ / RÉGION",
+    citizenshipVal: "UNION EUROPÉENNE / TÉLÉTRAVAIL GLOBAL",
+    bookCall: "Réserver un appel",
+    hireMe: "M'embaucher",
+    disclaimer: "CANAUX SÉCURISÉS • PRESTATION DE SERVICES GLOBALE • Sienne / Florence Télétravail",
+    corporateMailbox: "Boîte aux lettres d'entreprise",
+    directBusinessLines: "Lignes commerciales directes",
+    search: "Recherche"
+  }
+};
 
 export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveTheme }: HeaderProps) {
   const { lang, setLang, t } = useLanguage();
@@ -29,14 +138,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
   };
 
   // Typewriter parameters
-  const typewriterPhrases = [
-    "I Build Enterprise AI Systems",
-    "Generative AI Engineer",
-    "LLM Architect",
-    "AI Automation Architect",
-    "Multi-Agent Systems Developer",
-    "Turning AI Ideas into Production"
-  ];
+  const typewriterPhrases = typewriterPhrasesMap[lang] || typewriterPhrasesMap.en;
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [typedText, setTypedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -203,6 +305,9 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               {isDark ? <Sun size={13.5} className="text-amber-500" /> : <Moon size={13.5} className="text-indigo-600" />}
             </button>
 
+            {/* Language Switcher in Header */}
+            <LanguageSwitcher />
+
             <motion.a
               id="nav-email-btn"
               href={`mailto:${PERSONAL_INFO.email}?subject=B2B Contract/Freelance Opportunity`}
@@ -276,13 +381,13 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
               </span>
-              <span>Available for Freelance Projects, B2B Contracts &amp; Senior AI Roles</span>
+              <span>{t('hero.availability')}</span>
             </motion.div>
 
             {/* Core Display Title - Karpathy & Stripe Editorial Mix */}
             <motion.div variants={itemVariants} className="space-y-4">
               <h1 className="font-display text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white md:text-5.5xl lg:text-6xl leading-none min-h-[160px] sm:min-h-[140px] md:min-h-[190px]">
-                Engineering <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">reliable</span> <br />
+                {t('hero.title.part1')} <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">{t('hero.title.part2')}</span> <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-500 to-emerald-500 dark:from-indigo-400 dark:via-violet-300 dark:to-emerald-450 drop-shadow-sm font-black uppercase tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl">
                   {typedText}
                 </span>
@@ -290,21 +395,20 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               </h1>
               
               <p className="font-sans text-base text-zinc-500 dark:text-zinc-400 md:text-lg leading-relaxed font-light">
-                Senior Machine Learning Architect with <span className="text-zinc-850 dark:text-zinc-200 font-semibold">5+ years of production experience</span>. 
-                I design custom LLM-as-a-Service layers, optimize RAG databases, and adapt specialized parameters using Hugging Face PEFT/LoRA.
+                {t('hero.subtitle')}
               </p>
             </motion.div>
 
             {/* Quick architectural specs / metadata row */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-y-3 gap-x-6 text-[10px] font-mono text-zinc-500 dark:text-zinc-400 uppercase tracking-widest border-t border-zinc-200/80 dark:border-zinc-800 pt-5">
               <span className="flex items-center gap-1.5">
-                <MapPin size={11} className="text-indigo-600 dark:text-indigo-400" /> Siena, Italy &amp; Global (Remote)
+                <MapPin size={11} className="text-indigo-600 dark:text-indigo-400" /> {t('hero.location.details')}
               </span>
               <span className="flex items-center gap-1.5">
-                <Briefcase size={11} className="text-indigo-600 dark:text-indigo-400" /> 5+ Years Industry Practice
+                <Briefcase size={11} className="text-indigo-600 dark:text-indigo-400" /> {t('hero.experience.details')}
               </span>
               <span className="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50/70 dark:bg-emerald-950/20 px-2.5 py-1 rounded border border-emerald-200/40 dark:border-emerald-800/20">
-                ⚡ -40% Latency / -25% Host Cost
+                {t('hero.kpi.details')}
               </span>
             </motion.div>
 
@@ -317,7 +421,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 </div>
                 
                 {/* Language buttons inside the box */}
-                <div className="flex items-center p-0.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-805">
+                <div className="flex items-center p-0.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
                   <button
                     onClick={() => setLang('en')}
                     className={`cursor-pointer px-2 py-1 text-[9px] font-mono uppercase tracking-wider rounded transition-all ${
@@ -334,11 +438,19 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                   >
                     IT
                   </button>
+                  <button
+                    onClick={() => setLang('fr')}
+                    className={`cursor-pointer px-2 py-1 text-[9px] font-mono uppercase tracking-wider rounded transition-all ${
+                      lang === 'fr' ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/50 dark:border-zinc-800 font-bold shadow-xs' : 'text-zinc-450 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                    }`}
+                  >
+                    FR
+                  </button>
                 </div>
               </div>
               
               <p className="text-zinc-600 dark:text-zinc-300 text-xs md:text-sm leading-relaxed font-light">
-                {lang === 'en' ? PERSONAL_INFO.summaryEn : PERSONAL_INFO.summaryIt}
+                {lang === 'en' ? PERSONAL_INFO.summaryEn : lang === 'it' ? PERSONAL_INFO.summaryIt : PERSONAL_INFO.summaryFr}
               </p>
             </motion.div>
 
@@ -415,11 +527,11 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                   <div>
                     <div className="text-[9px] font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-1 flex items-center gap-1">
                       <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-ping" />
-                      <span>Contractor Desk</span>
+                      <span>{t('hero.desk.badge')}</span>
                     </div>
-                    <h3 className="font-display text-sm font-extrabold uppercase tracking-tight text-zinc-900 dark:text-white">Freelance &amp; B2B</h3>
+                    <h3 className="font-display text-sm font-extrabold uppercase tracking-tight text-zinc-900 dark:text-white">{t('hero.desk.title')}</h3>
                     <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed font-light">
-                      Open to B2B consultations, contracts, and senior technical roles. Fully insured &amp; VAT registered.
+                      {t('hero.desk.desc')}
                     </p>
                   </div>
                 </div>
@@ -427,20 +539,20 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 {/* Engagement fields formatted like a Spec Sheet */}
                 <div className="space-y-3 font-mono text-[10px]">
                   <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-zinc-800/50">
-                    <span className="text-zinc-400 dark:text-zinc-500">ENGAGEMENT STYLE</span>
-                    <span className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">B2B / Freelance / Contract</span>
+                    <span className="text-zinc-400 dark:text-zinc-500">{t('hero.desk.style.label')}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">{t('hero.desk.style.value')}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-zinc-800/50">
-                    <span className="text-zinc-400 dark:text-zinc-500">VAT / TAX STATUS</span>
-                    <span className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">Registered Business Entity</span>
+                    <span className="text-zinc-400 dark:text-zinc-500">{t('hero.desk.tax.label')}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300 font-bold uppercase">{t('hero.desk.tax.value')}</span>
                   </div>
                   <div className="flex justify-between py-1 border-b border-zinc-100 dark:border-zinc-800/50">
-                    <span className="text-zinc-400 dark:text-zinc-500">AVAILABILITY WEEKLY</span>
-                    <span className="text-emerald-700 dark:text-emerald-450 font-bold">UP TO 40 HOURS / FLEXIBLE</span>
+                    <span className="text-zinc-400 dark:text-zinc-500">{t('hero.desk.availability.label')}</span>
+                    <span className="text-emerald-700 dark:text-emerald-450 font-bold">{t('hero.desk.availability.value')}</span>
                   </div>
                   <div className="flex justify-between py-1">
-                    <span className="text-zinc-400 dark:text-zinc-500">CITIZENSHIP / REGION</span>
-                    <span className="text-zinc-700 dark:text-zinc-300 font-bold">EUROPEAN UNION / GLOBAL REMOTE</span>
+                    <span className="text-zinc-400 dark:text-zinc-500">{t('hero.desk.region.label')}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300 font-bold">{t('hero.desk.region.value')}</span>
                   </div>
                 </div>
 
@@ -454,7 +566,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                       <Mail size={14} />
                     </span>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[9px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">Corporate Mailbox</div>
+                      <div className="text-[9px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">{t('hero.desk.corporate_mailbox')}</div>
                       <div className="text-xs font-bold text-zinc-700 dark:text-zinc-300 truncate">{PERSONAL_INFO.email}</div>
                     </div>
                     <ChevronRight size={13} className="text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition" />
@@ -462,7 +574,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
 
                   {/* Dual Phones & WhatsApp Box */}
                   <div className="rounded border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950 p-3.5 space-y-2.5">
-                    <div className="text-[9px] font-mono text-zinc-455 dark:text-zinc-555 uppercase tracking-wider">Direct Business Lines</div>
+                    <div className="text-[9px] font-mono text-zinc-455 dark:text-zinc-555 uppercase tracking-wider">{t('hero.desk.business_lines')}</div>
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">
                       <a href={`tel:${PERSONAL_INFO.phoneItaly.replace(/\s+/g, '')}`} className="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-indigo-450 transition">
                         <span className="text-[9px] text-zinc-455 dark:text-zinc-500">IT</span> {PERSONAL_INFO.phoneItaly}
@@ -493,7 +605,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                     className="cursor-pointer flex items-center justify-center gap-2 rounded bg-indigo-600 dark:bg-indigo-500 py-3 text-center text-[10px] font-mono uppercase tracking-wider font-extrabold text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-sm"
                   >
                     <Calendar size={12} />
-                    <span>Book a Call</span>
+                    <span>{t('hero.bookCall')}</span>
                   </button>
 
                   <button
@@ -501,13 +613,13 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                     className="cursor-pointer flex items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 py-3 text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-white transition"
                   >
                     <Briefcase size={12} className="text-indigo-600 dark:text-indigo-400" />
-                    <span>Hire Me</span>
+                    <span>{t('hero.hireMe')}</span>
                   </button>
                 </div>
 
                 {/* Small disclaimer info */}
                 <div className="text-[9px] font-mono text-zinc-400 dark:text-zinc-500 leading-relaxed text-center">
-                  SECURE CHANNELS &bull; GLOBAL SERVICE PROVISION &bull; Siena / Florence Remote
+                  {t('hero.desk.disclaimer')}
                 </div>
 
               </div>

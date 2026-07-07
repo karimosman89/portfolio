@@ -16,11 +16,13 @@ import SearchOverlay from './components/SearchOverlay';
 import QuickChat from './components/QuickChat';
 import SEOMetadata from './components/SEOMetadata';
 import AIOrbit3D from './components/AIOrbit3D';
+import { useLanguage } from './i18n/LanguageContext';
 import { PERSONAL_INFO } from './data';
 import { Mail, Linkedin, Github, FileText, ArrowUp, Milestone, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function App() {
+  const { t } = useLanguage();
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -133,10 +135,10 @@ export default function App() {
                 <span>01.5 / Cognitive Visualization</span>
               </div>
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-                3D AI Specialization <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Orbit</span>
+                {t('section.orbit.title')}
               </h2>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-                Interact with the dynamic WebGL orbital system to inspect Karim's production specializations, engineering stacks, and quantifiable industrial impact metrics.
+                {t('section.orbit.subtitle')}
               </p>
             </div>
             <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />

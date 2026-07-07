@@ -1,5 +1,6 @@
 import React from 'react';
 import { SKILL_CATEGORIES } from '../data';
+import { useLanguage } from '../i18n/LanguageContext';
 import { Code, Layers, Sparkles, Cloud, Database, Cpu, Milestone } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -13,6 +14,7 @@ const categoryIcons: Record<string, any> = {
 };
 
 export default function SkillsBento() {
+  const { t } = useLanguage();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -66,10 +68,10 @@ export default function SkillsBento() {
             <span>04 / Capability Index</span>
           </div>
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-            Skill Matrix <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">&amp; Stack</span>
+            {t('section.skills.title')}
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Proven competencies across machine learning frameworks, enterprise infrastructure models, and programming languages.
+            {t('section.skills.subtitle')}
           </p>
         </div>
         
@@ -88,6 +90,8 @@ export default function SkillsBento() {
       >
         {SKILL_CATEGORIES.map((cat) => {
           const IconComponent = categoryIcons[cat.title] || Code;
+          const translatedCategoryTitle = t(`skills.category.${cat.title}`);
+          const displayCategoryTitle = translatedCategoryTitle !== `skills.category.${cat.title}` ? translatedCategoryTitle : cat.title;
 
           return (
             <motion.div
@@ -102,13 +106,15 @@ export default function SkillsBento() {
                   <IconComponent size={16} />
                 </span>
                 <h3 className="font-display text-sm font-extrabold text-zinc-850 dark:text-zinc-100 font-sans">
-                  {cat.title}
+                  {displayCategoryTitle}
                 </h3>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 {cat.skills.map((skill) => {
-                  const isHighlight = skill.includes("(Expert)") || skill.includes("YOLO") || skill.includes("RAG") || skill.includes("Fine-tuning") || skill.includes("Kubernetes") || skill.includes("PyTorch");
+                  const translatedSkill = t(`skills.item.${skill}`);
+                  const displaySkill = translatedSkill !== `skills.item.${skill}` ? translatedSkill : skill;
+                  const isHighlight = displaySkill.includes("(Expert)") || displaySkill.includes("YOLO") || displaySkill.includes("RAG") || displaySkill.includes("Fine-tuning") || displaySkill.includes("Kubernetes") || displaySkill.includes("PyTorch") || displaySkill.includes("Sistemi Multi-Agente");
                   
                   return (
                     <motion.span
@@ -130,7 +136,7 @@ export default function SkillsBento() {
                       {isHighlight && (
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-600 dark:bg-indigo-500 inline-block animate-pulse shrink-0" />
                       )}
-                      <span>{skill}</span>
+                      <span>{displaySkill}</span>
                     </motion.span>
                   );
                 })}

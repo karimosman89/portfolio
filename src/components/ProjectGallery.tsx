@@ -4,6 +4,7 @@ import { GITHUB_REPOS, EXPERIENCES } from '../data';
 import { Search, SlidersHorizontal, Github, Cpu, Briefcase, Star, GitFork, CornerDownRight, ExternalLink, Eye, ChevronUp, ChevronDown, CheckCircle2 } from 'lucide-react';
 import ProjectModal from './ProjectModal';
 import { Experience } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface GalleryItem {
   id: string;
@@ -19,6 +20,7 @@ interface GalleryItem {
 }
 
 export default function ProjectGallery() {
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'rating' | 'alphabetical'>('rating');
@@ -66,10 +68,17 @@ export default function ProjectGallery() {
         category = 'mlops';
       }
 
+      const baseKey = exp.company.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const translatedRole = t(`experience.${baseKey}.role`);
+      const displayRole = translatedRole !== `experience.${baseKey}.role` ? translatedRole : exp.role;
+
+      const translatedDesc = t(`experience.${baseKey}.description`);
+      const displayDesc = translatedDesc !== `experience.${baseKey}.description` ? translatedDesc : exp.description;
+
       items.push({
         id: `exp-${idx}`,
-        title: exp.role,
-        subtitle: `${exp.company} — ${exp.period}. ${exp.description}`,
+        title: displayRole,
+        subtitle: `${exp.company} — ${exp.period}. ${displayDesc}`,
         category,
         tags: Array.from(new Set(exp.modelsUsed.slice(0, 4))),
         type: 'industrial',
@@ -78,7 +87,7 @@ export default function ProjectGallery() {
     });
 
     return items;
-  }, []);
+  }, [t]);
 
   // Filtering and searching logic
   const filteredItems = useMemo(() => {
@@ -104,11 +113,11 @@ export default function ProjectGallery() {
   }, [galleryItems, activeCategory, searchQuery, sortBy]);
 
   const categories = [
-    { id: 'all', label: 'All Projects' },
-    { id: 'genai', label: 'Generative AI & LLMs' },
-    { id: 'vision', label: 'Computer Vision (CV)' },
-    { id: 'mlops', label: 'MLOps & Systems' },
-    { id: 'devtools', label: 'Developer Tooling' },
+    { id: 'all', label: t('gallery.cat.all') },
+    { id: 'genai', label: t('gallery.cat.genai') },
+    { id: 'vision', label: t('gallery.cat.vision') },
+    { id: 'mlops', label: t('gallery.cat.mlops') },
+    { id: 'devtools', label: t('gallery.cat.devtools') },
   ];
 
   return (
@@ -118,13 +127,13 @@ export default function ProjectGallery() {
         <div>
           <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <Cpu size={11} className="animate-pulse" />
-            <span>04 / Case workspace</span>
+            <span>{t('gallery.badge')}</span>
           </div>
           <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-            Project &amp; Production <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Workspace</span>
+            {t('gallery.title.main')} <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">{t('gallery.title.italic')}</span>
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-xl">
-            A filterable blueprint of open-source libraries, micro-agent sandboxes, and highly scalable industrial enterprise products.
+            {t('gallery.subtitle')}
           </p>
         </div>
 
@@ -135,7 +144,7 @@ export default function ProjectGallery() {
             <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500" />
             <input
               type="text"
-              placeholder="Search technologies, tags..."
+              placeholder={t('gallery.search_placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full text-xs font-sans rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-9 py-2.5 text-zinc-900 dark:text-white focus:outline-none focus:border-indigo-500/30"
@@ -152,17 +161,17 @@ export default function ProjectGallery() {
                   : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'
               }`}
             >
-              Top Impact
+              {t('gallery.sort.impact')}
             </button>
             <button
               onClick={() => setSortBy('alphabetical')}
               className={`px-3 py-2 text-[10px] font-mono font-bold uppercase rounded transition-all cursor-pointer ${
                 sortBy === 'alphabetical'
-                  ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                  ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-405 shadow-xs'
                   : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'
               }`}
             >
-              A-Z
+              {t('gallery.sort.az')}
             </button>
           </div>
         </div>
