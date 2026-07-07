@@ -68,7 +68,13 @@ export default function BookingWidget() {
         if (day === 0 || day === 6) {
           setAvailableSlots([]); // Weekends closed
         } else {
-          setAvailableSlots(["09:00", "10:30", "13:00", "14:30", "16:00"]);
+          const slots: string[] = [];
+          for (let i = 9 * 2; i <= 18 * 2; i++) {
+            const h = Math.floor(i / 2).toString().padStart(2, '0');
+            const m = (i % 2 === 0) ? '00' : '30';
+            slots.push(`${h}:${m}`);
+          }
+          setAvailableSlots(slots);
         }
       } finally {
         setLoadingSlots(false);
