@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Briefcase, Building2, Send, CheckCircle2, MessageSquare, Sparkles, Cpu, AlertCircle, RefreshCw, Settings, Calendar, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { PERSONAL_INFO } from '../data';
 import BookingWidget from './BookingWidget';
 import HostAdminPanel from './HostAdminPanel';
 import CalendlyWidget from './CalendlyWidget';
@@ -217,7 +218,7 @@ export default function ContactForm() {
       y: 0,
       transition: {
         duration: 0.75,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as any,
         staggerChildren: 0.1,
       }
     }
@@ -276,9 +277,12 @@ export default function ContactForm() {
             </div>
 
             <div className="rounded border border-zinc-200 dark:border-zinc-800/60 bg-white dark:bg-zinc-950 p-4.5 text-[11px] text-zinc-500 dark:text-zinc-450 leading-relaxed font-mono font-light space-y-1.5">
-              <div>Direct Email: <a href="mailto:karim.programmer2020@gmail.com" className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">karim.programmer2020@gmail.com</a></div>
-              <div>Telephone EU: <span className="text-zinc-700 dark:text-zinc-300 font-bold">+39 320 950 4754</span></div>
-              <div>Secondary: <span className="text-zinc-700 dark:text-zinc-300 font-bold">+33 7 66 62 9970</span></div>
+              <div>Direct Email: <a href={`mailto:${PERSONAL_INFO.email}`} className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">{PERSONAL_INFO.email}</a></div>
+              <div>Italy Call: <a href={`tel:${PERSONAL_INFO.phoneItaly.replace(/\s+/g, '')}`} className="text-zinc-700 dark:text-zinc-300 font-bold hover:text-indigo-500 transition">{PERSONAL_INFO.phoneItaly}</a></div>
+              <div>France Call: <a href={`tel:${PERSONAL_INFO.phoneFrance.replace(/\s+/g, '')}`} className="text-zinc-700 dark:text-zinc-300 font-bold hover:text-indigo-500 transition">{PERSONAL_INFO.phoneFrance}</a></div>
+              {PERSONAL_INFO.phoneWhatsapp && (
+                <div>WhatsApp: <a href={`https://wa.me/${PERSONAL_INFO.phoneWhatsapp.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">{PERSONAL_INFO.phoneWhatsapp}</a></div>
+              )}
             </div>
           </div>
         </div>

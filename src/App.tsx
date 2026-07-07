@@ -7,6 +7,9 @@ import InteractiveGraphs from './components/InteractiveGraphs';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import SkillsBento from './components/SkillsBento';
 import ServicesAndCompanies from './components/ServicesAndCompanies';
+import ProjectGallery from './components/ProjectGallery';
+import QRContactCard from './components/QRContactCard';
+import RSSFeedWidget from './components/RSSFeedWidget';
 import GithubAndBlogs from './components/GithubAndBlogs';
 import ContactForm from './components/ContactForm';
 import SearchOverlay from './components/SearchOverlay';
@@ -157,8 +160,46 @@ export default function App() {
           {/* 5.5. Enterprise Services & Client Sectors Marquee */}
           <ServicesAndCompanies />
 
+          {/* 5.6. Project & Production Workspace Gallery */}
+          <ProjectGallery />
+
           {/* 6. GitHub Repositories & Publication split-pane */}
           <GithubAndBlogs />
+
+          {/* 6.5. QR Card & RSS Syndication Widget Center */}
+          <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div className="flex flex-col justify-between">
+                <div className="mb-6">
+                  <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                    <span>06.5 / Secure credentials</span>
+                  </div>
+                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                    Unified Contact <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Card</span>
+                  </h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
+                    Scan the secure dynamic vCard to synchronize Karim's direct B2B contacts, corporate mailbox, and WhatsApp channels immediately.
+                  </p>
+                </div>
+                <QRContactCard />
+              </div>
+
+              <div className="flex flex-col justify-between">
+                <div className="mb-6">
+                  <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                    <span>06.6 / Syndication stream</span>
+                  </div>
+                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                    AI Sector News <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Feeds</span>
+                  </h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
+                    Subscribe to valid RSS 2.0 syndication channels to get fresh, daily-updated AI industry news, journals, and magazines delivered directly to your feed readers.
+                  </p>
+                </div>
+                <RSSFeedWidget />
+              </div>
+            </div>
+          </section>
 
           {/* 7. Business and Freelance Inquiry Desk */}
           <ContactForm />

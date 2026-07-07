@@ -30,7 +30,7 @@ export default function SkillsBento() {
       y: 0,
       transition: {
         duration: 0.55,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1] as any
       }
     }
   };
@@ -42,7 +42,7 @@ export default function SkillsBento() {
       y: 0,
       transition: {
         duration: 0.75,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as any,
         staggerChildren: 0.1,
       }
     }

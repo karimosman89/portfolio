@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { EXPERIENCES, EDUCATION, CERTIFICATIONS, LANGUAGES } from '../data';
-import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, Cpu, Award, BookOpen, Languages, Sparkles, CheckCircle2 } from 'lucide-react';
+import { EXPERIENCES, EDUCATION, CERTIFICATIONS } from '../data';
+import { Briefcase, Calendar, MapPin, ChevronDown, ChevronUp, Cpu, Award, BookOpen, Sparkles, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ProjectModal from './ProjectModal';
 import { Experience } from '../types';
@@ -32,7 +32,7 @@ export default function ExperienceTimeline() {
       y: 0,
       transition: {
         duration: 0.55,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1] as any
       }
     }
   };
@@ -48,7 +48,7 @@ export default function ExperienceTimeline() {
       y: 0,
       transition: {
         duration: 0.75,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as any,
         staggerChildren: 0.12,
       }
     }
@@ -305,27 +305,6 @@ export default function ExperienceTimeline() {
                       : 'bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 border border-yellow-100/65 dark:border-yellow-900/30'
                   }`}>
                     {cert.year === 'In Progress' ? 'In Progress' : cert.year}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Languages Block */}
-          <div className="space-y-5">
-            <div className="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-              <h2 className="font-display text-base font-extrabold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
-                <Languages size={15} className="text-indigo-600 dark:text-indigo-400" />
-                Language Fluency
-              </h2>
-            </div>
-            
-            <div className="grid gap-2">
-              {LANGUAGES.map((lang) => (
-                <div key={lang.name} className="flex justify-between items-center text-xs rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-950/15 p-3.5 font-sans">
-                  <span className="font-bold text-zinc-700 dark:text-zinc-200">{lang.name}</span>
-                  <span className="font-mono text-zinc-650 dark:text-zinc-350 text-[10px] bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 rounded">
-                    {lang.level}
                   </span>
                 </div>
               ))}

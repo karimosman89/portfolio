@@ -9,7 +9,8 @@ export const PERSONAL_INFO = {
   linkedin: "https://www.linkedin.com/in/karimosman89/",
   github: "https://github.com/karimosman89",
   phoneItaly: "+39 34 70 70 1100",
-  phoneFrance: "+33 7 66 62 9970",
+  phoneFrance: "+33 7 66 62 99 70",
+  phoneWhatsapp: "+39 320 952 47 54",
   summaryEn: "Result-oriented Senior AI Engineer and B2B Consultant with over 5 years of experience designing and implementing scalable AI/ML solutions for international enterprise clients. Specialized in Generative AI, RAG architectures, LLM fine-tuning (LoRA), and multimodal Computer Vision (YOLO). Open to Senior roles, high-impact Freelance contracts, and B2B corporate consultancies to transform research prototypes into high-uptime, production-ready systems.",
   summaryIt: "Senior AI Engineer e Consulente B2B orientato ai risultati con oltre 5 anni di esperienza nella progettazione e implementazione di soluzioni scalabili di AI/ML per clienti internazionali. Specializzato in Intelligenza Artificiale Generativa, sistemi RAG, fine-tuning di LLM e applicazioni AI multimodali. Disponibile per ruoli Senior, contratti Freelance ad alto impatto e consulenze aziendali B2B per trasformare prototipi in sistemi production-ready."
 };
@@ -73,7 +74,7 @@ export const EXPERIENCES: Experience[] = [
     company: "Baker Hughes (via Hermes Trade Company)",
     role: "AI Engineer (Consulente)",
     location: "Firenze, Italia",
-    period: "Nov 2024 – Present",
+    period: "Nov 2024 – Jan 2026",
     description: "Architecting enterprise AI platforms and scaling Generative AI services across global teams.",
     bulletPoints: [
       "Sviluppo Piattaforma AI-as-a-Service: Designed and implemented full RAG-as-a-Service and LLM-as-a-Service platforms, making advanced AI capabilities accessible to over 500 global team members across 15+ countries.",
@@ -208,14 +209,6 @@ export const EDUCATION = [
   }
 ];
 
-export const LANGUAGES = [
-  { name: "Arabic", level: "Native / Mother Tongue" },
-  { name: "English", level: "Fluent (C2)" },
-  { name: "Italian", level: "Intermediate (B1)" },
-  { name: "German", level: "Elementary (A2)" },
-  { name: "French", level: "Beginner (A1)" }
-];
-
 export const GITHUB_REPOS: GithubRepo[] = [
   {
     name: "career-ops",
@@ -264,76 +257,109 @@ export const GITHUB_REPOS: GithubRepo[] = [
   }
 ];
 
+function getDynamicDate(daysAgo: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
 export const TECHNICAL_BLOGS: BlogPost[] = [
   {
-    id: "blog-lora-latency",
-    title: "Mastering LoRA: 40% Latency Reduction for Domain-Specific LLMs",
-    summary: "How to combine Parameter-Efficient Fine-Tuning (PEFT) with post-training quantization to fit massive models on low-cost hardware without accuracy degradation.",
-    content: `Domain adaptation is one of the biggest challenges in deploying enterprise LLMs. While generalist models like Claude or GPT-4 perform outstandingly on open-ended queries, they frequently stumble or hallucinate on highly specialized terms—such as heavy machinery part serials or industrial gas turbine specs. 
+    id: "ai-news-1",
+    title: "Gemini 1.5 Pro Context Windows: Standardizing 2M Tokens Across Industry Workflows",
+    summary: "How enterprises are shifting from vector search to in-context learning with native 2-million-token context lengths for codebase analysis and complex multi-document reasoning.",
+    content: `The generative AI space is witnessing a massive transition. Developers and enterprise architects are no longer restricted to traditional 4K or 8K token windows. With the widespread integration of the Gemini 1.5 Pro model, a native 2-million-token context is quickly becoming the benchmark for production applications.
 
-To bridge this gap, we fine-tuned open-source models using Hugging Face **PEFT (Parameter-Efficient Fine-Tuning)** with **LoRA (Low-Rank Adaptation)** adapters. 
+### Shifting from RAG to In-Context Learning
+Traditionally, Retrieval-Augmented Generation (RAG) has been the gold standard for querying custom data pools. However, RAG pipelines introduce latency, chunking bugs, and embedding failures. By feeding entire codebases, 1,000-page financial audits, or hours of audio files directly into the 2M context window of Gemini 1.5, systems achieve perfect multi-hop reasoning without complex chunking algorithms.
 
-### Why LoRA?
-Instead of retraining all billions of parameters (which is cost-prohibitive and leads to catastrophic forgetting), LoRA injects low-rank trainable matrices into the self-attention layers. This reduces trainable parameters by up to 99%.
+### Cost and Latency Trade-Offs
+While long-context processing delivers superior recall, it raises performance and cost considerations:
+- **Prompt Caching**: Substantially reduces the cost and latency of subsequent queries by reusing pre-loaded context assets.
+- **Structured Outputs**: Pairing JSON schemas with long contexts ensures strict, validated schema adherence for heavy processing pipelines.
+- **Smarter Workflows**: Models can cross-reference multiple documents natively, detecting hidden inconsistencies with extreme precision.`,
+    date: getDynamicDate(0),
+    readTime: "4 min read",
+    tags: ["Gemini API", "LLM", "Long Context", "Enterprise AI", "Prompt Caching"]
+  },
+  {
+    id: "ai-news-2",
+    title: "Model Context Protocol (MCP): The Unified Standard for Agentic Tool Integration",
+    summary: "An analysis of Anthropic’s open standard that allows secure, standard communication between AI clients and data sources like Postgres, GitHub, and local environments.",
+    content: `The biggest bottleneck in deploying AI agents has always been the bespoke nature of tool integration. Every developer has had to write custom API wrappers for their agents to read local databases, scan directories, or send Slack notifications.
 
-### The Double-Whammy: Quantization (INT8/FP4)
-After training, we applied INT8 quantization. This maps 32-bit floating-point weights to 8-bit integers. 
+This fragmentation has been solved by the introduction of the **Model Context Protocol (MCP)**, an open-source standard designed to connect AI applications to data sources.
 
-**The Result:**
-- **40% Latency Reduction**: Inference response time dropped from 850ms to 510ms.
-- **25% Cost Savings**: Models can run comfortably on cheaper AWS Spot instances (A10G GPUs) instead of expensive multi-node setups.
-- **98% Accuracy Preserved**: Compared to a fully un-quantized float16 model, the accuracy degradation was virtually undetectable in domain specific evaluation datasets.`,
-    date: "May 14, 2026",
+### Architecture of MCP
+MCP defines a client-server relationship:
+1. **AI Clients**: Applications (like Claude Desktop, Zed, or custom CLI tools) that coordinate the agentic workflow.
+2. **MCP Servers**: Light services that expose specific resources, prompts, and tools through standard JSON-RPC 2.0.
+
+### Why This Changes Everything
+By standardizing the transport protocol (STDIO or SSE), an agent can seamlessly interface with any database, git repository, or memory node that implements an MCP server. The community has already built over 150 servers for PostgreSQL, Google Drive, Slack, Docker, and terminal shells, creating a universally interoperable agent ecosystem.`,
+    date: getDynamicDate(1),
     readTime: "5 min read",
-    tags: ["LLM", "Hugging Face", "LoRA", "Model Optimization", "MLOps"]
+    tags: ["MCP", "AI Agents", "API Design", "JSON-RPC", "Open Source"]
   },
   {
-    id: "blog-rag-service",
-    title: "Architecting 'RAG-as-a-Service' for Enterprise Scaling",
-    summary: "A blueprint for transforming simple vector-search scripts into a robust, multi-tenant distributed RAG pipeline serving 500+ global users.",
-    content: `Most developers can spin up a simple Retrieval-Augmented Generation (RAG) prototype in 15 lines of LangChain code. However, taking that to production to serve 500+ concurrent international users across 15+ countries is an entirely different story.
+    id: "ai-news-3",
+    title: "The Rise of Multi-Agent Systems in Software Engineering Automation",
+    summary: "Exploring how hierarchical multi-agent teams outperform single-prompt chatbots by distributing specialized software tasks like writing, linting, and building code.",
+    content: `While individual developer tools can edit files on command, true automation requires collaboration. Autonomous multi-agent systems are proving that specialized roles—such as an Architect, Coder, and QA Engineer—can solve complex codebase modifications far better than any single AI agent.
 
-In this article, we break down the architecture of the **RAG-as-a-Service** platform we designed at Baker Hughes.
+### Hierarchical Task Delegation
+Instead of prompting a single LLM to write a whole feature, multi-agent frameworks divide work:
+- **Planner Agent**: Parses instructions, inspects existing directory trees, and outlines a localized architectural plan.
+- **Coder Agent**: Receives precise edit instructions and executes file writes surgically, preventing token bloat.
+- **Reviewer Agent**: Runs compilers and linters in sandboxed containers, analyzing build logs and returning diagnostic errors directly to the coder.
 
-### Component 1: Chunk-as-a-Service (Text Segmentation)
-If you chunk your documents poorly, no retrieval strategy can save you. We built an asynchronous, token-aware chunking pipeline:
-- **Overlapping sliding windows** (512 token size with 10% overlap).
-- **Semantic boundary detection**: We detect headers and markdown sections to avoid breaking paragraphs mid-sentence.
-- Distributed worker queues using **Redis** and **Celery** to parse 10,000+ files daily.
-
-### Component 2: Multi-Tenant Vector Store Routing
-Using **Pinecone** with metadata namespace tagging, we isolated data per country and team. 
-- Hybrid keyword + vector search (BM25 + BGE Dense Embeddings).
-- **Reranking Layer**: Passing top-30 candidates through a Cohere-Rerank node, shrinking context window inputs down to the absolute 5 most relevant chunks.
-
-### Component 3: The LLM Guardrail Layer
-We implemented system-level safety guidelines, injecting explicit prompt instructions:
-1. *Strict Factual Boundary*: If the answer is not in the context, output "Information not found".
-2. *Attribution*: Every claim must cite its source PDF page numbers.`,
-    date: "Feb 22, 2026",
-    readTime: "7 min read",
-    tags: ["RAG", "System Design", "Vector Databases", "Pinecone", "Asynchronous Pipelines"]
-  },
-  {
-    id: "blog-yolo-manufacturing",
-    title: "Computer Vision in Heavy Industry: Defect Detection with YOLO v8",
-    summary: "How we applied state-of-the-art object detection to high-speed thermal scans of industrial components to increase defect classification accuracy by 22%.",
-    content: `Automating quality inspection in manufacturing plants is highly challenging due to varying lighting, dust, and microscopic defect sizes. In our Baker Hughes consultancy, we tackled this by applying **YOLO v8 (You Only Look Once)** to turbine rotor and compressor component inspection.
-
-### The Objective
-Detect microscopic thermal fractures and welding cracks on complex metal turbine blades as they move along the testing line.
-
-### Pipeline Architecture
-1. **Camera Stream Capture**: Dual thermal and high-resolution optical cameras capture frames at 30 FPS.
-2. **Preprocessing**: Adaptive histogram equalization is applied to normalize metal reflection and specular glares.
-3. **Inference with YOLO v8**: A customized YOLO v8-medium model, trained on highly balanced synthetic and real crack datasets, predicts bounding boxes in <15ms.
-4. **Edge AI Deployment**: The model was compiled via NVIDIA TensorRT and deployed onto Jetson Orin edge boards to avoid round-trip network delays.
-
-### Measurable Wins
-- **Defect Detection Boosted by 22%**: Outperformed legacy Hough-transform CV filters and manual visual inspection.
-- **Zero Interruption**: Seamless edge inference meant defect feedback occurs in real-time, instantly notifying workers or stopping the conveyor belt.`,
-    date: "Nov 08, 2025",
+### Minimizing Catastrophic Rewrites
+By isolating code edits to small, modular files, multi-agent pipelines minimize accidental code regression and preserve code patterns. In tests, multi-agent setups resolved 45% more GitHub issues successfully than standard single-turn agents.`,
+    date: getDynamicDate(2),
     readTime: "6 min read",
-    tags: ["Computer Vision", "YOLO v8", "Industrial AI", "TensorRT", "Edge AI"]
+    tags: ["Multi-Agent", "Software Automation", "Vite", "AI Coding", "LangGraph"]
+  },
+  {
+    id: "ai-news-4",
+    title: "Edge AI & Small Language Models (SLMs): Redefining Local Reasoning",
+    summary: "How models like Phi-3, Gemma 2, and Llama 3-8B are enabling high-performance inference directly on smartphones and edge devices without cloud connectivity.",
+    content: `For years, generative AI was synonymous with massive cloud-hosted APIs. But a quiet revolution is taking place at the edge. The rise of Small Language Models (SLMs) is enabling sophisticated on-device intelligence with zero internet latency and complete privacy.
+
+### The Efficiency Breakthrough
+Modern SLMs (ranging from 1B to 9B parameters) leverage advanced distillation and quantization techniques. Models like Gemma 2 (9B) and Phi-3 (3.8B) perform on par with older 70B models while running comfortably on low-power consumer devices.
+
+### Industrial & Mobile Applications
+On-device intelligence is critical for scenarios with limited connectivity:
+- **Industrial Quality Control**: High-speed assembly lines run visual anomaly detection locally to prevent network lag.
+- **Secure Patient Diagnostics**: Medical data can be analyzed directly on local tablets, preserving patient confidentiality.
+- **Interactive Hardware**: Robots and smart appliances process commands in milliseconds without depending on active cloud servers.`,
+    date: getDynamicDate(3),
+    readTime: "5 min read",
+    tags: ["Edge AI", "SLM", "Gemma", "Quantization", "On-Device AI"]
+  },
+  {
+    id: "ai-news-5",
+    title: "Vector Search vs. Graph RAG: Bridging the Structural Knowledge Gap",
+    summary: "An evaluation of Graph RAG pipelines that combine knowledge graphs with semantic embeddings to provide contextual answers for unstructured enterprise data.",
+    content: `Standard RAG pipelines excel at finding specific documents or facts, but fail on holistic questions like 'What are the main theme of these 100 research papers?'. This is because vector search treats chunks independently.
+
+Enter **Graph RAG**: a paradigm shift that integrates structured Knowledge Graphs with semantic search.
+
+### Building the Knowledge Graph
+Graph RAG works by using an LLM to analyze raw documents, extract entities (such as people, technologies, systems), and map their relationships (edges). This creates a structured network representation of the unstructured files.
+
+### Hybrid Query Execution
+When a user queries the database, Graph RAG executes a two-stage retrieval:
+1. **Relational Pathing**: Traverses the Knowledge Graph to retrieve high-level concepts and themes across the entire document set.
+2. **Semantic Retrieval**: Fetches localized raw text chunks via standard vector similarity.
+
+This hybrid approach delivers up to 60% higher completeness in summary responses, ensuring the LLM understands not just the words, but the deep relationships between them.`,
+    date: getDynamicDate(4),
+    readTime: "6 min read",
+    tags: ["Graph RAG", "Knowledge Graphs", "Vector Search", "Neo4j", "Information Retrieval"]
   }
 ];

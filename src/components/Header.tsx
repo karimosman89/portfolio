@@ -94,7 +94,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
       y: 0,
       transition: {
         duration: 0.55,
-        ease: [0.16, 1, 0.3, 1]
+        ease: [0.16, 1, 0.3, 1] as any
       }
     }
   };
@@ -460,9 +460,9 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                     <ChevronRight size={13} className="text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition" />
                   </a>
 
-                  {/* Dual Phones Box */}
-                  <div className="rounded border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950 p-3.5 space-y-2">
-                    <div className="text-[9px] font-mono text-zinc-450 dark:text-zinc-550 uppercase tracking-wider">Direct Business Lines</div>
+                  {/* Dual Phones & WhatsApp Box */}
+                  <div className="rounded border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950 p-3.5 space-y-2.5">
+                    <div className="text-[9px] font-mono text-zinc-455 dark:text-zinc-555 uppercase tracking-wider">Direct Business Lines</div>
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">
                       <a href={`tel:${PERSONAL_INFO.phoneItaly.replace(/\s+/g, '')}`} className="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-indigo-450 transition">
                         <span className="text-[9px] text-zinc-455 dark:text-zinc-500">IT</span> {PERSONAL_INFO.phoneItaly}
@@ -471,6 +471,18 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                         <span className="text-[9px] text-zinc-455 dark:text-zinc-500">FR</span> {PERSONAL_INFO.phoneFrance}
                       </a>
                     </div>
+                    {PERSONAL_INFO.phoneWhatsapp && (
+                      <div className="border-t border-zinc-100 dark:border-zinc-800 pt-2 flex justify-center">
+                        <a
+                          href={`https://wa.me/${PERSONAL_INFO.phoneWhatsapp.replace(/[^0-9]/g, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 hover:text-emerald-600 dark:hover:text-emerald-450 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300 transition"
+                        >
+                          <span className="text-[9px] text-emerald-500 font-bold px-1 rounded bg-emerald-500/10 dark:bg-emerald-500/20">WA</span> {PERSONAL_INFO.phoneWhatsapp}
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
