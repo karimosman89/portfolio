@@ -14,6 +14,10 @@ import AISoundstage from './AISoundstage';
 import AIMediaAnalyzer from './AIMediaAnalyzer';
 import LazyImage from './LazyImage';
 
+import rotorBladeImg from '../assets/images/rotor_blade_spec_1783290618549.jpg';
+import siliconCellImg from '../assets/images/silicon_cell_spec_1783290633275.jpg';
+import impellerHubImg from '../assets/images/impeller_hub_spec_1783290649239.jpg';
+
 // Example texts for Summarizer Demo
 const PRESEEDED_TEXTS = {
   turbine: `OPERATIONAL MAINTENANCE MANUAL - GE GAS TURBINE ROTOR BLADE ASSEMBLIES
@@ -43,7 +47,7 @@ const YOLO_PARTS: VisualPart[] = [
     name: "H-Stage Rotor Blade A-4",
     type: "Heavy Turbine Blade (Alloy)",
     imageBg: "from-zinc-950 to-zinc-900",
-    imageUrl: "/src/assets/images/rotor_blade_spec_1783290618549.jpg",
+    imageUrl: rotorBladeImg,
     rawIssues: [
       { label: "Thermal Crack", conf: 0.94, x: 25, y: 35, w: 20, h: 4, severity: "High", desc: "Thermal fracture spallation along core blade root." },
       { label: "Bond Coat Pore", conf: 0.78, x: 60, y: 50, w: 12, h: 12, severity: "Medium", desc: "Microscopic gas welding void within YSZ layer." }
@@ -54,7 +58,7 @@ const YOLO_PARTS: VisualPart[] = [
     name: "Solar Ingot Silicon Cell X-12",
     type: "High-Purity Silicon Wafer",
     imageBg: "from-zinc-950 to-zinc-900",
-    imageUrl: "/src/assets/images/silicon_cell_spec_1783290633275.jpg",
+    imageUrl: siliconCellImg,
     rawIssues: [
       { label: "Micro Crack", conf: 0.91, x: 45, y: 20, w: 30, h: 3, severity: "High", desc: "Structural crystalline split from mechanical shear." },
       { label: "Silver Contamination", conf: 0.62, x: 15, y: 70, w: 10, h: 10, severity: "Minor", desc: "Slight soldering spill, high resistance threat." }
@@ -65,7 +69,7 @@ const YOLO_PARTS: VisualPart[] = [
     name: "Compressor Impeller Hub",
     type: "Nickel-Steel Radial Compressor",
     imageBg: "from-zinc-950 to-zinc-900",
-    imageUrl: "/src/assets/images/impeller_hub_spec_1783290649239.jpg",
+    imageUrl: impellerHubImg,
     rawIssues: [
       { label: "Welding Pore", conf: 0.96, x: 30, y: 65, w: 8, h: 8, severity: "Medium", desc: "Structural porosity weld hazard detected near base." }
     ]
