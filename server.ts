@@ -121,9 +121,9 @@ app.get("/api/health", (req, res) => {
 // GOOGLE CALENDAR & MEETING BOOKING SYSTEM Backend
 // ==========================================
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_DIR = process.env.VERCEL === "1" ? path.join("/tmp", "data") : path.join(process.cwd(), "data");
 if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR);
+  fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
 const CONFIG_FILE = path.join(DATA_DIR, "host_config.json");
@@ -784,7 +784,7 @@ app.post("/api/contact", async (req, res) => {
     };
 
     // Durable persistence in local JSON file
-    const filePath = path.join(process.cwd(), "inquiries.json");
+    const filePath = path.join(DATA_DIR, "inquiries.json");
     let currentInquiries = [];
     if (fs.existsSync(filePath)) {
       try {
