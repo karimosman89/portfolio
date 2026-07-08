@@ -76,7 +76,13 @@ export default function QuickChat() {
       });
 
       if (!response.ok) {
-        throw new Error('Inference node timed out.');
+        let errData;
+        try {
+          errData = await response.json();
+        } catch (e) {
+          errData = { error: 'Inference node timed out.' };
+        }
+        throw new Error(errData.error || 'Inference node timed out.');
       }
 
       const data = await response.json();
@@ -89,12 +95,12 @@ export default function QuickChat() {
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
-    } catch (err) {
+    } catch (err: any) {
       setMessages(prev => [
         ...prev,
         {
           sender: 'assistant',
-          text: "I experienced an issue connecting to the Gemini inference endpoint. Karim's email is karim.programmer2020@gmail.com for direct messaging!",
+          text: `Connection Error: ${err.message}. If deploying to Vercel, please ensure GEMINI_API_KEY is configured in your Environment Variables. Karim's email is karim.programmer2020@gmail.com for direct messaging!`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
