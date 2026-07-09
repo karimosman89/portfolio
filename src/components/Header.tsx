@@ -128,7 +128,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
   const triggerContactTab = (tabName: 'booking' | 'calendly' | 'message') => {
-    window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }));
+    window.dispatchEvent(new CustomEvent('switch-tab', { detail: { id: 'contact', scrollToTop: false } }));
     const event = new CustomEvent('set-contact-tab', { detail: tabName });
     window.dispatchEvent(event);
     
@@ -138,7 +138,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 100);
+    }, 150);
   };
 
   // Typewriter parameters
