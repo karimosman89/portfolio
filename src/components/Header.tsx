@@ -227,11 +227,11 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
 
           {/* Center Navigation Links - Minimalist Editorial Styling */}
           <div className="hidden md:flex items-center gap-7 text-[11px] font-mono tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
-            <a href="#metrics-dashboard" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">01 / {t('nav.metrics') || 'Metrics'}</a>
-            <a href="#interactive-ai-playground" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">02 / {t('nav.playground') || 'Playground'}</a>
-            <a href="#career-and-education" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience')}</a>
-            <a href="#skills-stack" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('nav.skills')}</a>
-            <a href="#github-and-technical-blogs" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">05 / {t('nav.blog')}</a>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'overview' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">01 / {t('nav.metrics') || 'Metrics'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'capabilities' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">02 / {t('nav.playground') || 'Playground'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience')}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('nav.skills')}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">05 / {t('nav.blog') || 'Contact'}</button>
           </div>
 
           {/* Right Action Links */}
@@ -315,7 +315,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
               <Mail size={11} className="text-indigo-600 dark:text-indigo-400" />
               <span className="hidden sm:inline">Email</span>
@@ -329,7 +329,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
               <Linkedin size={11} className="text-indigo-600 dark:text-indigo-400" />
               <span className="hidden sm:inline">LinkedIn</span>
@@ -344,7 +344,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="inline-flex items-center gap-1.5 rounded border border-zinc-900 dark:border-zinc-850 bg-zinc-900 dark:bg-zinc-950 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-white hover:bg-zinc-850 dark:hover:bg-zinc-900 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-900 dark:border-zinc-850 bg-zinc-900 dark:bg-zinc-950 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-white hover:bg-zinc-850 dark:hover:bg-zinc-900 transition-colors"
             >
               <Github size={11} />
               <span className="hidden sm:inline">GitHub</span>
