@@ -121,9 +121,21 @@ app.get("/api/health", (req, res) => {
 // GOOGLE CALENDAR & MEETING BOOKING SYSTEM Backend
 // ==========================================
 
-const DATA_DIR = process.env.VERCEL === "1" ? path.join("/tmp", "data") : path.join(process.cwd(), "data");
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+let DATA_DIR = path.join(process.cwd(), "data");
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Fallback to /tmp if process.cwd() is read-only (like in Vercel serverless)
+  DATA_DIR = path.join("/tmp", "data");
+  if (!fs.existsSync(DATA_DIR)) {
+    try {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    } catch (err) {
+      console.warn("Could not create data directory in /tmp either:", err);
+    }
+  }
 }
 
 const CONFIG_FILE = path.join(DATA_DIR, "host_config.json");
