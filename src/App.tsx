@@ -45,8 +45,13 @@ export default function App() {
     const handleSwitchTab = (e: Event) => {
       const customEvent = e as CustomEvent;
       if (customEvent.detail) {
-        setActiveTab(customEvent.detail);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const tabId = typeof customEvent.detail === 'string' ? customEvent.detail : customEvent.detail.id;
+        const shouldScrollTop = typeof customEvent.detail === 'object' ? customEvent.detail.scrollToTop : true;
+        
+        setActiveTab(tabId);
+        if (shouldScrollTop) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
     };
     window.addEventListener('switch-tab', handleSwitchTab);
@@ -141,7 +146,7 @@ export default function App() {
           {/* TABS NAVIGATION */}
           <div className="sticky top-[65px] z-40 bg-[#fafbfc]/90 dark:bg-zinc-950/90 backdrop-blur-md border-y border-zinc-200/80 dark:border-zinc-800">
             <div className="mx-auto max-w-7xl px-4 md:px-8">
-              <nav className="flex space-x-4 md:space-x-8 overflow-x-auto scrollbar-hide py-3 snap-x snap-mandatory" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <nav className="flex space-x-4 md:space-x-8 overflow-x-auto scrollbar-hide py-3" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {[
                   { id: 'overview', label: 'Overview' },
                   { id: 'capabilities', label: 'AI Capabilities' },
@@ -151,7 +156,7 @@ export default function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`snap-start shrink-0 whitespace-nowrap px-2 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    className={`shrink-0 whitespace-nowrap px-2 py-2 text-sm font-medium border-b-2 transition-colors ${
                       activeTab === tab.id
                         ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
                         : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
