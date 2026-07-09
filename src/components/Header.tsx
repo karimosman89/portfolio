@@ -128,14 +128,17 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
   const triggerContactTab = (tabName: 'booking' | 'calendly' | 'message') => {
+    window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }));
     const event = new CustomEvent('set-contact-tab', { detail: tabName });
     window.dispatchEvent(event);
     
     // Smooth scroll to the inquiry section
-    const el = document.getElementById('business-inquiry-desk');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    setTimeout(() => {
+      const el = document.getElementById('business-inquiry-desk');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   // Typewriter parameters
@@ -229,9 +232,8 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
           <div className="hidden md:flex items-center gap-7 text-[11px] font-mono tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
             <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'overview' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">01 / {t('nav.metrics') || 'Metrics'}</button>
             <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'capabilities' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">02 / {t('nav.playground') || 'Playground'}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience')}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('nav.skills')}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">05 / {t('nav.blog') || 'Contact'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience') || 'Experience'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('hero.hireMe') || 'Contact'}</button>
           </div>
 
           {/* Right Action Links */}
