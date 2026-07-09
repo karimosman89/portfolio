@@ -323,12 +323,15 @@ export default function ServicesAndCompanies() {
 
         <button
           onClick={() => {
+            window.dispatchEvent(new CustomEvent('switch-tab', { detail: { id: 'contact', scrollToTop: false } }));
             const event = new CustomEvent('set-contact-tab', { detail: 'calendly' });
             window.dispatchEvent(event);
-            const el = document.getElementById('business-inquiry-desk');
-            if (el) {
-              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            setTimeout(() => {
+              const el = document.getElementById('business-inquiry-desk');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 150);
           }}
           className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-5 py-3 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition group"
         >
