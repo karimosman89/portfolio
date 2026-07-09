@@ -39,6 +39,8 @@ export default function App() {
     return 'ai-dark';
   });
 
+  const [activeTab, setActiveTab] = useState<'overview' | 'capabilities' | 'experience' | 'contact'>('overview');
+
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
@@ -124,88 +126,131 @@ export default function App() {
             setActiveTheme={setActiveTheme}
           />
 
-          {/* 2. Core Quantitative Impact Metrics */}
-          <Metrics />
-
-          {/* 2.5. Interactive WebGL AI Specialization Orbit */}
-          <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
-            <div className="mb-10">
-              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest animate-pulse">
-                <Sparkles size={10} />
-                <span>01.5 / Cognitive Visualization</span>
-              </div>
-              <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-                {t('section.orbit.title')}
-              </h2>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-                {t('section.orbit.subtitle')}
-              </p>
+          {/* TABS NAVIGATION */}
+          <div className="sticky top-0 z-40 bg-[#fafbfc]/90 dark:bg-zinc-950/90 backdrop-blur-md border-y border-zinc-200/80 dark:border-zinc-800">
+            <div className="mx-auto max-w-7xl px-6 md:px-8">
+              <nav className="flex space-x-8 overflow-x-auto scrollbar-hide py-3">
+                {[
+                  { id: 'overview', label: 'Overview' },
+                  { id: 'capabilities', label: 'AI Capabilities' },
+                  { id: 'experience', label: 'Experience & Skills' },
+                  { id: 'contact', label: 'Contact' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`whitespace-nowrap px-1 py-2 text-sm font-medium border-b-2 transition-colors ${
+                      activeTab === tab.id
+                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </nav>
             </div>
-            <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
-          </section>
+          </div>
 
-          {/* 3. Rich Interactive Sandboxes */}
-          <AIDemos />
+          <div className="min-h-[60vh] py-8">
+            {activeTab === 'overview' && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+                {/* 2. Core Quantitative Impact Metrics */}
+                <Metrics />
 
-          {/* 3.5. Dedicated AI Agents & Workflows Showcase */}
-          <AIAgentsShowcase />
-
-          {/* 3.6. Interactive Performance & Cost Matrices */}
-          <InteractiveGraphs />
-
-          {/* 4. Experience & Careers Timeline */}
-          <ExperienceTimeline />
-
-          {/* 5. Categorized Bento Skills Matrix */}
-          <SkillsBento />
-
-          {/* 5.5. Enterprise Services & Client Sectors Marquee */}
-          <ServicesAndCompanies />
-
-          {/* 5.6. Project & Production Workspace Gallery */}
-          <ProjectGallery />
-
-          {/* 6. GitHub Repositories & Publication split-pane */}
-          <GithubAndBlogs />
-
-          {/* 6.5. QR Card & RSS Syndication Widget Center */}
-          <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
-            <div className="grid gap-12 lg:grid-cols-2">
-              <div className="flex flex-col justify-between">
-                <div className="mb-6">
-                  <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
-                    <span>06.5 / Secure credentials</span>
+                {/* 2.5. Interactive WebGL AI Specialization Orbit */}
+                <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
+                  <div className="mb-10">
+                    <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest animate-pulse">
+                      <Sparkles size={10} />
+                      <span>01.5 / Cognitive Visualization</span>
+                    </div>
+                    <h2 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                      {t('section.orbit.title')}
+                    </h2>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                      {t('section.orbit.subtitle')}
+                    </p>
                   </div>
-                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-                    Unified Contact <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Card</span>
-                  </h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
-                    Scan the secure dynamic vCard to synchronize Karim's direct B2B contacts, corporate mailbox, and WhatsApp channels immediately.
-                  </p>
-                </div>
-                <QRContactCard />
-              </div>
+                  <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
+                </section>
+              </motion.div>
+            )}
 
-              <div className="flex flex-col justify-between">
-                <div className="mb-6">
-                  <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
-                    <span>06.6 / Syndication stream</span>
+            {activeTab === 'capabilities' && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+                {/* 3. Rich Interactive Sandboxes */}
+                <AIDemos />
+
+                {/* 3.5. Dedicated AI Agents & Workflows Showcase */}
+                <AIAgentsShowcase />
+
+                {/* 3.6. Interactive Performance & Cost Matrices */}
+                <InteractiveGraphs />
+              </motion.div>
+            )}
+
+            {activeTab === 'experience' && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+                {/* 4. Experience & Careers Timeline */}
+                <ExperienceTimeline />
+
+                {/* 5. Categorized Bento Skills Matrix */}
+                <SkillsBento />
+
+                {/* 5.5. Enterprise Services & Client Sectors Marquee */}
+                <ServicesAndCompanies />
+
+                {/* 5.6. Project & Production Workspace Gallery */}
+                <ProjectGallery />
+
+                {/* 6. GitHub Repositories & Publication split-pane */}
+                <GithubAndBlogs />
+              </motion.div>
+            )}
+
+            {activeTab === 'contact' && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+                {/* 6.5. QR Card & RSS Syndication Widget Center */}
+                <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-b border-zinc-200/80 dark:border-zinc-800">
+                  <div className="grid gap-12 lg:grid-cols-2">
+                    <div className="flex flex-col justify-between">
+                      <div className="mb-6">
+                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                          <span>06.5 / Secure credentials</span>
+                        </div>
+                        <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                          Unified Contact <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Card</span>
+                        </h3>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
+                          Scan the secure dynamic vCard to synchronize Karim's direct B2B contacts, corporate mailbox, and WhatsApp channels immediately.
+                        </p>
+                      </div>
+                      <QRContactCard />
+                    </div>
+
+                    <div className="flex flex-col justify-between">
+                      <div className="mb-6">
+                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                          <span>06.6 / Syndication stream</span>
+                        </div>
+                        <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
+                          AI Sector News <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Feeds</span>
+                        </h3>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
+                          Subscribe to valid RSS 2.0 syndication channels to get fresh, daily-updated AI industry news, journals, and magazines delivered directly to your feed readers.
+                        </p>
+                      </div>
+                      <RSSFeedWidget />
+                    </div>
                   </div>
-                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
-                    AI Sector News <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">Feeds</span>
-                  </h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 max-w-md leading-relaxed font-light">
-                    Subscribe to valid RSS 2.0 syndication channels to get fresh, daily-updated AI industry news, journals, and magazines delivered directly to your feed readers.
-                  </p>
-                </div>
-                <RSSFeedWidget />
-              </div>
-            </div>
-          </section>
+                </section>
 
-          {/* 7. Business and Freelance Inquiry Desk */}
-          <ContactForm />
-
+                {/* 7. Business and Freelance Inquiry Desk */}
+                <ContactForm />
+              </motion.div>
+            )}
+          </div>
         </motion.div>
 
         {/* Global Minimal Footer */}
