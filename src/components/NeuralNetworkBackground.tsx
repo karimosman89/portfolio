@@ -173,10 +173,10 @@ export default function NeuralNetworkBackground({ activeTheme, isDark }: NeuralN
         // High quality editorial Light Mode colors (Indigo/Slate tones with softer lines)
         return {
           nodeColor: hexToRGB(0x6366f1),      // Indigo
-          lineColor: hexToRGB(0xd1d5db),      // Light Grey
+          lineColor: hexToRGB(0xa5b4fc),      // Light Grey
           mouseLineColor: hexToRGB(0x10b981), // Emerald interactive accent
-          nodeSize: 1.4,
-          lineOpacity: 0.25,
+          nodeSize: 2.0,
+          lineOpacity: 0.45,
         };
       }
       switch (theme) {

@@ -190,7 +190,7 @@ export default function GithubAndBlogs() {
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
             <div>
-              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                 <Github size={11} />
                 <span>05 / Open-Source blueprint</span>
               </div>
@@ -257,7 +257,7 @@ export default function GithubAndBlogs() {
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {repo.topics.slice(0, 2).map((tag, idx) => (
-                      <span key={`${tag}-${idx}`} className="text-[9px] font-mono bg-white dark:bg-zinc-900 px-2 py-0.5 rounded text-zinc-550 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800">
+                      <span key={`${tag}-${idx}`} className="text-[10px] font-mono bg-white dark:bg-zinc-900 px-2 py-0.5 rounded text-zinc-550 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800">
                         {tag}
                       </span>
                     ))}
@@ -278,7 +278,7 @@ export default function GithubAndBlogs() {
         >
           <div className="border-b border-zinc-200 dark:border-zinc-800 pb-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+              <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                 <BookOpen size={11} />
                 <span>06 / AI Sector News Feed</span>
               </div>
@@ -339,7 +339,7 @@ export default function GithubAndBlogs() {
                 >
                   <div className="space-y-1 truncate">
                     <div className="truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-semibold">{blog.title}</div>
-                    <div className="text-[9px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1 font-light">
+                    <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono flex items-center gap-1 font-light">
                       <Calendar size={10} /> {blog.date}
                     </div>
                   </div>
@@ -370,7 +370,7 @@ export default function GithubAndBlogs() {
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5">
                   {activeBlog.tags.map((tag, idx) => (
-                    <span key={`${tag}-${idx}`} className="text-[9px] bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/45 text-indigo-600 dark:text-indigo-400 font-mono font-bold px-2 py-0.5 rounded">
+                    <span key={`${tag}-${idx}`} className="text-[10px] bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/45 text-indigo-600 dark:text-indigo-400 font-mono font-bold px-2 py-0.5 rounded">
                       {tag}
                     </span>
                   ))}
@@ -397,7 +397,7 @@ export default function GithubAndBlogs() {
                 <span className="font-light">Interested in discussing these AI sector insights?</span>
                 <a
                   href={`mailto:${PERSONAL_INFO.email}?subject=Inquiry regarding AI Sector: ${encodeURIComponent(activeBlog.title)}`}
-                  className="text-indigo-600 dark:text-indigo-400 hover:underline hover:text-indigo-500 dark:hover:text-indigo-300 font-bold uppercase tracking-wider text-[9px] font-mono"
+                  className="text-indigo-600 dark:text-indigo-400 hover:underline hover:text-indigo-500 dark:hover:text-indigo-300 font-bold uppercase tracking-wider text-[10px] font-mono"
                 >
                   Discuss AI Sector Trends with Karim
                 </a>

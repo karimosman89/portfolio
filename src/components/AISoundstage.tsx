@@ -140,7 +140,7 @@ export default function AISoundstage() {
           <div className="space-y-3.5 text-xs">
             {/* Model Length Selection */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">Track Length Preset</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">Track Length Preset</span>
               <div className="grid grid-cols-2 gap-2 mt-1">
                 <button
                   type="button"
@@ -169,7 +169,7 @@ export default function AISoundstage() {
 
             {/* Prompt */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">Musical Motif Prompt</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">Musical Motif Prompt</span>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -239,7 +239,7 @@ export default function AISoundstage() {
             {/* Lyrics sheet */}
             {lyrics && (
               <div className="w-full bg-white dark:bg-zinc-950 border border-zinc-250 dark:border-zinc-800 rounded p-4 text-left shadow-inner max-h-[140px] overflow-y-auto">
-                <span className="text-[9px] font-mono font-bold text-indigo-600 uppercase tracking-wider block border-b border-zinc-100 dark:border-zinc-900 pb-1 mb-2">Compiled Lyrics / Vocal Sheet</span>
+                <span className="text-[10px] font-mono font-bold text-indigo-600 uppercase tracking-wider block border-b border-zinc-100 dark:border-zinc-900 pb-1 mb-2">Compiled Lyrics / Vocal Sheet</span>
                 <p className="text-xs text-zinc-600 dark:text-zinc-300 whitespace-pre-line leading-relaxed italic font-serif">
                   {lyrics}
                 </p>

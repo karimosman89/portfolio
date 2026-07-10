@@ -61,7 +61,7 @@ export default function QRContactCard() {
         <div className="flex items-center p-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800">
           <button
             onClick={() => setActiveTab('card')}
-            className={`px-3 py-1.5 text-[9px] font-mono font-bold uppercase rounded-md transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase rounded-md transition-all cursor-pointer ${
               activeTab === 'card'
                 ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm border border-zinc-200/40 dark:border-zinc-700/50'
                 : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'
@@ -71,7 +71,7 @@ export default function QRContactCard() {
           </button>
           <button
             onClick={() => setActiveTab('qr')}
-            className={`px-3 py-1.5 text-[9px] font-mono font-bold uppercase rounded-md transition-all cursor-pointer ${
+            className={`px-3 py-1.5 text-[10px] font-mono font-bold uppercase rounded-md transition-all cursor-pointer ${
               activeTab === 'qr'
                 ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm border border-zinc-200/40 dark:border-zinc-700/50'
                 : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'

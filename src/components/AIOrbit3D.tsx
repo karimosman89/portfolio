@@ -379,7 +379,7 @@ export default function AIOrbit3D({ activeTheme, isDark }: AIOrbit3DProps) {
         <canvas ref={canvasRef} className="w-full h-full block" />
         
         {/* Absolute Instruction Tags */}
-        <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/50 dark:border-zinc-800/50 px-2 py-1 text-[9px] font-mono text-zinc-500 uppercase tracking-widest pointer-events-none select-none">
+        <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded bg-zinc-100/80 dark:bg-zinc-900/80 border border-zinc-200/50 dark:border-zinc-800/50 px-2 py-1 text-[10px] font-mono text-zinc-500 uppercase tracking-widest pointer-events-none select-none">
           <Activity size={10} className="text-indigo-600 animate-pulse" />
           <span>Interactive Cognitive HUD</span>
         </div>
@@ -387,7 +387,7 @@ export default function AIOrbit3D({ activeTheme, isDark }: AIOrbit3DProps) {
         {/* Accessibility Motion Toggle Badge */}
         <button
           onClick={() => setPrefersReducedMotion(prev => !prev)}
-          className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded bg-zinc-100/85 dark:bg-zinc-900/85 border border-zinc-200/50 dark:border-zinc-800/50 px-2.5 py-1 text-[9px] font-mono text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition duration-150 cursor-pointer select-none"
+          className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded bg-zinc-100/85 dark:bg-zinc-900/85 border border-zinc-200/50 dark:border-zinc-800/50 px-2.5 py-1 text-[10px] font-mono text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition duration-150 cursor-pointer select-none"
           title={prefersReducedMotion ? "Enable full 3D orbital animation" : "Reduce motion for vestibulary comfort"}
         >
           <span className={`h-1.5 w-1.5 rounded-full ${prefersReducedMotion ? 'bg-amber-500' : 'bg-emerald-500'}`} />
@@ -442,7 +442,7 @@ export default function AIOrbit3D({ activeTheme, isDark }: AIOrbit3DProps) {
                   <h3 className="font-display font-extrabold text-lg text-zinc-900 dark:text-white leading-tight">
                     {selectedNode.name}
                   </h3>
-                  <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
                     Telemetry Node {selectedNode.id.toUpperCase()}-00
                   </span>
                 </div>
@@ -473,7 +473,7 @@ export default function AIOrbit3D({ activeTheme, isDark }: AIOrbit3DProps) {
 
             {/* Core Metrics */}
             <div className="rounded-lg border border-indigo-100/50 dark:border-indigo-950 bg-indigo-50/15 dark:bg-indigo-950/10 p-4 space-y-1.5">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-mono block">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-mono block">
                 Validated Industrial Impact
               </span>
               <div className="font-sans text-xs text-zinc-800 dark:text-zinc-200 font-semibold leading-relaxed">
@@ -484,7 +484,7 @@ export default function AIOrbit3D({ activeTheme, isDark }: AIOrbit3DProps) {
         </AnimatePresence>
 
         {/* Telemetry Footer Info */}
-        <div className="pt-6 mt-6 border-t border-zinc-150 dark:border-zinc-850 flex items-center justify-between text-[9px] font-mono text-zinc-400 dark:text-zinc-500">
+        <div className="pt-6 mt-6 border-t border-zinc-150 dark:border-zinc-850 flex items-center justify-between text-[10px] font-mono text-zinc-400 dark:text-zinc-500">
           <span className="flex items-center gap-1.5">
             <Cpu size={10} className="text-indigo-600" />
             SECURE INFRASTRUCTURE UPTIME: 99.9%

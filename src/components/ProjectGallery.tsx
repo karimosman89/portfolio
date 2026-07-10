@@ -125,7 +125,7 @@ export default function ProjectGallery() {
       {/* Header Area */}
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <Cpu size={11} className="animate-pulse" />
             <span>{t('gallery.badge')}</span>
           </div>
@@ -214,7 +214,7 @@ export default function ProjectGallery() {
               <div className="space-y-4">
                 {/* Header Tag / Icon */}
                 <div className="flex items-center justify-between">
-                  <span className={`inline-flex items-center gap-1 rounded px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider border ${
+                  <span className={`inline-flex items-center gap-1 rounded px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider border ${
                     item.type === 'industrial'
                       ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-900/40'
                       : 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/40'
@@ -232,7 +232,7 @@ export default function ProjectGallery() {
                     )}
                   </span>
 
-                  <span className="text-[9px] font-mono uppercase font-bold text-zinc-400 dark:text-zinc-550">
+                  <span className="text-[10px] font-mono uppercase font-bold text-zinc-400 dark:text-zinc-550">
                     {item.category === 'genai' ? 'GenAI / LLM' :
                      item.category === 'vision' ? 'CV / YOLO' :
                      item.category === 'mlops' ? 'MLOps' : 'DevTool'}
@@ -254,7 +254,7 @@ export default function ProjectGallery() {
                   {item.tags.map((tag, idx) => (
                     <span 
                       key={`${tag}-${idx}`} 
-                      className="text-[9px] font-mono bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2 py-0.5 rounded text-zinc-650 dark:text-zinc-400"
+                      className="text-[10px] font-mono bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2 py-0.5 rounded text-zinc-650 dark:text-zinc-400"
                     >
                       {tag}
                     </span>
@@ -274,7 +274,7 @@ export default function ProjectGallery() {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-[9px] font-mono text-emerald-500 flex items-center gap-1 font-bold">
+                  <span className="text-[10px] font-mono text-emerald-500 flex items-center gap-1 font-bold">
                     <CheckCircle2 size={11} /> High Uptime Live
                   </span>
                 )}

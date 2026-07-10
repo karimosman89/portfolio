@@ -71,7 +71,7 @@ export default function CalendlyWidget({ url = "https://calendly.com/karim-progr
     <div className="relative w-full rounded-xl border border-zinc-200 dark:border-zinc-850 overflow-hidden bg-white dark:bg-zinc-950 p-1 min-h-[660px] flex flex-col justify-between">
       
       {/* Top micro-bar for branding integration */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/30 font-mono text-[9px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/30 font-mono text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
         <div className="flex items-center gap-1.5">
           <Calendar size={11} className="text-indigo-600 dark:text-indigo-400" />
           <span>Official Calendly Scheduler</span>
@@ -83,7 +83,7 @@ export default function CalendlyWidget({ url = "https://calendly.com/karim-progr
         {loading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-zinc-950 text-zinc-400 space-y-3 z-10">
             <Loader2 size={24} className="animate-spin text-indigo-500" />
-            <p className="font-mono text-[9px] uppercase tracking-widest text-zinc-400">Initializing Calendly Core API...</p>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">Initializing Calendly Core API...</p>
           </div>
         )}
         

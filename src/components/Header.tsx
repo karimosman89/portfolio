@@ -6,7 +6,7 @@ import NeuralNetworkBackground from './NeuralNetworkBackground';
 import LazyImage from './LazyImage';
 import { useLanguage, Language } from '../i18n/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.png';
+import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.jpg';
 
 interface HeaderProps {
   isDark: boolean;
@@ -214,7 +214,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
           
           {/* Left Brand Area */}
           <div className="flex items-center gap-3">
-            <div className="relative flex h-8 w-8 items-center justify-center rounded overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
+            <div className="relative flex h-9 w-9 items-center justify-center rounded overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
               <LazyImage
                 src={avatarImg}
                 alt="Karim Osman"
@@ -224,7 +224,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             </div>
             <div>
               <div className="font-display font-semibold text-xs tracking-tight text-zinc-900 dark:text-zinc-100">{PERSONAL_INFO.name}</div>
-              <div className="text-[9px] font-mono text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">Senior AI &amp; B2B Consultant</div>
+              <div className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">Senior AI &amp; B2B Consultant</div>
             </div>
           </div>
 
@@ -242,17 +242,17 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             <div className="relative">
               <button
                 onClick={() => setShowThemeMenu(!showThemeMenu)}
-                className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
+                className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
                 title="Select Theme Presets"
               >
-                <Palette size={13.5} className="text-indigo-600 dark:text-indigo-400" />
+                <Palette size={16} className="text-indigo-600 dark:text-indigo-400" />
               </button>
               
               {showThemeMenu && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setShowThemeMenu(false)} />
                   <div className="absolute right-0 mt-2 w-48 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 p-1.5 shadow-xl backdrop-blur-md z-20 font-mono text-[10px]">
-                    <div className="px-2.5 py-1.5 text-[8px] font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-900 mb-1 flex items-center justify-between">
+                    <div className="px-2.5 py-1.5 text-[9px] font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-100 dark:border-zinc-900 mb-1 flex items-center justify-between">
                       <span>Neural Themes</span>
                       <Sparkles size={9} className="text-indigo-500 animate-pulse" />
                     </div>
@@ -288,12 +288,12 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             {/* Global Search Button */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-search'))}
-              className="cursor-pointer inline-flex h-8 items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
+              className="cursor-pointer inline-flex h-9 items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 text-[10px] font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
               title="Search Portfolio (Ctrl+K)"
             >
-              <Search size={11} className="text-zinc-400" />
+              <Search size={14} className="text-zinc-400" />
               <span className="hidden sm:inline">Search</span>
-              <kbd className="hidden sm:inline-flex h-4 items-center justify-center rounded bg-zinc-200/50 dark:bg-zinc-800 px-1 font-sans text-[8px] font-bold text-zinc-500 dark:text-zinc-400">
+              <kbd className="hidden sm:inline-flex h-4 items-center justify-center rounded bg-zinc-200/50 dark:bg-zinc-800 px-1 font-sans text-[9px] font-bold text-zinc-500 dark:text-zinc-400">
                 ⌘K
               </kbd>
             </button>
@@ -302,10 +302,10 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             <button
               id="dark-mode-toggle"
               onClick={toggleDarkMode}
-              className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
+              className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition"
               title={isDark ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {isDark ? <Sun size={13.5} className="text-amber-500" /> : <Moon size={13.5} className="text-indigo-600" />}
+              {isDark ? <Sun size={16} className="text-amber-500" /> : <Moon size={16} className="text-indigo-600" />}
             </button>
 
             {/* Language Switcher in Header */}
@@ -317,9 +317,9 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3.5 py-2 text-[11px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
-              <Mail size={11} className="text-indigo-600 dark:text-indigo-400" />
+              <Mail size={14} className="text-indigo-600 dark:text-indigo-400" />
               <span className="hidden sm:inline">Email</span>
             </motion.a>
 
@@ -331,9 +331,9 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3.5 py-2 text-[11px] font-mono uppercase tracking-wider text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white transition-colors"
             >
-              <Linkedin size={11} className="text-indigo-600 dark:text-indigo-400" />
+              <Linkedin size={14} className="text-indigo-600 dark:text-indigo-400" />
               <span className="hidden sm:inline">LinkedIn</span>
               <ArrowUpRight size={10} className="text-zinc-450 dark:text-zinc-500" />
             </motion.a>
@@ -346,9 +346,9 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-900 dark:border-zinc-850 bg-zinc-900 dark:bg-zinc-950 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-white hover:bg-zinc-850 dark:hover:bg-zinc-900 transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded border border-zinc-900 dark:border-zinc-850 bg-zinc-900 dark:bg-zinc-950 px-3.5 py-2 text-[11px] font-mono uppercase tracking-wider text-white hover:bg-zinc-850 dark:hover:bg-zinc-900 transition-colors"
             >
-              <Github size={11} />
+              <Github size={14} />
               <span className="hidden sm:inline">GitHub</span>
             </motion.a>
           </div>
@@ -427,7 +427,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 <div className="flex items-center p-0.5 rounded bg-zinc-50 dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
                   <button
                     onClick={() => setLang('en')}
-                    className={`cursor-pointer px-2 py-1 text-[9px] font-mono uppercase tracking-wider rounded transition-all ${
+                    className={`cursor-pointer px-2 py-1 text-[10px] font-mono uppercase tracking-wider rounded transition-all ${
                       lang === 'en' ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/50 dark:border-zinc-800 font-bold shadow-xs' : 'text-zinc-450 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                     }`}
                   >
@@ -435,7 +435,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                   </button>
                   <button
                     onClick={() => setLang('it')}
-                    className={`cursor-pointer px-2 py-1 text-[9px] font-mono uppercase tracking-wider rounded transition-all ${
+                    className={`cursor-pointer px-2 py-1 text-[10px] font-mono uppercase tracking-wider rounded transition-all ${
                       lang === 'it' ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/50 dark:border-zinc-800 font-bold shadow-xs' : 'text-zinc-450 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                     }`}
                   >
@@ -443,7 +443,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                   </button>
                   <button
                     onClick={() => setLang('fr')}
-                    className={`cursor-pointer px-2 py-1 text-[9px] font-mono uppercase tracking-wider rounded transition-all ${
+                    className={`cursor-pointer px-2 py-1 text-[10px] font-mono uppercase tracking-wider rounded transition-all ${
                       lang === 'fr' ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 border border-zinc-200/50 dark:border-zinc-800 font-bold shadow-xs' : 'text-zinc-450 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                     }`}
                   >
@@ -461,17 +461,17 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-3">
               <button
                 onClick={() => triggerContactTab('calendly')}
-                className="cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-5 py-3.5 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-200"
+                className="cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-200"
               >
-                <Calendar size={13} className="animate-pulse" />
+                <Calendar size={18} className="animate-pulse" />
                 <span>{t('hero.bookCall')}</span>
               </button>
               
               <button
                 onClick={() => triggerContactTab('message')}
-                className="cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 font-mono font-bold uppercase tracking-wider text-[10px] px-5 py-3.5 transition-all duration-200"
+                className="cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 transition-all duration-200"
               >
-                <Briefcase size={13} className="text-indigo-600 dark:text-indigo-400" />
+                <Briefcase size={18} className="text-indigo-600 dark:text-indigo-400" />
                 <span>{t('hero.hireMe')}</span>
               </button>
             </motion.div>
@@ -528,7 +528,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                   </div>
 
                   <div>
-                    <div className="text-[9px] font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-1 flex items-center gap-1">
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400 font-bold mb-1 flex items-center gap-1">
                       <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-ping" />
                       <span>{t('hero.desk.badge')}</span>
                     </div>
@@ -569,7 +569,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                       <Mail size={14} />
                     </span>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[9px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">{t('hero.desk.corporate_mailbox')}</div>
+                      <div className="text-[10px] font-mono text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">{t('hero.desk.corporate_mailbox')}</div>
                       <div className="text-xs font-bold text-zinc-700 dark:text-zinc-300 truncate">{PERSONAL_INFO.email}</div>
                     </div>
                     <ChevronRight size={13} className="text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition" />
@@ -577,13 +577,13 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
 
                   {/* Dual Phones & WhatsApp Box */}
                   <div className="rounded border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950 p-3.5 space-y-2.5">
-                    <div className="text-[9px] font-mono text-zinc-455 dark:text-zinc-555 uppercase tracking-wider">{t('hero.desk.business_lines')}</div>
+                    <div className="text-[10px] font-mono text-zinc-455 dark:text-zinc-555 uppercase tracking-wider">{t('hero.desk.business_lines')}</div>
                     <div className="grid grid-cols-2 gap-2 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">
                       <a href={`tel:${PERSONAL_INFO.phoneItaly.replace(/\s+/g, '')}`} className="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-indigo-450 transition">
-                        <span className="text-[9px] text-zinc-455 dark:text-zinc-500">IT</span> {PERSONAL_INFO.phoneItaly}
+                        <span className="text-[10px] text-zinc-455 dark:text-zinc-500">IT</span> {PERSONAL_INFO.phoneItaly}
                       </a>
                       <a href={`tel:${PERSONAL_INFO.phoneFrance.replace(/\s+/g, '')}`} className="flex items-center gap-1.5 hover:text-indigo-600 dark:hover:text-indigo-450 transition justify-end">
-                        <span className="text-[9px] text-zinc-455 dark:text-zinc-500">FR</span> {PERSONAL_INFO.phoneFrance}
+                        <span className="text-[10px] text-zinc-455 dark:text-zinc-500">FR</span> {PERSONAL_INFO.phoneFrance}
                       </a>
                     </div>
                     {PERSONAL_INFO.phoneWhatsapp && (
@@ -594,7 +594,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                           rel="noopener noreferrer"
                           className="flex items-center gap-1.5 hover:text-emerald-600 dark:hover:text-emerald-450 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300 transition"
                         >
-                          <span className="text-[9px] text-emerald-500 font-bold px-1 rounded bg-emerald-500/10 dark:bg-emerald-500/20">WA</span> {PERSONAL_INFO.phoneWhatsapp}
+                          <span className="text-[10px] text-emerald-500 font-bold px-1 rounded bg-emerald-500/10 dark:bg-emerald-500/20">WA</span> {PERSONAL_INFO.phoneWhatsapp}
                         </a>
                       </div>
                     )}
@@ -605,23 +605,23 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 <div className="grid grid-cols-2 gap-2.5 pt-1">
                   <button
                     onClick={() => triggerContactTab('calendly')}
-                    className="cursor-pointer flex items-center justify-center gap-2 rounded bg-indigo-600 dark:bg-indigo-500 py-3 text-center text-[10px] font-mono uppercase tracking-wider font-extrabold text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-sm"
+                    className="cursor-pointer flex items-center justify-center gap-2 rounded bg-indigo-600 dark:bg-indigo-500 py-3.5 text-center text-xs font-mono uppercase tracking-wider font-extrabold text-white hover:bg-indigo-700 dark:hover:bg-indigo-600 transition shadow-sm"
                   >
-                    <Calendar size={12} />
+                    <Calendar size={18} />
                     <span>{t('hero.bookCall')}</span>
                   </button>
 
                   <button
                     onClick={() => triggerContactTab('message')}
-                    className="cursor-pointer flex items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 py-3 text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-white transition"
+                    className="cursor-pointer flex items-center justify-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 py-4 text-sm font-mono uppercase tracking-wider font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-white transition"
                   >
-                    <Briefcase size={12} className="text-indigo-600 dark:text-indigo-400" />
+                    <Briefcase size={18} className="text-indigo-600 dark:text-indigo-400" />
                     <span>{t('hero.hireMe')}</span>
                   </button>
                 </div>
 
                 {/* Small disclaimer info */}
-                <div className="text-[9px] font-mono text-zinc-400 dark:text-zinc-500 leading-relaxed text-center">
+                <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 leading-relaxed text-center">
                   {t('hero.desk.disclaimer')}
                 </div>
 

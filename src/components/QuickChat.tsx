@@ -204,7 +204,7 @@ export default function QuickChat() {
                       Virtual Assistant
                       <Sparkles size={11} className="text-indigo-500 animate-pulse" />
                     </h3>
-                    <div className="flex items-center gap-1.5 font-mono text-[9px] text-zinc-500">
+                    <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-500">
                       <span>Gemini 3.5 Flash Active</span>
                       <span className="text-zinc-300 dark:text-zinc-700">|</span>
                       <span>Karim’s Co-pilot</span>
@@ -255,7 +255,7 @@ export default function QuickChat() {
                         >
                           <p className="whitespace-pre-line font-light">{msg.text}</p>
                         </div>
-                        <div className={`text-[8px] font-mono text-zinc-400 dark:text-zinc-500 px-1 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
+                        <div className={`text-[9px] font-mono text-zinc-400 dark:text-zinc-500 px-1 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
                           {msg.timestamp}
                         </div>
                       </div>
@@ -280,7 +280,7 @@ export default function QuickChat() {
 
               {/* Suggestions / Prompt Chips */}
               <div className="p-4 border-t border-zinc-150 dark:border-zinc-800/80 bg-zinc-50/30 dark:bg-zinc-950/20">
-                <div className="flex items-center gap-1.5 text-[9px] text-zinc-500 font-mono font-bold uppercase tracking-wider mb-2">
+                <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-mono font-bold uppercase tracking-wider mb-2">
                   <HelpCircle size={11} className="text-indigo-500" />
                   <span>Frequently Asked Questions</span>
                 </div>
@@ -320,7 +320,7 @@ export default function QuickChat() {
                     <Send size={13} />
                   </motion.button>
                 </form>
-                <p className="text-[8px] text-zinc-450 dark:text-zinc-500 text-center font-mono mt-2 leading-tight">
+                <p className="text-[9px] text-zinc-450 dark:text-zinc-500 text-center font-mono mt-2 leading-tight">
                   Karim's Personal Agent can check project parameters, tech experience or connect live.
                 </p>
               </div>

@@ -70,7 +70,7 @@ export default function ExperienceTimeline() {
         {/* Experience Timeline (Left 8 Columns) */}
         <div className="lg:col-span-8 space-y-8">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+            <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
               <Briefcase size={10} />
               <span>03 / Professional Milestones</span>
             </div>
@@ -125,7 +125,7 @@ export default function ExperienceTimeline() {
                       </div>
                       <button
                         onClick={() => openProjectModal(exp)}
-                        className="cursor-pointer shrink-0 font-mono text-[9px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-zinc-950 px-3 py-1.5 rounded transition-all duration-300 flex items-center gap-1 self-start sm:self-center"
+                        className="cursor-pointer shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 bg-indigo-50/20 dark:bg-indigo-950/20 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-zinc-950 px-3 py-1.5 rounded transition-all duration-300 flex items-center gap-1 self-start sm:self-center"
                       >
                         <span>Case Study Blueprint</span>
                         <Cpu size={11} />
@@ -161,13 +161,13 @@ export default function ExperienceTimeline() {
                   {/* Technology Tag Badge Grid */}
                   {exp.modelsUsed && exp.modelsUsed.length > 0 && (
                     <div className="pt-2 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[9px] uppercase font-bold tracking-wider text-zinc-450 dark:text-zinc-550 mr-1 flex items-center gap-1 font-mono">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-450 dark:text-zinc-550 mr-1 flex items-center gap-1 font-mono">
                         <Cpu size={10} /> Stack:
                       </span>
                       {exp.modelsUsed.map((model) => (
                         <span
                           key={model}
-                          className="inline-block rounded bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-850 px-2 py-0.5 text-[9px] font-mono text-zinc-600 dark:text-zinc-350"
+                          className="inline-block rounded bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-850 px-2 py-0.5 text-[10px] font-mono text-zinc-600 dark:text-zinc-350"
                         >
                           {model}
                         </span>
@@ -219,11 +219,11 @@ export default function ExperienceTimeline() {
                                   >
                                     <div className="p-4 space-y-3 text-xs text-zinc-650 dark:text-zinc-350 leading-relaxed font-light">
                                       <div>
-                                        <span className="font-mono text-[9px] text-rose-600 dark:text-rose-400 block mb-0.5 uppercase tracking-wide">Problem / Bottleneck:</span>
+                                        <span className="font-mono text-[10px] text-rose-600 dark:text-rose-400 block mb-0.5 uppercase tracking-wide">Problem / Bottleneck:</span>
                                         {challenge.challenge}
                                       </div>
                                       <div>
-                                        <span className="font-mono text-[9px] text-indigo-650 dark:text-indigo-400 block mb-0.5 uppercase tracking-wide">Custom Solution Architecture:</span>
+                                        <span className="font-mono text-[10px] text-indigo-650 dark:text-indigo-400 block mb-0.5 uppercase tracking-wide">Custom Solution Architecture:</span>
                                         {challenge.solution}
                                       </div>
                                       <div className="bg-indigo-50/50 dark:bg-indigo-950/25 rounded p-3.5 border border-indigo-100/50 dark:border-indigo-900/30 text-zinc-700 dark:text-zinc-300">
@@ -279,7 +279,7 @@ export default function ExperienceTimeline() {
                 return (
                   <div key={edu.degree} className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-5 space-y-3.5">
                     <div className="flex justify-between items-start gap-2">
-                      <span className="font-mono text-[9px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 px-2.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900/40">
+                      <span className="font-mono text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 px-2.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900/40">
                         {edu.period}
                       </span>
                       <span className="text-[10px] text-zinc-500 dark:text-zinc-500 font-mono">{edu.location}</span>
@@ -319,7 +319,7 @@ export default function ExperienceTimeline() {
                     <div className="font-bold text-zinc-800 dark:text-zinc-200">{cert.title}</div>
                     <div className="text-zinc-500 dark:text-zinc-400 text-[11px]">{cert.issuer}</div>
                   </div>
-                  <span className={`shrink-0 inline-block px-2.5 py-0.5 rounded text-[9px] font-mono font-bold ${
+                  <span className={`shrink-0 inline-block px-2.5 py-0.5 rounded text-[10px] font-mono font-bold ${
                     cert.status === 'Completed' 
                       ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100/60 dark:border-indigo-900/40' 
                       : 'bg-yellow-50 dark:bg-yellow-950/20 text-yellow-700 dark:text-yellow-400 border border-yellow-100/65 dark:border-yellow-900/30'

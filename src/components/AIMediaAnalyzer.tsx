@@ -126,7 +126,7 @@ export default function AIMediaAnalyzer() {
           </h4>
 
           <div className="space-y-1.5 pt-1">
-            <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">Analysis instructions (Prompt)</span>
+            <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">Analysis instructions (Prompt)</span>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}

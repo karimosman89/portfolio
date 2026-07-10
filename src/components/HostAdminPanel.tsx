@@ -304,7 +304,7 @@ export default function HostAdminPanel() {
                 className="w-full rounded border border-zinc-200 dark:border-zinc-850 pl-9 pr-3 py-2 text-zinc-850 dark:text-zinc-100 bg-zinc-50/20 focus:outline-none focus:border-indigo-500 focus:bg-white text-xs"
               />
             </div>
-            <p className="text-[9px] text-zinc-400 font-mono pt-1">
+            <p className="text-[10px] text-zinc-400 font-mono pt-1">
               Hint: Default passcode is "karim-ai-2026"
             </p>
           </div>
@@ -331,7 +331,7 @@ export default function HostAdminPanel() {
             <h3 className="font-display text-base font-extrabold text-zinc-900 dark:text-white uppercase tracking-tight">
               Host Administration Hub
             </h3>
-            <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider">
+            <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
               ONLINE
             </span>
           </div>
@@ -549,7 +549,7 @@ export default function HostAdminPanel() {
               {loading ? (
                 <div className="text-center py-12 text-zinc-400 space-y-2">
                   <Loader2 size={20} className="animate-spin mx-auto text-indigo-500" />
-                  <p className="font-mono text-[9px] uppercase tracking-widest text-zinc-400">Loading Active bookings...</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">Loading Active bookings...</p>
                 </div>
               ) : meetings.length === 0 ? (
                 <div className="text-center py-12 text-zinc-400 dark:text-zinc-500 space-y-1.5 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg">
@@ -569,11 +569,11 @@ export default function HostAdminPanel() {
                       <div className="flex justify-between items-start gap-2 border-b border-zinc-100 dark:border-zinc-900 pb-2">
                         <div className="space-y-0.5">
                           <span className="font-bold text-[11px] text-zinc-850 dark:text-zinc-100 block">{meet.clientName}</span>
-                          <span className="font-mono text-[9px] text-indigo-600 dark:text-indigo-400 font-semibold">{meet.subject}</span>
+                          <span className="font-mono text-[10px] text-indigo-600 dark:text-indigo-400 font-semibold">{meet.subject}</span>
                         </div>
-                        <span className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded px-2 py-1 font-mono text-[9px] font-bold shrink-0 text-right">
+                        <span className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded px-2 py-1 font-mono text-[10px] font-bold shrink-0 text-right">
                           {mTime.toLocaleDateString('en', { month: 'short', day: 'numeric' })}
-                          <span className="block font-normal text-[8px] text-zinc-400 mt-0.5">{meet.dateTime.substring(11, 16)}</span>
+                          <span className="block font-normal text-[9px] text-zinc-400 mt-0.5">{meet.dateTime.substring(11, 16)}</span>
                         </span>
                       </div>
 
@@ -591,7 +591,7 @@ export default function HostAdminPanel() {
                           </a>
                         </div>
                         {meet.description && (
-                          <div className="bg-zinc-100/50 dark:bg-zinc-900/30 rounded p-2 text-[9px] font-light leading-normal border border-zinc-100 dark:border-zinc-900 italic text-zinc-500">
+                          <div className="bg-zinc-100/50 dark:bg-zinc-900/30 rounded p-2 text-[10px] font-light leading-normal border border-zinc-100 dark:border-zinc-900 italic text-zinc-500">
                             "{meet.description}"
                           </div>
                         )}

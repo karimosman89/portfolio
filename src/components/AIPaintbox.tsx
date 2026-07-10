@@ -129,7 +129,7 @@ export default function AIPaintbox({ onImageUsedAsRef }: AIPaintboxProps) {
               <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
                 <CheckCircle size={15} className="text-emerald-500" />
                 <span className="font-mono truncate max-w-[150px]">{uploadName}</span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 font-bold uppercase tracking-wider">Reference Loaded</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 font-bold uppercase tracking-wider">Reference Loaded</span>
               </div>
               <button 
                 onClick={clearUploaded}
@@ -162,7 +162,7 @@ export default function AIPaintbox({ onImageUsedAsRef }: AIPaintboxProps) {
           <div className="space-y-3.5 text-xs">
             {/* Model Selection */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">1. Image Quality Tier</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">1. Image Quality Tier</span>
               <div className="grid grid-cols-2 gap-2 mt-1">
                 <button
                   type="button"
@@ -194,7 +194,7 @@ export default function AIPaintbox({ onImageUsedAsRef }: AIPaintboxProps) {
 
             {/* Aspect Ratio */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">2. Aspect Ratio</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">2. Aspect Ratio</span>
               <div className="flex flex-wrap gap-1.5 mt-1">
                 {(['1:1', '3:4', '4:3', '9:16', '16:9'] as const).map((ratio) => (
                   <button
@@ -215,7 +215,7 @@ export default function AIPaintbox({ onImageUsedAsRef }: AIPaintboxProps) {
 
             {/* Resolution */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">3. Target Resolution</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">3. Target Resolution</span>
               <div className="flex gap-1.5 mt-1">
                 {(['512px', '1K', '2K'] as const).map((s) => (
                   <button
@@ -236,7 +236,7 @@ export default function AIPaintbox({ onImageUsedAsRef }: AIPaintboxProps) {
           </div>
 
           <div className="space-y-1.5 pt-2">
-            <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">4. Creation Prompt</span>
+            <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">4. Creation Prompt</span>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}

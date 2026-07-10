@@ -256,7 +256,7 @@ export default function InteractiveGraphs() {
       
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <TrendingUp size={10} />
             <span>{activeT.sectionNum}</span>
           </div>
@@ -307,7 +307,7 @@ export default function InteractiveGraphs() {
             </p>
 
             <div className="border-t border-zinc-100 dark:border-zinc-800/80 pt-4.5 space-y-3 font-mono text-[10px]">
-              <div className="text-[9px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider mb-1">{activeT.perfSpecTitle}</div>
+              <div className="text-[10px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider mb-1">{activeT.perfSpecTitle}</div>
               
               <div className="flex justify-between py-1 border-b border-zinc-150 dark:border-zinc-900/50">
                 <span>{activeMetricTab === 'latency-vs-acc' ? activeT.optimalLatencyTitle : activeT.week1EfficiencyTitle}</span>
@@ -323,7 +323,7 @@ export default function InteractiveGraphs() {
           <div className="rounded-xl border border-zinc-200 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/45 p-6 flex items-start gap-3.5">
             <Activity className="text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" size={18} />
             <div className="space-y-1">
-              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-450 dark:text-zinc-550 font-bold">{activeT.calibrationTitle}</span>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-450 dark:text-zinc-550 font-bold">{activeT.calibrationTitle}</span>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-normal font-light">
                 {activeT.calibrationDesc}
               </p>

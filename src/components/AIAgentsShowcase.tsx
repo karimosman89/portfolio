@@ -63,7 +63,7 @@ export default function AIAgentsShowcase() {
       {/* Upper Title Area */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <Sparkles size={10} />
             <span>{t('agents.title.badge')}</span>
           </div>
@@ -135,8 +135,8 @@ export default function AIAgentsShowcase() {
                 {/* Simulation control panel */}
                 <div className="rounded-xl border border-zinc-200 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/45 p-6 space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-bold">{t('agents.multi.sandbox')}</span>
-                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-mono tracking-wider bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-150/40 dark:border-indigo-900/40">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-bold">{t('agents.multi.sandbox')}</span>
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono tracking-wider bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-150/40 dark:border-indigo-900/40">
                       {t('agents.multi.live')}
                     </span>
                   </div>
@@ -199,7 +199,7 @@ export default function AIAgentsShowcase() {
                 </div>
 
                 <div className="rounded-xl border border-zinc-200 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/45 p-6 text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed space-y-2 font-mono">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200 uppercase text-[9px] tracking-wider mb-1">{t('agents.rag.perf_title')}</div>
+                  <div className="font-bold text-zinc-800 dark:text-zinc-200 uppercase text-[10px] tracking-wider mb-1">{t('agents.rag.perf_title')}</div>
                   <div className="flex justify-between py-1 border-b border-zinc-150 dark:border-zinc-900/50">
                     <span>{t('agents.rag.perf.recall')}</span>
                     <span className="font-bold text-indigo-600 dark:text-indigo-400">98.4%</span>
@@ -249,7 +249,7 @@ export default function AIAgentsShowcase() {
                 </div>
 
                 <div className="rounded-xl border border-zinc-200 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/45 p-6 text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed space-y-2 font-mono">
-                  <div className="font-bold text-zinc-800 dark:text-zinc-200 uppercase text-[9px] tracking-wider mb-1">{t('agents.mcp.enclave_title')}</div>
+                  <div className="font-bold text-zinc-800 dark:text-zinc-200 uppercase text-[10px] tracking-wider mb-1">{t('agents.mcp.enclave_title')}</div>
                   <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 p-2 rounded.5 border border-zinc-150 dark:border-zinc-800/80 text-[10px] text-zinc-600 dark:text-zinc-400 leading-tight">
                     <Shield size={14} className="text-indigo-600 dark:text-indigo-400 shrink-0" />
                     <span>{t('agents.mcp.enclave_desc')}</span>
@@ -274,7 +274,7 @@ export default function AIAgentsShowcase() {
                 {activeWorkflow === 'multi-agent' ? t('agents.diagram.multi_title') : activeWorkflow === 'rag' ? t('agents.diagram.rag_title') : t('agents.diagram.mcp_title')}
               </span>
             </div>
-            <span className="text-[9px] text-zinc-400 uppercase tracking-widest font-light">{t('agents.diagram.status')}</span>
+            <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-light">{t('agents.diagram.status')}</span>
           </div>
 
           {/* Interactive Simulation Viewport */}
@@ -293,7 +293,7 @@ export default function AIAgentsShowcase() {
                   }`}>
                     <Cpu size={16} className={simStep === 1 ? "text-indigo-600 animate-pulse" : "text-zinc-400"} />
                     <span className="font-bold text-zinc-800 dark:text-zinc-200 mt-1.5">{t('agents.diagram.orchestrator')}</span>
-                    <span className="text-[8px] text-zinc-400 font-light mt-0.5">GPT-4o</span>
+                    <span className="text-[9px] text-zinc-400 font-light mt-0.5">GPT-4o</span>
                   </div>
 
                   {/* Dynamic Processing Line indicators */}
@@ -307,7 +307,7 @@ export default function AIAgentsShowcase() {
                   }`}>
                     <Database size={16} className={simStep === 2 ? "text-indigo-600 animate-pulse" : "text-zinc-400"} />
                     <span className="font-bold text-zinc-800 dark:text-zinc-200 mt-1.5">{t('agents.diagram.rag_agent')}</span>
-                    <span className="text-[8px] text-zinc-400 font-light mt-0.5">Qdrant / PG</span>
+                    <span className="text-[9px] text-zinc-400 font-light mt-0.5">Qdrant / PG</span>
                   </div>
 
                   {/* Dynamic Processing Line indicators */}
@@ -321,13 +321,13 @@ export default function AIAgentsShowcase() {
                   }`}>
                     <Shield size={16} className={simStep >= 4 ? "text-emerald-500 animate-pulse" : "text-zinc-400"} />
                     <span className="font-bold text-zinc-800 dark:text-zinc-200 mt-1.5">{t('agents.diagram.guardrail')}</span>
-                    <span className="text-[8px] text-zinc-400 font-light mt-0.5">NeMo Guard</span>
+                    <span className="text-[9px] text-zinc-400 font-light mt-0.5">NeMo Guard</span>
                   </div>
                 </div>
 
                 {/* Simulation Output Logger */}
                 <div className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-4.5 space-y-3">
-                  <div className="flex items-center justify-between border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[9px] text-zinc-400">
+                  <div className="flex items-center justify-between border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[10px] text-zinc-400">
                     <span>{t('agents.multi.console_output')}</span>
                     <span className="text-indigo-600 dark:text-indigo-400 font-bold">● ONLINE</span>
                   </div>
@@ -335,7 +335,7 @@ export default function AIAgentsShowcase() {
                   <div className="space-y-2 text-xs font-light text-zinc-650 dark:text-zinc-350 leading-relaxed font-sans min-h-[50px]">
                     {isSimulating || simStep > 0 ? (
                       <div>
-                        <div className="font-mono text-[9px] font-bold text-indigo-600 dark:text-indigo-400 mb-1">
+                        <div className="font-mono text-[10px] font-bold text-indigo-600 dark:text-indigo-400 mb-1">
                           &gt; {simulationSteps[simStep].title}
                         </div>
                         <p>{simulationSteps[simStep].text}</p>
@@ -351,7 +351,7 @@ export default function AIAgentsShowcase() {
             {activeWorkflow === 'rag' && (
               <div className="w-full max-w-md space-y-6 font-mono text-[10px]">
                 <div className="relative border border-zinc-200 dark:border-zinc-800 rounded-lg p-5 bg-zinc-50/50 dark:bg-zinc-900/30 space-y-4">
-                  <div className="flex justify-between items-center border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[9px] text-zinc-450 dark:text-zinc-550 uppercase">
+                  <div className="flex justify-between items-center border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[10px] text-zinc-450 dark:text-zinc-550 uppercase">
                     <span>{t('agents.diagram.topology_header')}</span>
                     <span>{t('agents.diagram.topology_cluster')}</span>
                   </div>
@@ -361,14 +361,14 @@ export default function AIAgentsShowcase() {
                       <div className="font-bold text-zinc-850 dark:text-zinc-200 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-indigo-600" /> {t('agents.diagram.dense_vector')}
                       </div>
-                      <p className="text-[9px] text-zinc-450 dark:text-zinc-550 leading-normal font-sans font-light">{t('agents.diagram.dense_vector_desc')}</p>
+                      <p className="text-[10px] text-zinc-450 dark:text-zinc-550 leading-normal font-sans font-light">{t('agents.diagram.dense_vector_desc')}</p>
                     </div>
 
                     <div className="rounded border border-zinc-200 dark:border-zinc-800 p-3 bg-white dark:bg-zinc-950 shadow-xs space-y-1">
                       <div className="font-bold text-zinc-850 dark:text-zinc-200 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> {t('agents.diagram.sparse_bm25')}
                       </div>
-                      <p className="text-[9px] text-zinc-450 dark:text-zinc-550 leading-normal font-sans font-light">{t('agents.diagram.sparse_bm25_desc')}</p>
+                      <p className="text-[10px] text-zinc-450 dark:text-zinc-550 leading-normal font-sans font-light">{t('agents.diagram.sparse_bm25_desc')}</p>
                     </div>
                   </div>
 
@@ -382,7 +382,7 @@ export default function AIAgentsShowcase() {
             {activeWorkflow === 'mcp' && (
               <div className="w-full max-w-lg space-y-6 font-mono text-[10px]">
                 <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-5 bg-zinc-50/50 dark:bg-zinc-900/30 space-y-4">
-                  <div className="flex justify-between items-center border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[9px] text-zinc-450 dark:text-zinc-550 uppercase">
+                  <div className="flex justify-between items-center border-b border-zinc-150 dark:border-zinc-800 pb-2 text-[10px] text-zinc-450 dark:text-zinc-550 uppercase">
                     <span>{t('agents.diagram.mcp_header')}</span>
                     <span>{t('agents.diagram.mcp_tools')}</span>
                   </div>
@@ -393,7 +393,7 @@ export default function AIAgentsShowcase() {
                         <Code2 size={13} className="text-indigo-600 dark:text-indigo-400" />
                         <span className="font-bold text-zinc-750 dark:text-zinc-300">{t('agents.diagram.mcp.sql')}</span>
                       </div>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950 text-amber-600 border border-amber-200/40 uppercase">{t('agents.diagram.mcp.sql_badge')}</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950 text-amber-600 border border-amber-200/40 uppercase">{t('agents.diagram.mcp.sql_badge')}</span>
                     </div>
 
                     <div className="flex items-center justify-between p-2 rounded bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-800">
@@ -401,7 +401,7 @@ export default function AIAgentsShowcase() {
                         <Database size={13} className="text-indigo-600 dark:text-indigo-400" />
                         <span className="font-bold text-zinc-750 dark:text-zinc-300">{t('agents.diagram.mcp.files')}</span>
                       </div>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 border border-indigo-200/40 uppercase">{t('agents.diagram.mcp.files_badge')}</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-600 border border-indigo-200/40 uppercase">{t('agents.diagram.mcp.files_badge')}</span>
                     </div>
 
                     <div className="flex items-center justify-between p-2 rounded bg-white dark:bg-zinc-950 border border-zinc-150 dark:border-zinc-800">
@@ -409,7 +409,7 @@ export default function AIAgentsShowcase() {
                         <Bot size={13} className="text-indigo-600 dark:text-indigo-400" />
                         <span className="font-bold text-zinc-750 dark:text-zinc-300">{t('agents.diagram.mcp.delegate')}</span>
                       </div>
-                      <span className="text-[8px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 border border-emerald-200/40 uppercase">{t('agents.diagram.mcp.delegate_badge')}</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 border border-emerald-200/40 uppercase">{t('agents.diagram.mcp.delegate_badge')}</span>
                     </div>
                   </div>
                 </div>
@@ -419,7 +419,7 @@ export default function AIAgentsShowcase() {
           </div>
 
           {/* Diagram Console Footer */}
-          <div className="border-t border-zinc-100 dark:border-zinc-900 pt-4 flex justify-between items-center font-mono text-[9px] text-zinc-400 relative z-10">
+          <div className="border-t border-zinc-100 dark:border-zinc-900 pt-4 flex justify-between items-center font-mono text-[10px] text-zinc-400 relative z-10">
             <span>{(footerTranslations[lang] || footerTranslations.en).thread}: gr_442a8b9</span>
             <span>{(footerTranslations[lang] || footerTranslations.en).grounding}: {(footerTranslations[lang] || footerTranslations.en).active}</span>
           </div>

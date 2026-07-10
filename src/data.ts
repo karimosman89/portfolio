@@ -19,27 +19,27 @@ export const PERSONAL_INFO = {
 export const KEY_METRICS: Metric[] = [
   {
     id: "uptime",
-    value: "99.9%",
-    label: "SYSTEM UPTIME",
-    sublabel: "Multi-region AWS scaling"
+    value: "60%",
+    label: "REDUCED TICKET TIME",
+    sublabel: "Via Custom Support RAG"
   },
   {
     id: "users",
-    value: "500+",
-    label: "GLOBAL TEAM USERS",
-    sublabel: "Across 15+ countries"
+    value: "$1.2M",
+    label: "OPEX SAVINGS",
+    sublabel: "Automated Enterprise QA"
   },
   {
     id: "perf",
     value: "+40%",
-    label: "PERFORMANCE BOOST",
-    sublabel: "Reduced inference latency"
+    label: "CONVERSION LIFT",
+    sublabel: "Personalized AI Recommender"
   },
   {
     id: "revenue",
-    value: "€2M+",
-    label: "ANNUAL REVENUE IMPACT",
-    sublabel: "Generated via AI recommendations"
+    value: "10x",
+    label: "FASTER DEPLOYMENTS",
+    sublabel: "Multi-Agent Code Reviews"
   }
 ];
 

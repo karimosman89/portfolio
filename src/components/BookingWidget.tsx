@@ -275,12 +275,12 @@ export default function BookingWidget() {
 
         <div className="max-w-md mx-auto bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 text-left text-xs space-y-4">
           <div className="flex justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-3">
-            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[9px]">Topic</span>
+            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[10px]">Topic</span>
             <span className="font-semibold text-zinc-800 dark:text-zinc-150">{bookingSuccess.subject}</span>
           </div>
           
           <div className="flex justify-between border-b border-zinc-200/80 dark:border-zinc-800 pb-3">
-            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[9px]">Date &amp; Time</span>
+            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[10px]">Date &amp; Time</span>
             <span className="font-semibold text-zinc-850 dark:text-zinc-150 flex items-center gap-1.5">
               <Clock size={12} className="text-indigo-500" />
               {meetTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at {bookingSuccess.dateTime.substring(11, 16)} ({bookingSuccess.duration} mins)
@@ -288,7 +288,7 @@ export default function BookingWidget() {
           </div>
 
           <div className="space-y-2 pt-1">
-            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[9px] block">Google Meet Video Link</span>
+            <span className="text-zinc-400 dark:text-zinc-500 uppercase tracking-wider font-mono font-bold text-[10px] block">Google Meet Video Link</span>
             <a 
               href={bookingSuccess.googleMeetLink} 
               target="_blank" 
@@ -367,7 +367,7 @@ export default function BookingWidget() {
             </div>
 
             {/* Days Of Week Headers */}
-            <div className="grid grid-cols-7 gap-1 text-center font-mono font-bold text-[9px] text-zinc-400 dark:text-zinc-500 pb-2 border-b border-zinc-200/50 dark:border-zinc-800/40">
+            <div className="grid grid-cols-7 gap-1 text-center font-mono font-bold text-[10px] text-zinc-400 dark:text-zinc-500 pb-2 border-b border-zinc-200/50 dark:border-zinc-800/40">
               {daysOfWeek.map((day, idx) => (
                 <div key={idx}>{day}</div>
               ))}
@@ -424,13 +424,13 @@ export default function BookingWidget() {
               ) : loadingSlots ? (
                 <div className="flex flex-col items-center justify-center text-zinc-500 dark:text-zinc-400 py-6 space-y-2">
                   <Loader2 size={18} className="animate-spin text-indigo-500" />
-                  <span className="font-mono text-[9px] uppercase tracking-wider text-zinc-400">Consulting Live Availability...</span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400">Consulting Live Availability...</span>
                 </div>
               ) : availableSlots.length === 0 ? (
                 <div className="text-center text-rose-500/80 dark:text-rose-450/80 py-4 space-y-1">
                   <AlertCircle size={16} className="mx-auto" />
                   <p className="font-semibold">No slots available on this date.</p>
-                  <p className="text-[9px] text-zinc-400">Karim is fully booked or inactive on this date.</p>
+                  <p className="text-[10px] text-zinc-400">Karim is fully booked or inactive on this date.</p>
                 </div>
               ) : (
                 <motion.div

@@ -134,11 +134,11 @@ export default function ProjectModal({ isOpen, onClose, project }: ProjectModalP
 
                         <div className="grid gap-3.5 md:grid-cols-2 text-xs">
                           <div className="space-y-1">
-                            <span className="font-mono text-[9px] text-zinc-400 uppercase tracking-wider block">Critical Bottleneck:</span>
+                            <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-wider block">Critical Bottleneck:</span>
                             <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">{challenge.challenge}</p>
                           </div>
                           <div className="space-y-1">
-                            <span className="font-mono text-[9px] text-indigo-500 uppercase tracking-wider block">Resolution Strategy:</span>
+                            <span className="font-mono text-[10px] text-indigo-500 uppercase tracking-wider block">Resolution Strategy:</span>
                             <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed">{challenge.solution}</p>
                           </div>
                         </div>
@@ -146,7 +146,7 @@ export default function ProjectModal({ isOpen, onClose, project }: ProjectModalP
                         <div className="bg-indigo-50/30 dark:bg-indigo-950/10 rounded border border-indigo-100/40 dark:border-indigo-950/60 p-3 flex items-start gap-2 text-xs">
                           <CheckCircle2 size={13} className="text-emerald-500 shrink-0 mt-0.5" />
                           <div>
-                            <span className="font-bold text-indigo-600 dark:text-indigo-400 font-mono uppercase text-[9px] tracking-wide block">Validated Quantifiable Outcome:</span>
+                            <span className="font-bold text-indigo-600 dark:text-indigo-400 font-mono uppercase text-[10px] tracking-wide block">Validated Quantifiable Outcome:</span>
                             <p className="text-zinc-700 dark:text-zinc-300 font-light leading-relaxed">{challenge.impact}</p>
                           </div>
                         </div>

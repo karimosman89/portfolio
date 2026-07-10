@@ -179,7 +179,7 @@ export default function AICinematic() {
           <div className="space-y-3.5 text-xs">
             {/* Aspect Ratio */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">Aspect Ratio Presets</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">Aspect Ratio Presets</span>
               <div className="grid grid-cols-2 gap-2 mt-1">
                 <button
                   type="button"
@@ -208,7 +208,7 @@ export default function AICinematic() {
 
             {/* Prompt */}
             <div className="space-y-1">
-              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[9px] uppercase tracking-wider">Cinematic Motion Prompt</span>
+              <span className="text-zinc-500 dark:text-zinc-450 font-mono text-[10px] uppercase tracking-wider">Cinematic Motion Prompt</span>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}

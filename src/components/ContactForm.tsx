@@ -249,7 +249,7 @@ export default function ContactForm() {
         {/* Pitch Sidebar (Left 4 Columns) */}
         <div className="lg:col-span-4 space-y-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+            <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
               <Sparkles size={10} />
               <span>07 / Collaboration Hub</span>
             </div>
@@ -307,31 +307,31 @@ export default function ContactForm() {
               <button
                 type="button"
                 onClick={() => setActiveTab('calendly')}
-                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-4 py-2 rounded font-semibold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                   activeTab === 'calendly'
                     ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
                     : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                 }`}
               >
-                <Sparkles size={11} className="text-amber-500 shrink-0" />
+                <Sparkles size={14} className="text-amber-500 shrink-0" />
                 Book a Call (Calendly)
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('booking')}
-                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-4 py-2 rounded font-semibold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer ${
                   activeTab === 'booking'
                     ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
                     : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                 }`}
               >
-                <Calendar size={11} className="text-indigo-500 shrink-0" />
+                <Calendar size={14} className="text-indigo-500 shrink-0" />
                 Native Booking
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('message')}
-                className={`px-3 py-1.5 rounded font-semibold text-[10px] uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded font-semibold text-xs uppercase tracking-wider transition-all cursor-pointer ${
                   activeTab === 'message'
                     ? 'bg-white dark:bg-zinc-950 text-indigo-600 dark:text-indigo-400 shadow-xs border border-zinc-200/50 dark:border-zinc-800 font-bold'
                     : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
@@ -351,7 +351,7 @@ export default function ContactForm() {
               }`}
               title="Host Settings / Admin Console"
             >
-              <Settings size={14} />
+              <Settings size={16} />
             </button>
           </div>
 
@@ -422,7 +422,7 @@ export default function ContactForm() {
                         }`}
                       >
                         <div className="font-bold text-[11px]">{type.label}</div>
-                        <div className="text-[9px] text-zinc-400 dark:text-zinc-500 font-mono font-light mt-0.5">{type.description}</div>
+                        <div className="text-[10px] text-zinc-400 dark:text-zinc-500 font-mono font-light mt-0.5">{type.description}</div>
                       </button>
                     ))}
                   </div>
@@ -538,7 +538,7 @@ export default function ContactForm() {
                     <label htmlFor="message-input" className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-mono">
                       Project Scope &amp; Deliverables *
                     </label>
-                    <span className="text-[9px] text-zinc-400 font-mono font-light">Markdown supported</span>
+                    <span className="text-[10px] text-zinc-400 font-mono font-light">Markdown supported</span>
                   </div>
                   <textarea
                     id="message-input"
@@ -578,7 +578,7 @@ export default function ContactForm() {
                     disabled={isLoading}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="cursor-pointer w-full rounded border border-zinc-900 dark:border-zinc-800 bg-zinc-900 dark:bg-zinc-950 text-white font-mono font-bold uppercase tracking-wider text-xs px-5 py-3.5 hover:bg-zinc-800 dark:hover:bg-zinc-900 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    className="cursor-pointer w-full rounded border border-zinc-900 dark:border-zinc-800 bg-zinc-900 dark:bg-zinc-950 text-white font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 hover:bg-zinc-800 dark:hover:bg-zinc-900 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
                     {isLoading ? (
                       <>
@@ -587,7 +587,7 @@ export default function ContactForm() {
                       </>
                     ) : (
                       <>
-                        <Send size={12} />
+                        <Send size={16} />
                         <span>Transmit Secure Business Proposal</span>
                       </>
                     )}
@@ -633,7 +633,7 @@ export default function ContactForm() {
                         Karim's AI Co-pilot Assessment
                       </h4>
                     </div>
-                    <span className="text-[9px] font-mono text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-indigo-100 dark:border-indigo-900">
+                    <span className="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded bg-white dark:bg-zinc-900 border border-indigo-100 dark:border-indigo-900">
                       Model: Gemini 3.5 Flash
                     </span>
                   </div>

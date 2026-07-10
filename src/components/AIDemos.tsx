@@ -450,7 +450,7 @@ export default function AIDemos() {
       {/* Visual Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+          <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <Sparkles size={11} className="text-indigo-600 dark:text-indigo-400" />
             <span>02 / Interactive Sandbox</span>
           </div>
@@ -570,7 +570,7 @@ export default function AIDemos() {
 
           <div className="flex items-center gap-3">
             <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-[9px] text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">
+            <span className="font-mono text-[10px] text-zinc-500 dark:text-zinc-400 tracking-wider uppercase">
               COMPILER: LIVE
             </span>
           </div>
@@ -723,7 +723,7 @@ export default function AIDemos() {
                       }`}
                     >
                       <p className="whitespace-pre-line font-light">{msg.text}</p>
-                      <div className={`mt-2 text-[9px] text-right ${msg.sender === 'user' ? 'text-indigo-200 dark:text-indigo-300' : 'text-zinc-400 dark:text-zinc-500 font-mono'}`}>
+                      <div className={`mt-2 text-[10px] text-right ${msg.sender === 'user' ? 'text-indigo-200 dark:text-indigo-300' : 'text-zinc-400 dark:text-zinc-500 font-mono'}`}>
                         {msg.timestamp}
                       </div>
                     </div>
@@ -913,7 +913,7 @@ export default function AIDemos() {
                       <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5">
                         <CheckCircle size={13} className="text-indigo-600" /> Pipeline Output: LLM Summary
                       </span>
-                      <span className="text-[9px] font-mono text-zinc-450 dark:text-zinc-555">Latency: 142ms</span>
+                      <span className="text-[10px] font-mono text-zinc-450 dark:text-zinc-555">Latency: 142ms</span>
                     </div>
                     <p className="text-zinc-700 dark:text-zinc-300 text-xs leading-relaxed whitespace-pre-line font-light">
                       {textResults.summary}
@@ -931,7 +931,7 @@ export default function AIDemos() {
                     <div className="flex-1 overflow-y-auto space-y-3.5 max-h-[190px] pr-2">
                       {textResults.chunks.map((chunk) => (
                         <div key={chunk.id} className="rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 hover:border-indigo-205 transition">
-                          <div className="flex justify-between text-zinc-455 dark:text-zinc-500 font-mono text-[9px] mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1.5">
+                          <div className="flex justify-between text-zinc-455 dark:text-zinc-500 font-mono text-[10px] mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1.5">
                             <span className="text-indigo-600 dark:text-indigo-400 font-bold uppercase">Chunk ID: {chunk.id}</span>
                             <span>Char Indices: [{chunk.start} - {chunk.end}]</span>
                           </div>
@@ -980,7 +980,7 @@ export default function AIDemos() {
                       }`}
                     >
                       <div>{part.name}</div>
-                      <div className="text-[9px] text-zinc-450 dark:text-zinc-500 mt-0.5">{part.type}</div>
+                      <div className="text-[10px] text-zinc-450 dark:text-zinc-500 mt-0.5">{part.type}</div>
                     </button>
                   ))}
                 </div>
@@ -1002,7 +1002,7 @@ export default function AIDemos() {
                     onChange={(e) => setConfThreshold(parseFloat(e.target.value))}
                     className="w-full accent-indigo-600 dark:accent-indigo-400"
                   />
-                  <div className="flex justify-between text-[9px] text-zinc-455 dark:text-zinc-500 font-mono">
+                  <div className="flex justify-between text-[10px] text-zinc-455 dark:text-zinc-500 font-mono">
                     <span>0.40 (Sensitive)</span>
                     <span>0.95 (High Conf)</span>
                   </div>
@@ -1080,7 +1080,7 @@ export default function AIDemos() {
                           height: `${issue.h}%`,
                         }}
                       >
-                        <span className="absolute -top-5 left-0 bg-rose-500 text-white font-mono text-[9px] font-bold px-1 py-0.5 rounded shadow-md whitespace-nowrap">
+                        <span className="absolute -top-5 left-0 bg-rose-500 text-white font-mono text-[10px] font-bold px-1 py-0.5 rounded shadow-md whitespace-nowrap">
                           {issue.label} ({(issue.conf * 100).toFixed(0)}%)
                         </span>
                       </motion.div>
@@ -1124,7 +1124,7 @@ export default function AIDemos() {
                             </div>
                             <p className="text-[10px] text-zinc-500 dark:text-zinc-450 leading-relaxed font-light">{issue.desc}</p>
                           </div>
-                          <span className={`shrink-0 inline-block px-2 py-0.5 rounded text-[9px] font-mono font-bold ${
+                          <span className={`shrink-0 inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                             issue.severity === 'High' 
                               ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-100 dark:border-rose-900' 
                               : 'bg-yellow-50 dark:bg-yellow-950/30 text-yellow-700 dark:text-yellow-400 border border-yellow-100 dark:border-yellow-900'

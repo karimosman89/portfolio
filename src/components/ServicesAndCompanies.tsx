@@ -208,7 +208,7 @@ export default function ServicesAndCompanies() {
       
       {/* Services Title */}
       <div className="max-w-3xl mb-14">
-        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
           <Sparkles size={10} />
           <span>{localTranslations[lang]?.sectionNum || localTranslations.en.sectionNum}</span>
         </div>
@@ -238,7 +238,7 @@ export default function ServicesAndCompanies() {
                   {svc.icon}
                 </div>
                 {svc.badge && (
-                  <span className="inline-flex items-center rounded px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-950 text-zinc-500 dark:text-zinc-400 border border-zinc-150 dark:border-zinc-805">
+                  <span className="inline-flex items-center rounded px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-950 text-zinc-500 dark:text-zinc-400 border border-zinc-150 dark:border-zinc-805">
                     {svc.badge}
                   </span>
                 )}
@@ -276,7 +276,7 @@ export default function ServicesAndCompanies() {
             <Milestone size={11} className="text-indigo-500" />
             <span>{localTranslations[lang]?.targetSectors || localTranslations.en.targetSectors}</span>
           </div>
-          <span className="text-[9px] text-zinc-400 font-light italic">{localTranslations[lang]?.compliance || localTranslations.en.compliance}</span>
+          <span className="text-[10px] text-zinc-400 font-light italic">{localTranslations[lang]?.compliance || localTranslations.en.compliance}</span>
         </div>
 
         {/* Marquee Container */}
@@ -302,7 +302,7 @@ export default function ServicesAndCompanies() {
                     <div className="h-2 w-2 rounded-full bg-indigo-500/25 dark:bg-indigo-500/40" />
                   )}
                   <span className="font-display font-black text-xs tracking-wider uppercase">{company.name}</span>
-                  <span className="text-[9px] font-mono text-zinc-300 dark:text-zinc-700">|</span>
+                  <span className="text-[10px] font-mono text-zinc-300 dark:text-zinc-700">|</span>
                 </div>
               );
             })}
@@ -333,7 +333,7 @@ export default function ServicesAndCompanies() {
               }
             }, 150);
           }}
-          className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-5 py-3 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition group"
+          className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition group"
         >
           <span>{localTranslations[lang]?.ctaBtn || localTranslations.en.ctaBtn}</span>
           <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />

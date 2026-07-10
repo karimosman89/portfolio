@@ -303,7 +303,7 @@ export default function SearchOverlay() {
                               </div>
                             </div>
                             <div className="flex flex-col items-end gap-1.5 shrink-0 hidden sm:flex">
-                              <span className={`text-[9px] font-mono uppercase tracking-wider font-bold ${
+                              <span className={`text-[10px] font-mono uppercase tracking-wider font-bold ${
                                 isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-zinc-400 dark:text-zinc-500'
                               }`}>
                                 {getTypeLabel(result.type)}
@@ -342,7 +342,7 @@ export default function SearchOverlay() {
                     <span className="ml-1">to select</span>
                   </div>
                 </div>
-                <div className="text-[9px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500">
+                <div className="text-[10px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500">
                   Portfolio Search
                 </div>
               </div>

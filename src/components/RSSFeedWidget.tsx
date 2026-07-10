@@ -77,7 +77,7 @@ export default function RSSFeedWidget() {
         <div className="flex items-center p-0.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800">
           <button
             onClick={() => setActiveTab('reader')}
-            className={`cursor-pointer px-3.5 py-1.5 text-[9px] font-mono font-bold uppercase rounded-md transition-all flex items-center gap-1.5 ${
+            className={`cursor-pointer px-3.5 py-1.5 text-[10px] font-mono font-bold uppercase rounded-md transition-all flex items-center gap-1.5 ${
               activeTab === 'reader'
                 ? 'bg-white dark:bg-zinc-800 text-orange-600 dark:text-orange-400 shadow-xs border border-zinc-200/40 dark:border-zinc-700/50'
                 : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'
@@ -88,7 +88,7 @@ export default function RSSFeedWidget() {
           </button>
           <button
             onClick={() => setActiveTab('xml')}
-            className={`cursor-pointer px-3.5 py-1.5 text-[9px] font-mono font-bold uppercase rounded-md transition-all flex items-center gap-1.5 ${
+            className={`cursor-pointer px-3.5 py-1.5 text-[10px] font-mono font-bold uppercase rounded-md transition-all flex items-center gap-1.5 ${
               activeTab === 'xml'
                 ? 'bg-white dark:bg-zinc-800 text-orange-600 dark:text-orange-400 shadow-xs border border-zinc-200/40 dark:border-zinc-700/50'
                 : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-300'
@@ -120,7 +120,7 @@ export default function RSSFeedWidget() {
               </div>
               <button
                 onClick={copyFeedLink}
-                className="cursor-pointer flex items-center gap-1 shrink-0 rounded bg-orange-500 hover:bg-orange-600 text-white font-mono text-[9px] font-bold uppercase tracking-wider px-2.5 py-1.5 transition-colors"
+                className="cursor-pointer flex items-center gap-1 shrink-0 rounded bg-orange-500 hover:bg-orange-600 text-white font-mono text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 transition-colors"
               >
                 {copiedLink ? <Check size={11} /> : <Copy size={11} />}
                 <span>{copiedLink ? 'Copied' : 'Subscribe'}</span>
@@ -142,7 +142,7 @@ export default function RSSFeedWidget() {
                     <p className="text-[10px] text-zinc-450 dark:text-zinc-500 font-light leading-relaxed line-clamp-2">
                       {blog.summary}
                     </p>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[9px] font-mono text-zinc-400 dark:text-zinc-500 pt-1 border-t border-zinc-100 dark:border-zinc-900/50 mt-1.5 pt-1.5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[10px] font-mono text-zinc-400 dark:text-zinc-500 pt-1 border-t border-zinc-100 dark:border-zinc-900/50 mt-1.5 pt-1.5">
                       <div className="flex items-center gap-2 flex-wrap">
                         <Calendar size={9} />
                         <span>{blog.date}</span>

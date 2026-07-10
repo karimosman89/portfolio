@@ -21,6 +21,10 @@ import { PERSONAL_INFO } from './data';
 import { Mail, Linkedin, Github, FileText, ArrowUp, Milestone, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import EnterpriseSecurity from './components/EnterpriseSecurity';
+import MiniAgentPlayground from './components/MiniAgentPlayground';
+import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
+
 export default function App() {
   const { t } = useLanguage();
   const [isDark, setIsDark] = useState(() => {
@@ -178,7 +182,7 @@ export default function App() {
                 {/* 2.5. Interactive WebGL AI Specialization Orbit */}
                 <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
                   <div className="mb-10">
-                    <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest animate-pulse">
+                    <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest animate-pulse">
                       <Sparkles size={10} />
                       <span>01.5 / Cognitive Visualization</span>
                     </div>
@@ -196,6 +200,9 @@ export default function App() {
 
             {activeTab === 'capabilities' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
+                <ArchitecturalBlueprint />
+                <MiniAgentPlayground />
+                
                 {/* 3. Rich Interactive Sandboxes */}
                 <AIDemos />
 
@@ -215,6 +222,9 @@ export default function App() {
                 {/* 5. Categorized Bento Skills Matrix */}
                 <SkillsBento />
 
+                {/* Enterprise Security Section */}
+                <EnterpriseSecurity />
+
                 {/* 5.5. Enterprise Services & Client Sectors Marquee */}
                 <ServicesAndCompanies />
 
@@ -233,7 +243,7 @@ export default function App() {
                   <div className="grid gap-12 lg:grid-cols-2">
                     <div className="flex flex-col justify-between">
                       <div className="mb-6">
-                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                           <span>06.5 / Secure credentials</span>
                         </div>
                         <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
@@ -248,7 +258,7 @@ export default function App() {
 
                     <div className="flex flex-col justify-between">
                       <div className="mb-6">
-                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[9px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
+                        <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                           <span>06.6 / Syndication stream</span>
                         </div>
                         <h3 className="font-display text-2xl font-extrabold tracking-tight text-zinc-900 dark:text-white mt-2.5">
