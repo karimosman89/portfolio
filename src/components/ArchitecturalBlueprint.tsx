@@ -11,7 +11,7 @@ export default function ArchitecturalBlueprint() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div className="flex flex-col lg:flex-row md:items-end justify-between gap-4 mb-10">
         <div>
           <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-mono text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
             <Route size={10} className="text-indigo-500" />
@@ -30,7 +30,7 @@ export default function ArchitecturalBlueprint() {
         {/* Architectural Blueprint Grid Pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-30 dark:opacity-20 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
           
           {/* User Input Layer */}
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }} className="flex flex-col items-center">
@@ -43,7 +43,7 @@ export default function ArchitecturalBlueprint() {
             </div>
           </motion.div>
 
-          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 md:rotate-0" />
+          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 lg:rotate-0" />
 
           {/* API Gateway & Load Balancer Layer */}
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="flex flex-col items-center">
@@ -56,7 +56,7 @@ export default function ArchitecturalBlueprint() {
             </div>
           </motion.div>
 
-          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 md:rotate-0" />
+          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 lg:rotate-0" />
 
           {/* Vector DB / RAG Layer */}
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col items-center relative">
@@ -73,7 +73,7 @@ export default function ArchitecturalBlueprint() {
             </div>
           </motion.div>
 
-          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 md:rotate-0" />
+          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 lg:rotate-0" />
 
           {/* LLM Engine Layer */}
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="flex flex-col items-center relative">
@@ -91,7 +91,7 @@ export default function ArchitecturalBlueprint() {
             </div>
           </motion.div>
 
-          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 md:rotate-0" />
+          <ArrowRight size={20} className="text-zinc-300 dark:text-zinc-700 rotate-90 lg:rotate-0" />
 
           {/* Output & Guardrails Layer */}
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="flex flex-col items-center">

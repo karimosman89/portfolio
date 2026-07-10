@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { PERSONAL_INFO } from '../data';
 import { Mail, Linkedin, Github, MapPin, Phone, Briefcase, Award, ArrowUpRight, Globe2, ChevronRight, FileText, Settings, ShieldAlert, Sun, Moon, Sparkles, Palette, Calendar, Search } from 'lucide-react';
 import { motion } from 'motion/react';
-import NeuralNetworkBackground from './NeuralNetworkBackground';
+import DataWaveBackground from './DataWaveBackground';
 import LazyImage from './LazyImage';
 import { useLanguage, Language } from '../i18n/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.png';
+import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.jpg';
 
 interface HeaderProps {
   isDark: boolean;
@@ -366,7 +366,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
         <div className="absolute inset-0 bg-grid-pattern opacity-25 dark:opacity-[0.15] bg-grid-mask pointer-events-none" />
 
         {/* Three.js-based animated 3D neural network background */}
-        <NeuralNetworkBackground activeTheme={activeTheme} isDark={isDark} />
+        <DataWaveBackground activeTheme={activeTheme} isDark={isDark} />
 
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start relative z-10">
           

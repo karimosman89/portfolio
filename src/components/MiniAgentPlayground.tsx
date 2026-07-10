@@ -97,7 +97,7 @@ export default function MiniAgentPlayground() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm overflow-hidden flex flex-col max-w-4xl mx-auto h-[500px]">
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm overflow-hidden flex flex-col max-w-4xl mx-auto h-[400px] sm:h-[500px]">
         {/* Terminal Header */}
         <div className="border-b border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">

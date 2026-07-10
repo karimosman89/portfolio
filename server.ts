@@ -707,7 +707,7 @@ ${CV_GROUNDING_DATA}
     res.json({ text: response.text || "I apologize, but I could not formulate a response at this time." });
   } catch (error: any) {
     console.error("Error in /api/chat:", error);
-    res.status(500).json({ error: error.message || "An internal error occurred." });
+    if (error?.status === 503 || error?.message?.includes("503") || error?.message?.includes("currently experiencing high demand")) { res.status(503).json({ error: "The AI model is currently experiencing high demand and is unavailable. Please try again in a few moments." }); } else { if (error?.status === 503 || error?.message?.includes("503") || error?.message?.includes("currently experiencing high demand")) { res.status(503).json({ error: "The AI model is currently experiencing high demand and is unavailable. Please try again in a few moments." }); } else { res.status(500).json({ error: error.message || "An internal error occurred." }); } }
   }
 });
 
