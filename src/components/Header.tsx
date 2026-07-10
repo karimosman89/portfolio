@@ -6,7 +6,7 @@ import DataWaveBackground from './DataWaveBackground';
 import LazyImage from './LazyImage';
 import { useLanguage, Language } from '../i18n/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.jpg';
+import avatarImg from '../assets/images/karim_personal_avatar_1783292406420.png';
 
 interface HeaderProps {
   isDark: boolean;
