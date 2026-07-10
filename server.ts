@@ -16,6 +16,43 @@ const PORT = 3000;
 
 app.use(express.json());
 
+/**
+ * Optional email delivery for contact submissions.
+ * Configure SMTP via environment variables (see .env.example):
+ *   SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
+ * If nodemailer or the SMTP vars are missing, submissions still persist
+ * to inquiries.json and the API succeeds gracefully.
+ */
+async function sendContactEmail(inquiry: Record<string, any>): Promise<boolean> {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL } = process.env;
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return false;
+  try {
+    // Dynamic import so the app runs even if nodemailer isn't installed.
+    const nodemailer = await import("nodemailer").then((m: any) => m.default || m);
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT) || 587,
+      secure: Number(SMTP_PORT) === 465,
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    });
+    const to = CONTACT_TO_EMAIL || "karim.programmer2020@gmail.com";
+    const rows = Object.entries(inquiry)
+      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#666;font-family:sans-serif;font-size:13px">${k}</td><td style="padding:4px 0;font-family:sans-serif;font-size:13px">${String(v).replace(/\n/g, "<br/>")}</td></tr>`)
+      .join("");
+    await transporter.sendMail({
+      from: `"Portfolio Contact" <${SMTP_USER}>`,
+      to,
+      replyTo: inquiry.email,
+      subject: `New AI project inquiry — ${inquiry.name}${inquiry.company ? " (" + inquiry.company + ")" : ""}`,
+      html: `<h2 style="font-family:sans-serif">New Project Inquiry</h2><table>${rows}</table>`,
+    });
+    return true;
+  } catch (err) {
+    console.error("Email delivery failed (submission still persisted):", err);
+    return false;
+  }
+}
+
 // Lazy-initialized Gemini Client
 let aiClient: GoogleGenAI | null = null;
 
@@ -684,7 +721,7 @@ ${CV_GROUNDING_DATA}
     
     // We can use chat.sendMessage or generateContent with history. Let's use generateContent for simplicity and stability.
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
       contents: formattedContents,
       config: {
         systemInstruction,
@@ -738,7 +775,7 @@ Keep the output under 3 bullet points or a single powerful paragraph. Focus pure
 `;
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
       contents: `Please summarize the following text:\n\n${text}`,
       config: {
         systemInstruction: summaryInstructions,
@@ -797,6 +834,9 @@ app.post("/api/contact", async (req, res) => {
     currentInquiries.push(inquiry);
     fs.writeFileSync(filePath, JSON.stringify(currentInquiries, null, 2), "utf-8");
 
+    // Attempt to forward the inquiry to Karim's inbox (no-op if SMTP not configured).
+    const emailSent = await sendContactEmail(inquiry);
+
     // Generate immediate interactive assessment of their request by Karim's Virtual AI Consultant!
     let aiResponseText = "";
     try {
@@ -823,7 +863,7 @@ Generate a highly professional, technically competent, and warm immediate acknow
 Keep the response strictly formatted in markdown, under 180 words, using bullet points or bold text if necessary. Do not include signature blocks, use a warm and objective advisor tone.
 `;
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
         contents: prompt,
         config: {
           temperature: 0.6,
@@ -838,6 +878,7 @@ Keep the response strictly formatted in markdown, under 180 words, using bullet 
     res.json({
       success: true,
       inquiryId: inquiry.id,
+      emailSent,
       aiAssessment: aiResponseText
     });
   } catch (err: any) {

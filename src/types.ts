@@ -25,7 +25,8 @@ export interface Experience {
 
 export interface SkillCategory {
   title: string;
-  skills: string[];
+  icon?: string;
+  skills: { name: string; level: number }[];
 }
 
 export interface BlogPost {
@@ -36,6 +37,7 @@ export interface BlogPost {
   date: string;
   readTime: string;
   tags: string[];
+  category: string;
 }
 
 export interface GithubRepo {
@@ -46,6 +48,7 @@ export interface GithubRepo {
   language: string;
   url: string;
   topics: string[];
+  metrics?: { label: string; value: string }[];
 }
 
 export interface Message {
@@ -54,28 +57,38 @@ export interface Message {
   timestamp: string;
 }
 
-export interface HostConfig {
-  weeklyAvailability: {
-    [dayOfWeek: number]: { start: string; end: string; active: boolean };
-  };
-  slotDuration: number;
-  timezone: string;
-  isGoogleConnected: boolean;
-  googleCalendarId?: string;
-  hostEmail?: string;
-  calendlyUrl?: string;
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  bullets: string[];
+  tag?: string;
 }
 
-export interface Meeting {
+export interface Testimonial {
   id: string;
-  clientName: string;
-  clientEmail: string;
-  clientLinkedIn: string;
-  dateTime: string;
-  duration: number;
-  subject: string;
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+  rating: number;
+  metric: string;
+}
+
+export interface AgentCapability {
+  id: string;
+  title: string;
   description: string;
-  googleEventId?: string;
-  googleMeetLink?: string;
-  createdAt: string;
+  icon: string;
+  tags: string[];
+}
+
+export interface Stat {
+  id: string;
+  value: number;
+  suffix: string;
+  prefix: string;
+  label: string;
+  icon: string;
 }
