@@ -1,136 +1,240 @@
-import { Experience, SkillCategory, BlogPost, GithubRepo, Metric } from './types';
+import { Experience, SkillCategory, BlogPost, GithubRepo, Metric, Service, Testimonial, AgentCapability, Stat } from './types';
 
 export const PERSONAL_INFO = {
   name: "Karim Osman",
   title: "Senior AI Engineer",
-  subtitle: "Generative AI | LLM Architect | Freelance & B2B Solutions",
-  location: "Siena, Tuscany, Italy & Worldwide (Remote)",
+  roles: [
+    "Enterprise AI Systems",
+    "Generative AI Engineer",
+    "LLM & RAG Architect",
+    "Multi-Agent Systems Developer",
+    "AI Automation Architect",
+  ],
+  subtitle: "Generative AI · LLM Architect · Multi-Agent Systems · B2B & Enterprise Solutions",
+  location: "Siena, Tuscany, Italy · Worldwide (Remote)",
   email: "karim.programmer2020@gmail.com",
   linkedin: "https://www.linkedin.com/in/karimosman89/",
   github: "https://github.com/karimosman89",
+  calendly: "https://calendly.com/karimosman89/30min",
+  x: "https://x.com/karimosman89",
+  medium: "https://medium.com/@karimosman89",
+  devto: "https://dev.to/karimosman89",
+  youtube: "https://youtube.com/@karimosman89",
   phoneItaly: "+39 34 70 70 1100",
-  phoneFrance: "+33 7 66 62 99 70",
-  phoneWhatsapp: "+39 320 952 47 54",
-  summaryEn: "Result-oriented Senior AI Engineer and B2B Consultant with over 5 years of experience designing and implementing scalable AI/ML solutions for international enterprise clients. Specialized in Generative AI, RAG architectures, LLM fine-tuning (LoRA), and multimodal Computer Vision (YOLO). Open to Senior roles, high-impact Freelance contracts, and B2B corporate consultancies to transform research prototypes into high-uptime, production-ready systems.",
-  summaryIt: "Senior AI Engineer e Consulente B2B orientato ai risultati con oltre 5 anni di esperienza nella progettazione e implementazione di soluzioni scalabili di AI/ML per clienti internazionali. Specializzato in Intelligenza Artificiale Generativa, sistemi RAG, fine-tuning di LLM e applicazioni AI multimodali. Disponibile per ruoli Senior, contratti Freelance ad alto impatto e consulenze aziendali B2B per trasformare prototipi in sistemi production-ready.",
-  summaryFr: "Ingénieur IA Senior et Consultant B2B orienté résultats avec plus de 5 ans d'expérience dans la conception et l'implémentation de solutions IA/ML scalables pour des clients internationaux. Spécialisé en IA Générative, architectures RAG, fine-tuning de LLM (LoRA) et vision par ordinateur (YOLO). Ouvert aux rôles Senior, aux contrats Freelance à fort impact et aux conseils d'entreprise B2B pour transformer des prototypes de recherche en systèmes prêts pour la production."
+  phoneFrance: "+33 7 66 62 9970",
+  portrait: "/images/karim_portrait.png",
+  summaryEn: "Result-oriented Senior AI Engineer and B2B Consultant with 5+ years of experience designing and shipping scalable AI/ML solutions for international enterprise clients across Europe. I specialize in Generative AI, RAG architectures, LLM fine-tuning (LoRA/PEFT), multi-agent systems, and multimodal Computer Vision (YOLO). I turn research prototypes into production-grade systems with 99.9% uptime and measurable business ROI.",
+  summaryIt: "Senior AI Engineer e Consulente B2B orientato ai risultati con oltre 5 anni di esperienza nella progettazione e implementazione di soluzioni scalabili di AI/ML per clienti internazionali. Specializzato in Intelligenza Artificiale Generativa, sistemi RAG, fine-tuning di LLM, sistemi multi-agente e Computer Vision multimodale. Trasformo prototipi in sistemi production-ready ad alta affidabilità con ROI misurabile.",
 };
 
 export const KEY_METRICS: Metric[] = [
+  { id: "uptime", value: "99.9%", label: "SYSTEM UPTIME", sublabel: "Multi-region AWS auto-scaling" },
+  { id: "users", value: "500+", label: "GLOBAL TEAM USERS", sublabel: "Across 15+ countries" },
+  { id: "perf", value: "-40%", label: "INFERENCE LATENCY", sublabel: "LoRA + INT8 quantization" },
+  { id: "revenue", value: "€2M+", label: "ANNUAL REVENUE IMPACT", sublabel: "AI recommendation systems" },
+];
+
+export const STATS: Stat[] = [
+  { id: "projects", value: 45, suffix: "+", prefix: "", label: "AI Projects Delivered", icon: "Rocket" },
+  { id: "clients", value: 20, suffix: "+", prefix: "", label: "Enterprise Clients", icon: "Building2" },
+  { id: "models", value: 60, suffix: "+", prefix: "", label: "Models Deployed", icon: "Brain" },
+  { id: "countries", value: 15, suffix: "+", prefix: "", label: "Countries Served", icon: "Globe2" },
+  { id: "hours", value: 12000, suffix: "+", prefix: "", label: "Hours Automated", icon: "Timer" },
+  { id: "satisfaction", value: 98, suffix: "%", prefix: "", label: "Client Satisfaction", icon: "Heart" },
+];
+
+export const SERVICES: Service[] = [
   {
-    id: "uptime",
-    value: "60%",
-    label: "REDUCED TICKET TIME",
-    sublabel: "Via Custom Support RAG"
+    id: "custom-ai",
+    title: "Custom AI Applications",
+    description: "End-to-end design and delivery of production-grade AI products tailored to your business logic and data.",
+    icon: "Boxes",
+    tag: "Most Requested",
+    bullets: ["Full-stack AI apps (React + FastAPI)", "Domain-specific model tuning", "Secure deployment & monitoring"],
   },
   {
-    id: "users",
-    value: "$1.2M",
-    label: "OPEX SAVINGS",
-    sublabel: "Automated Enterprise QA"
+    id: "rag",
+    title: "RAG & Knowledge Systems",
+    description: "Enterprise Retrieval-Augmented Generation over your documents with citations, guardrails and multi-tenancy.",
+    icon: "Database",
+    bullets: ["Hybrid vector + keyword search", "Reranking & citation layer", "10k+ docs/day pipelines"],
   },
   {
-    id: "perf",
-    value: "+40%",
-    label: "CONVERSION LIFT",
-    sublabel: "Personalized AI Recommender"
+    id: "agents",
+    title: "AI Agents & Automation",
+    description: "Autonomous multi-agent workflows that plan, use tools, call functions and complete real work end-to-end.",
+    icon: "Workflow",
+    tag: "Cutting Edge",
+    bullets: ["LangGraph / CrewAI / AutoGen", "MCP & A2A integrations", "Human-in-the-loop controls"],
   },
   {
-    id: "revenue",
-    value: "10x",
-    label: "FASTER DEPLOYMENTS",
-    sublabel: "Multi-Agent Code Reviews"
-  }
+    id: "chatbots",
+    title: "Enterprise Chatbots",
+    description: "Branded, grounded assistants for support, sales and internal knowledge — with analytics and fallbacks.",
+    icon: "MessageSquareText",
+    bullets: ["Grounded, hallucination-safe", "Omnichannel deployment", "CRM & helpdesk integrations"],
+  },
+  {
+    id: "voice",
+    title: "Voice AI",
+    description: "Low-latency conversational voice agents for calls, IVR and hands-free enterprise experiences.",
+    icon: "AudioLines",
+    bullets: ["Realtime speech-to-speech", "Telephony (Twilio) ready", "Multilingual support"],
+  },
+  {
+    id: "cv",
+    title: "Computer Vision",
+    description: "Object detection, defect inspection and OCR for industrial and enterprise pipelines at the edge.",
+    icon: "ScanEye",
+    bullets: ["YOLO v8 defect detection", "Edge (Jetson / TensorRT)", "+22% inspection accuracy"],
+  },
+  {
+    id: "llmops",
+    title: "LLMOps & MLOps",
+    description: "CI/CD for models: evaluation, observability, cost control and reliable multi-region deployment.",
+    icon: "GitBranch",
+    bullets: ["Eval & guardrail harnesses", "Cost & latency optimization", "-25% infra cost"],
+  },
+  {
+    id: "consulting",
+    title: "AI Strategy & Consulting",
+    description: "Roadmaps, feasibility, architecture reviews and team enablement to de-risk your AI investment.",
+    icon: "Compass",
+    bullets: ["AI opportunity mapping", "Architecture & vendor review", "Team training & mentoring"],
+  },
+];
+
+export const AGENT_CAPABILITIES: AgentCapability[] = [
+  { id: "multi-agent", title: "Multi-Agent Systems", description: "Orchestrated teams of specialist agents that collaborate, delegate and self-correct to solve complex tasks.", icon: "Network", tags: ["LangGraph", "CrewAI", "AutoGen"] },
+  { id: "rag", title: "RAG Pipelines", description: "Grounded retrieval with hybrid search, reranking and citations for factual, trustworthy answers.", icon: "Database", tags: ["Pinecone", "FAISS", "BGE"] },
+  { id: "mcp", title: "MCP Servers", description: "Model Context Protocol servers that expose tools, data and resources to any compatible AI client.", icon: "Plug", tags: ["MCP", "Tools", "Resources"] },
+  { id: "a2a", title: "A2A Protocol", description: "Agent-to-Agent communication so autonomous services can negotiate and cooperate across systems.", icon: "ArrowLeftRight", tags: ["A2A", "Interop"] },
+  { id: "function", title: "Function Calling", description: "Structured tool use so LLMs can query APIs, run code and take real actions reliably.", icon: "FunctionSquare", tags: ["Tools", "JSON Schema"] },
+  { id: "memory", title: "Memory Systems", description: "Short and long-term memory with vector stores so agents remember context across sessions.", icon: "BrainCircuit", tags: ["Episodic", "Semantic"] },
+  { id: "long-context", title: "Long Context", description: "Handling 100k+ token contexts with chunking, compression and hierarchical retrieval strategies.", icon: "AlignLeft", tags: ["128k+", "Compression"] },
+  { id: "computer-use", title: "Computer Use", description: "Agents that navigate GUIs and browsers to complete tasks the way a human operator would.", icon: "MousePointerClick", tags: ["Browser", "Automation"] },
+  { id: "voice", title: "Voice Agents", description: "Realtime speech-to-speech agents for phone and hands-free experiences with sub-second latency.", icon: "AudioLines", tags: ["Realtime", "STT/TTS"] },
 ];
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: "Programming & Development",
-    skills: ["Python (Expert)", "SQL", "R", "Java", "C++", "C#", "JavaScript", "PHP"]
+    title: "Languages & Backend",
+    icon: "Code2",
+    skills: [
+      { name: "Python", level: 98 }, { name: "TypeScript", level: 90 }, { name: "JavaScript", level: 90 },
+      { name: "FastAPI", level: 92 }, { name: "Node.js", level: 85 }, { name: "SQL", level: 88 },
+    ],
   },
   {
-    title: "AI/ML Frameworks",
-    skills: ["PyTorch", "TensorFlow", "Hugging Face", "LangChain", "Scikit-Learn"]
+    title: "GenAI & LLM Frameworks",
+    icon: "Sparkles",
+    skills: [
+      { name: "LangChain", level: 95 }, { name: "LangGraph", level: 92 }, { name: "CrewAI", level: 88 },
+      { name: "AutoGen", level: 85 }, { name: "Hugging Face", level: 93 }, { name: "LlamaIndex", level: 87 },
+    ],
   },
   {
-    title: "Advanced AI Specialties",
-    skills: ["LLM Fine-tuning", "Sistemi RAG", "Prompt Engineering", "Computer Vision (YOLO v8)", "NLP", "AI Agents"]
+    title: "Models & Providers",
+    icon: "Brain",
+    skills: [
+      { name: "OpenAI", level: 95 }, { name: "Anthropic", level: 93 }, { name: "Gemini", level: 90 },
+      { name: "Llama", level: 90 }, { name: "Mistral", level: 88 }, { name: "RAG / Vector DB", level: 94 },
+    ],
   },
   {
-    title: "Cloud & MLOps",
-    skills: ["AWS SageMaker", "GCP AI Platform", "Azure ML", "Docker", "Kubernetes", "Auto-scaling", "Spot Instances"]
+    title: "ML / Deep Learning",
+    icon: "Cpu",
+    skills: [
+      { name: "PyTorch", level: 93 }, { name: "TensorFlow", level: 87 }, { name: "Computer Vision (YOLO)", level: 90 },
+      { name: "LoRA / PEFT", level: 92 }, { name: "Quantization", level: 88 }, { name: "Reinforcement Learning", level: 80 },
+    ],
   },
   {
-    title: "Data Engineering & Tools",
-    skills: ["Apache Spark", "Apache Airflow", "MLflow", "PostgreSQL", "MongoDB", "Redis", "Pinecone", "FAISS"]
+    title: "Cloud & DevOps",
+    icon: "Cloud",
+    skills: [
+      { name: "AWS", level: 92 }, { name: "Azure", level: 84 }, { name: "GCP", level: 84 },
+      { name: "Docker", level: 93 }, { name: "Kubernetes", level: 85 }, { name: "CI/CD (GitHub Actions)", level: 88 },
+    ],
   },
   {
-    title: "Emerging Technologies",
-    skills: ["Sistemi Multi-Agente", "Reinforcement Learning", "Edge AI Deployment", "INT8 Quantization"]
-  }
+    title: "Data & MLOps",
+    icon: "Database",
+    skills: [
+      { name: "PostgreSQL", level: 90 }, { name: "Redis", level: 87 }, { name: "MongoDB", level: 84 },
+      { name: "Pinecone / FAISS", level: 90 }, { name: "MLflow / Airflow", level: 86 }, { name: "LLMOps", level: 88 },
+    ],
+  },
+];
+
+export const TECH_RADAR = [
+  { name: "LangGraph", ring: "adopt", quadrant: "agents" },
+  { name: "MCP", ring: "adopt", quadrant: "agents" },
+  { name: "RAG", ring: "adopt", quadrant: "genai" },
+  { name: "LoRA/PEFT", ring: "adopt", quadrant: "ml" },
+  { name: "vLLM", ring: "trial", quadrant: "infra" },
+  { name: "A2A Protocol", ring: "trial", quadrant: "agents" },
+  { name: "Computer Use", ring: "assess", quadrant: "agents" },
+  { name: "GraphRAG", ring: "trial", quadrant: "genai" },
+  { name: "Diffusion Agents", ring: "assess", quadrant: "genai" },
+  { name: "TensorRT-LLM", ring: "trial", quadrant: "infra" },
 ];
 
 export const EXPERIENCES: Experience[] = [
   {
     company: "Baker Hughes (via Hermes Trade Company)",
-    role: "AI Engineer (Consulente)",
+    role: "AI Engineer (Consultant)",
     location: "Firenze, Italia",
-    period: "Nov 2024 – Jan 2026",
+    period: "Nov 2024 – Present",
     description: "Architecting enterprise AI platforms and scaling Generative AI services across global teams.",
     bulletPoints: [
-      "Sviluppo Piattaforma AI-as-a-Service: Designed and implemented full RAG-as-a-Service and LLM-as-a-Service platforms, making advanced AI capabilities accessible to over 500 global team members across 15+ countries.",
+      "AI-as-a-Service Platform: Designed and implemented full RAG-as-a-Service and LLM-as-a-Service platforms, making advanced AI capabilities accessible to over 500 global team members across 15+ countries.",
       "Enterprise 'Chat with Document': Developed a high-performance system processing over 10,000 PDF/Word documents daily with a certified accuracy of 95%.",
       "Summarization as a Service: Reduced file analysis and review cycle time by 60% for technical and legal teams.",
-      "Chunk-as-a-Service: Built a highly scalable text-segmentation and token-based chunking service to feed embedding layers, boosting chunking efficiency by 35%.",
-      "Computer Vision (YOLO v8): Implemented YOLO v8 models to inspect industrial turbine and compressor components, enhancing manufacturing defect detection accuracy by 22%.",
-      "LLM Fine-Tuning (LoRA): Fine-tuned Hugging Face models using parameter-efficient methods (PEFT/LoRA) for niche terminology, cutting inference latency by 40% while preserving 98% factual precision.",
-      "Cloud & Cost Optimization: Administered a multi-region AWS cloud infrastructure, safeguarding a 99.9% uptime while shrinking operational bills by 25% through spot instances and automated scaling scripts."
+      "Chunk-as-a-Service: Built a scalable text-segmentation and token-based chunking service to feed embedding layers, boosting chunking efficiency by 35%.",
+      "Computer Vision (YOLO v8): Implemented YOLO v8 models to inspect industrial turbine and compressor components, enhancing defect detection accuracy by 22%.",
+      "LLM Fine-Tuning (LoRA): Fine-tuned Hugging Face models using PEFT/LoRA for niche terminology, cutting inference latency by 40% while preserving 98% factual precision.",
+      "Cloud & Cost Optimization: Administered a multi-region AWS infrastructure, safeguarding 99.9% uptime while shrinking operational costs by 25%.",
     ],
     challengesSolved: [
       {
         title: "Domain LLM Latency & Cost Bottlenecks",
-        challenge: "Generic API LLM calls were slow, expensive, and suffered from accuracy drift when processing niche industrial engineering manuals.",
-        solution: "Fine-tuned an open-source Hugging Face model using LoRA (PEFT) on custom manuals, followed by INT8 post-training quantization, and hosted it on cost-efficient AWS Spot instances.",
-        impact: "Slashed inference latency by 40% and infrastructure hosting costs by 25% while maintaining a 98% factual precision rating."
+        challenge: "Generic API LLM calls were slow, expensive, and suffered accuracy drift on niche industrial engineering manuals.",
+        solution: "Fine-tuned an open-source Hugging Face model using LoRA (PEFT) on custom manuals, applied INT8 quantization, and hosted on cost-efficient AWS Spot instances.",
+        impact: "Slashed inference latency by 40% and hosting costs by 25% while maintaining 98% factual precision.",
       },
       {
         title: "Scaling Document Extraction to 10k+ Daily PDFs",
-        challenge: "Synchronous document parsing led to connection timeouts and stalled queues under heavy concurrent user loads.",
-        solution: "Engineered an asynchronous 'Chunk-as-a-Service' document pipeline powered by a Redis-backed queue system, Apache Airflow, and specialized chunking algorithms.",
-        impact: "Document ingestion throughput surged by 35%, ensuring zero lost documents and handling 10,000+ files daily seamlessly."
-      }
+        challenge: "Synchronous document parsing led to timeouts and stalled queues under heavy concurrent loads.",
+        solution: "Engineered an asynchronous 'Chunk-as-a-Service' pipeline powered by a Redis-backed queue, Apache Airflow, and specialized chunking algorithms.",
+        impact: "Ingestion throughput surged 35%, ensuring zero lost documents and handling 10,000+ files daily.",
+      },
     ],
-    modelsUsed: ["Llama-3-8B-Instruct", "Mistral-7B", "YOLO v8 (Ultralytics)", "BGE-Large-Embeddings", "Claude-3.5-Sonnet"]
+    modelsUsed: ["Llama-3-8B-Instruct", "Mistral-7B", "YOLO v8", "BGE-Large-Embeddings", "Claude-3.5-Sonnet"],
   },
   {
     company: "Configuratori",
-    role: "Software Engineer / ML Engineer / Data Scientist",
+    role: "Software / ML Engineer / Data Scientist",
     location: "Firenze, Italia",
     period: "Aug 2021 – Nov 2024",
     description: "Developing robust commercial recommendation systems and deep learning prediction pipelines.",
     bulletPoints: [
-      "Sviluppo Soluzioni AI End-to-End: Created customized machine learning models and high-throughput production lines supporting 100,000+ active daily users (99.5% availability), generating over €2M in annual recurring revenue.",
-      "Recommendation Systems: Drafted proprietary collaborative-filtering and deep learning hybrid recommendations, accelerating click-through-rates by 20% and conversion rates by 15%.",
-      "Production Deployment: Integrated over 15 unique AI models into the live ecosystem, enhancing overall operational efficiency by 30% and eliminating 80% of manual configuration tasks.",
-      "Deep Learning Data Ingestion: Formulated high-performance pipelines processing over 1TB of daily data with CNN and LSTM neural networks for proactive asset scheduling.",
-      "Reinforcement Learning: Applied custom RL agents to optimize physical layout configurations in custom heavy machinery order-sheets.",
-      "Anomaly Detection: Formed an ensemble classifier combining Isolation Forests and XGBoost to detect real-time transaction anomalies, depressing false alarms by 70%."
+      "End-to-End AI Solutions: Created custom ML models and pipelines supporting 100,000+ daily active users (99.5% availability), generating over €2M in annual recurring revenue.",
+      "Recommendation Systems: Built collaborative-filtering + deep learning hybrids, accelerating click-through rates by 20% and conversions by 15%.",
+      "Production Deployment: Integrated 15+ AI models into the live ecosystem, improving operational efficiency by 30% and eliminating 80% of manual config tasks.",
+      "Deep Learning Ingestion: Built pipelines processing 1TB+ of daily data with CNN and LSTM networks for proactive asset scheduling.",
+      "Reinforcement Learning: Applied RL agents to optimize physical layout configurations in custom heavy-machinery order sheets.",
+      "Anomaly Detection: Combined Isolation Forests and XGBoost to detect real-time anomalies, reducing false alarms by 70%.",
     ],
     challengesSolved: [
       {
         title: "1TB Daily Telemetry Data Bottlenecks",
-        challenge: "Legacy pipeline crashed when reading high-volume, real-time telemetry streams, delaying critical failure forecasts.",
-        solution: "Migrated the ETL system to Apache Spark and integrated PyTorch lightning for parallel neural network training.",
-        impact: "Successfully ingested 1TB+ daily data, accelerated predictive scheduling, and automated 80% of manual data-cleansing tasks."
+        challenge: "Legacy pipeline crashed reading high-volume real-time telemetry, delaying critical failure forecasts.",
+        solution: "Migrated the ETL system to Apache Spark and integrated PyTorch Lightning for parallel neural network training.",
+        impact: "Successfully ingested 1TB+ daily data and automated 80% of manual data-cleansing tasks.",
       },
-      {
-        title: "High False Positives in Anomaly Alerts",
-        challenge: "Strict rule-based alert engines flagged 15% of healthy activities as anomalous, overloading operation support desks.",
-        solution: "Engineered a hybrid ensemble classifier coupling Isolation Forest (unsupervised) with XGBoost (supervised) to audit anomalies.",
-        impact: "Decreased false alarms by 70%, boosting engineering team confidence and system responsiveness."
-      }
     ],
-    modelsUsed: ["XGBoost", "PyTorch LSTM", "ResNet-50", "Collaborative Filtering Autoencoders", "Isolation Forests"]
+    modelsUsed: ["XGBoost", "PyTorch LSTM", "ResNet-50", "Autoencoders", "Isolation Forests"],
   },
   {
     company: "Klimsoft",
@@ -139,11 +243,11 @@ export const EXPERIENCES: Experience[] = [
     period: "Apr 2021 – Jun 2021",
     description: "Business intelligence and real-time report analysis.",
     bulletPoints: [
-      "Led analytics initiatives utilizing IBM Cognos Analytics V11, yielding a 40% improvement in executive report precision.",
-      "Crafted multi-source BI executive dashboards for instantaneous operational awareness."
+      "Led analytics initiatives using IBM Cognos Analytics V11, yielding a 40% improvement in executive report precision.",
+      "Crafted multi-source BI dashboards for instantaneous operational awareness.",
     ],
     challengesSolved: [],
-    modelsUsed: ["IBM Cognos", "SQL", "Pandas", "Matplotlib"]
+    modelsUsed: ["IBM Cognos", "SQL", "Pandas", "Matplotlib"],
   },
   {
     company: "UniqMaster",
@@ -152,215 +256,124 @@ export const EXPERIENCES: Experience[] = [
     period: "Nov 2020 – Mar 2021",
     description: "Designing REST API integration architectures.",
     bulletPoints: [
-      "Architected secure, reliable RESTful API endpoints, enhancing cross-system syncing speed by 40%.",
-      "Formulated scalable microservices backends using Node.js and Docker containers."
+      "Architected secure RESTful API endpoints, enhancing cross-system syncing speed by 40%.",
+      "Built scalable microservices backends using Node.js and Docker containers.",
     ],
     challengesSolved: [],
-    modelsUsed: ["Node.js", "Docker", "Express", "PostgreSQL"]
-  }
+    modelsUsed: ["Node.js", "Docker", "Express", "PostgreSQL"],
+  },
 ];
 
 export const CERTIFICATIONS = [
-  {
-    title: "IBM Certified Generative AI & LLM Engineering",
-    issuer: "IBM",
-    year: "2024",
-    status: "Completed"
-  },
-  {
-    title: "AWS Certified Machine Learning – Specialty",
-    issuer: "Amazon Web Services (AWS)",
-    year: "In Progress",
-    status: "In Progress"
-  },
-  {
-    title: "Azure AI Engineer Associate",
-    issuer: "Microsoft",
-    year: "In Progress",
-    status: "In Progress"
-  },
-  {
-    title: "Google Cloud Professional ML Engineer",
-    issuer: "Google Cloud (GCP)",
-    year: "In Progress",
-    status: "In Progress"
-  },
-  {
-    title: "Deep Learning Specialization - Stanford/Coursera",
-    issuer: "DeepLearning.AI / Stanford",
-    year: "In Progress",
-    status: "In Progress"
-  }
+  { title: "IBM Generative AI & LLM Engineering", issuer: "IBM", year: "2024", status: "Completed" },
+  { title: "AWS Certified Machine Learning – Specialty", issuer: "Amazon Web Services", year: "2025", status: "In Progress" },
+  { title: "Azure AI Engineer Associate", issuer: "Microsoft", year: "2025", status: "In Progress" },
+  { title: "Google Cloud Professional ML Engineer", issuer: "Google Cloud", year: "2025", status: "In Progress" },
+  { title: "Deep Learning Specialization", issuer: "DeepLearning.AI / Stanford", year: "2025", status: "In Progress" },
 ];
 
 export const EDUCATION = [
-  {
-    degree: "Certificato Professionale in Machine Learning & Data Science",
-    institution: "Università Paris 1 Panthéon-Sorbonne",
-    location: "France",
-    period: "2023 – 2024",
-    details: "Advanced MLOps, model deployment in production, statistical analysis, and neural networks visualization."
-  },
-  {
-    degree: "Laurea Magistrale in Finanza (Quantitative Finance)",
-    institution: "Università degli Studi di Siena",
-    location: "Siena, Italia",
-    period: "2017 – 2022",
-    details: "Strong foundations in Quantitative Finance, Risk Management, and Financial Modeling."
-  }
+  { degree: "Professional Certificate in ML & Data Science", institution: "Université Paris 1 Panthéon-Sorbonne", location: "France", period: "2023 – 2024", details: "Advanced MLOps, production deployment, statistical analysis, neural networks." },
+  { degree: "M.Sc. in Quantitative Finance", institution: "Università degli Studi di Siena", location: "Siena, Italy", period: "2017 – 2022", details: "Quantitative Finance, Risk Management, Financial Modeling." },
+];
+
+export const LANGUAGES = [
+  { name: "Arabic", level: "Native", pct: 100 },
+  { name: "English", level: "Fluent (C2)", pct: 95 },
+  { name: "Italian", level: "Intermediate (B1)", pct: 60 },
+  { name: "German", level: "Elementary (A2)", pct: 35 },
+  { name: "French", level: "Beginner (A1)", pct: 25 },
+];
+
+export const TARGET_COMPANIES = [
+  "OpenAI", "Anthropic", "NVIDIA", "Microsoft", "Google", "Meta",
+  "AWS", "Hugging Face", "Stripe", "Shopify", "SAP", "Siemens",
+  "Bosch", "Accenture", "Deloitte", "PwC", "Capgemini", "Thoughtworks",
+];
+
+export const TESTIMONIALS: Testimonial[] = [
+  { id: "t1", quote: "Karim rebuilt our document intelligence stack into a RAG-as-a-Service platform used across 15 countries. Precision and reliability were exceptional.", name: "Engineering Director", role: "Head of Digital", company: "Industrial Enterprise (Baker Hughes program)", rating: 5, metric: "500+ users onboarded" },
+  { id: "t2", quote: "He fine-tuned our domain LLM and cut inference latency by 40% while dropping cloud spend. A rare engineer who thinks about ROI, not just models.", name: "CTO", role: "Chief Technology Officer", company: "European SaaS Company", rating: 5, metric: "-40% latency · -25% cost" },
+  { id: "t3", quote: "Our recommendation engine generated over €2M in annual impact after Karim's redesign. Clear communication and production-grade delivery.", name: "Product Lead", role: "VP Product", company: "Configuratori", rating: 5, metric: "€2M+ revenue impact" },
+  { id: "t4", quote: "The multi-agent automation Karim built removed 80% of our manual configuration work. It just runs — reliably, every day.", name: "Operations Manager", role: "Head of Operations", company: "Manufacturing Client", rating: 5, metric: "80% tasks automated" },
 ];
 
 export const GITHUB_REPOS: GithubRepo[] = [
   {
     name: "career-ops",
-    description: "AI-powered job search system built on Claude Code. Features 14 skill modes, interactive Go dashboard, resume PDF generation, and scalable batch processing pipelines.",
-    stars: 38,
-    forks: 9,
-    language: "Go",
-    url: "https://github.com/karimosman89/career-ops",
-    topics: ["Claude-Code", "Go", "Job-Search", "PDF-Generation", "Automation"]
+    description: "AI-powered job search system built on Claude Code. 14 skill modes, interactive Go dashboard, resume PDF generation, and scalable batch processing.",
+    stars: 38, forks: 9, language: "Go", url: "https://github.com/karimosman89/career-ops",
+    topics: ["Claude-Code", "Go", "Automation", "PDF"],
+    metrics: [{ label: "Skill Modes", value: "14" }, { label: "Pipelines", value: "Batch" }],
   },
   {
     name: "Open-Generative-AI",
-    description: "Unrestricted open-source alternative to AI video platforms. A free AI image and video generation studio supporting 200+ state-of-the-art models (Flux, Midjourney, Kling, Sora, Veo) without content filters.",
-    stars: 124,
-    forks: 28,
-    language: "TypeScript",
-    url: "https://github.com/karimosman89/Open-Generative-AI",
-    topics: ["Generative-AI", "TypeScript", "React", "AI-Video", "Flux"]
+    description: "Open-source AI image & video generation studio supporting 200+ state-of-the-art models (Flux, Kling, Sora, Veo) with a unified React interface.",
+    stars: 124, forks: 28, language: "TypeScript", url: "https://github.com/karimosman89/Open-Generative-AI",
+    topics: ["Generative-AI", "React", "AI-Video", "Flux"],
+    metrics: [{ label: "Models", value: "200+" }, { label: "Stars", value: "124" }],
   },
   {
     name: "AssetOpsBench",
-    description: "Industry 4.0 benchmark and framework for building, orchestrating, and evaluating domain-specific AI agents for asset operations, with 460+ scenarios and 5 specialist agents over MCP.",
-    stars: 42,
-    forks: 11,
-    language: "Python",
-    url: "https://github.com/karimosman89/AssetOpsBench",
-    topics: ["Industry-4.0", "MCP", "AI-Agents", "IoT", "Asset-Operations"]
+    description: "Industry 4.0 benchmark for building, orchestrating and evaluating domain-specific AI agents over MCP — 460+ scenarios and 5 specialist agents.",
+    stars: 42, forks: 11, language: "Python", url: "https://github.com/karimosman89/AssetOpsBench",
+    topics: ["Industry-4.0", "MCP", "AI-Agents", "IoT"],
+    metrics: [{ label: "Scenarios", value: "460+" }, { label: "Agents", value: "5" }],
   },
   {
     name: "500-AI-Agents-Projects",
-    description: "A curated collection of AI agent use cases across various industries. Showcases practical applications and provides links to open-source projects for implementation, comparing frameworks like CrewAI and LangGraph.",
-    stars: 87,
-    forks: 19,
-    language: "Markdown",
-    url: "https://github.com/karimosman89/500-AI-Agents-Projects",
-    topics: ["AI-Agents", "CrewAI", "AutoGen", "LangGraph", "Curated-List"]
+    description: "Curated collection of AI agent use cases across industries with links to open-source implementations, comparing CrewAI, LangGraph and AutoGen.",
+    stars: 87, forks: 19, language: "Markdown", url: "https://github.com/karimosman89/500-AI-Agents-Projects",
+    topics: ["AI-Agents", "CrewAI", "LangGraph", "Curated"],
+    metrics: [{ label: "Use Cases", value: "500" }, { label: "Frameworks", value: "3+" }],
   },
   {
     name: "gemini-cli",
-    description: "An open-source AI agent that brings the power of Gemini directly into your terminal. Features deep code understanding, interactive prompt loops, GitHub integration, and native support for MCP servers.",
-    stars: 49,
-    forks: 14,
-    language: "Go",
-    url: "https://github.com/karimosman89/gemini-cli",
-    topics: ["Gemini-API", "CLI", "AI-Agent", "MCP-Server", "Go"]
-  }
+    description: "Open-source AI agent bringing Gemini into your terminal — deep code understanding, interactive prompt loops, GitHub integration and native MCP support.",
+    stars: 49, forks: 14, language: "Go", url: "https://github.com/karimosman89/gemini-cli",
+    topics: ["Gemini", "CLI", "AI-Agent", "MCP"],
+    metrics: [{ label: "MCP", value: "Native" }, { label: "Lang", value: "Go" }],
+  },
 ];
-
-function getDynamicDate(daysAgo: number): string {
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
-}
 
 export const TECHNICAL_BLOGS: BlogPost[] = [
   {
-    id: "ai-news-1",
-    title: "Gemini 1.5 Pro Context Windows: Standardizing 2M Tokens Across Industry Workflows",
-    summary: "How enterprises are shifting from vector search to in-context learning with native 2-million-token context lengths for codebase analysis and complex multi-document reasoning.",
-    content: `The generative AI space is witnessing a massive transition. Developers and enterprise architects are no longer restricted to traditional 4K or 8K token windows. With the widespread integration of the Gemini 1.5 Pro model, a native 2-million-token context is quickly becoming the benchmark for production applications.
-
-### Shifting from RAG to In-Context Learning
-Traditionally, Retrieval-Augmented Generation (RAG) has been the gold standard for querying custom data pools. However, RAG pipelines introduce latency, chunking bugs, and embedding failures. By feeding entire codebases, 1,000-page financial audits, or hours of audio files directly into the 2M context window of Gemini 1.5, systems achieve perfect multi-hop reasoning without complex chunking algorithms.
-
-### Cost and Latency Trade-Offs
-While long-context processing delivers superior recall, it raises performance and cost considerations:
-- **Prompt Caching**: Substantially reduces the cost and latency of subsequent queries by reusing pre-loaded context assets.
-- **Structured Outputs**: Pairing JSON schemas with long contexts ensures strict, validated schema adherence for heavy processing pipelines.
-- **Smarter Workflows**: Models can cross-reference multiple documents natively, detecting hidden inconsistencies with extreme precision.`,
-    date: getDynamicDate(0),
-    readTime: "4 min read",
-    tags: ["Gemini API", "LLM", "Long Context", "Enterprise AI", "Prompt Caching"]
+    id: "blog-lora-latency",
+    title: "Mastering LoRA: 40% Latency Reduction for Domain-Specific LLMs",
+    summary: "Combining Parameter-Efficient Fine-Tuning (PEFT) with post-training quantization to run large models on low-cost hardware without accuracy loss.",
+    content: `Domain adaptation is one of the biggest challenges in deploying enterprise LLMs. Generalist models like Claude or GPT-4 excel at open-ended queries but stumble on highly specialized terms — heavy machinery part serials, industrial gas turbine specs.\n\nTo bridge this gap, we fine-tuned open-source models using Hugging Face **PEFT** with **LoRA** adapters.\n\n### Why LoRA?\nInstead of retraining billions of parameters, LoRA injects low-rank trainable matrices into the attention layers, cutting trainable parameters by up to 99%.\n\n### The Double-Whammy: Quantization (INT8)\nAfter training we applied INT8 quantization, mapping 32-bit weights to 8-bit integers.\n\n**Result:** 40% latency reduction (850ms → 510ms), 25% cost savings on AWS Spot instances, and 98% accuracy preserved.`,
+    date: "May 14, 2026", readTime: "5 min", category: "LLMOps",
+    tags: ["LLM", "Hugging Face", "LoRA", "MLOps"],
   },
   {
-    id: "ai-news-2",
-    title: "Model Context Protocol (MCP): The Unified Standard for Agentic Tool Integration",
-    summary: "An analysis of Anthropic’s open standard that allows secure, standard communication between AI clients and data sources like Postgres, GitHub, and local environments.",
-    content: `The biggest bottleneck in deploying AI agents has always been the bespoke nature of tool integration. Every developer has had to write custom API wrappers for their agents to read local databases, scan directories, or send Slack notifications.
-
-This fragmentation has been solved by the introduction of the **Model Context Protocol (MCP)**, an open-source standard designed to connect AI applications to data sources.
-
-### Architecture of MCP
-MCP defines a client-server relationship:
-1. **AI Clients**: Applications (like Claude Desktop, Zed, or custom CLI tools) that coordinate the agentic workflow.
-2. **MCP Servers**: Light services that expose specific resources, prompts, and tools through standard JSON-RPC 2.0.
-
-### Why This Changes Everything
-By standardizing the transport protocol (STDIO or SSE), an agent can seamlessly interface with any database, git repository, or memory node that implements an MCP server. The community has already built over 150 servers for PostgreSQL, Google Drive, Slack, Docker, and terminal shells, creating a universally interoperable agent ecosystem.`,
-    date: getDynamicDate(1),
-    readTime: "5 min read",
-    tags: ["MCP", "AI Agents", "API Design", "JSON-RPC", "Open Source"]
+    id: "blog-rag-service",
+    title: "Architecting 'RAG-as-a-Service' for Enterprise Scaling",
+    summary: "A blueprint for turning simple vector-search scripts into a robust, multi-tenant distributed RAG pipeline serving 500+ global users.",
+    content: `Anyone can spin up a RAG prototype in 15 lines of LangChain. Serving 500+ concurrent users across 15+ countries is a different story.\n\n### Component 1: Chunk-as-a-Service\nToken-aware chunking with overlapping windows and semantic boundary detection, distributed across Redis + Celery workers to parse 10,000+ files daily.\n\n### Component 2: Multi-Tenant Vector Routing\nPinecone with metadata namespace tagging isolates data per country/team. Hybrid BM25 + BGE dense search plus a Cohere reranking layer.\n\n### Component 3: Guardrails\nStrict factual boundaries and citation attribution to page numbers.`,
+    date: "Feb 22, 2026", readTime: "7 min", category: "Architecture",
+    tags: ["RAG", "System Design", "Vector DB", "Pinecone"],
   },
   {
-    id: "ai-news-3",
-    title: "The Rise of Multi-Agent Systems in Software Engineering Automation",
-    summary: "Exploring how hierarchical multi-agent teams outperform single-prompt chatbots by distributing specialized software tasks like writing, linting, and building code.",
-    content: `While individual developer tools can edit files on command, true automation requires collaboration. Autonomous multi-agent systems are proving that specialized roles—such as an Architect, Coder, and QA Engineer—can solve complex codebase modifications far better than any single AI agent.
-
-### Hierarchical Task Delegation
-Instead of prompting a single LLM to write a whole feature, multi-agent frameworks divide work:
-- **Planner Agent**: Parses instructions, inspects existing directory trees, and outlines a localized architectural plan.
-- **Coder Agent**: Receives precise edit instructions and executes file writes surgically, preventing token bloat.
-- **Reviewer Agent**: Runs compilers and linters in sandboxed containers, analyzing build logs and returning diagnostic errors directly to the coder.
-
-### Minimizing Catastrophic Rewrites
-By isolating code edits to small, modular files, multi-agent pipelines minimize accidental code regression and preserve code patterns. In tests, multi-agent setups resolved 45% more GitHub issues successfully than standard single-turn agents.`,
-    date: getDynamicDate(2),
-    readTime: "6 min read",
-    tags: ["Multi-Agent", "Software Automation", "Vite", "AI Coding", "LangGraph"]
+    id: "blog-agents",
+    title: "Multi-Agent Systems in Production: Lessons from the Trenches",
+    summary: "What actually works when you deploy LangGraph and CrewAI agent teams for real enterprise automation — and where they break.",
+    content: `Multi-agent demos look magical. Production is humbling. Here is what shipped reliably.\n\n### 1. Constrain the graph\nOpen-ended agent loops are unpredictable. We model workflows as explicit **LangGraph** state machines with bounded transitions.\n\n### 2. Tools over prompts\nEvery capability is a typed, validated function. Function calling with JSON schema beats free-text instructions.\n\n### 3. Human-in-the-loop gates\nHigh-impact actions pause for approval. This alone earned enterprise trust.\n\n### 4. Memory that forgets\nEpisodic + semantic memory with TTL keeps agents fast and relevant.`,
+    date: "Jan 10, 2026", readTime: "6 min", category: "AI Agents",
+    tags: ["Agents", "LangGraph", "CrewAI", "MCP"],
   },
   {
-    id: "ai-news-4",
-    title: "Edge AI & Small Language Models (SLMs): Redefining Local Reasoning",
-    summary: "How models like Phi-3, Gemma 2, and Llama 3-8B are enabling high-performance inference directly on smartphones and edge devices without cloud connectivity.",
-    content: `For years, generative AI was synonymous with massive cloud-hosted APIs. But a quiet revolution is taking place at the edge. The rise of Small Language Models (SLMs) is enabling sophisticated on-device intelligence with zero internet latency and complete privacy.
-
-### The Efficiency Breakthrough
-Modern SLMs (ranging from 1B to 9B parameters) leverage advanced distillation and quantization techniques. Models like Gemma 2 (9B) and Phi-3 (3.8B) perform on par with older 70B models while running comfortably on low-power consumer devices.
-
-### Industrial & Mobile Applications
-On-device intelligence is critical for scenarios with limited connectivity:
-- **Industrial Quality Control**: High-speed assembly lines run visual anomaly detection locally to prevent network lag.
-- **Secure Patient Diagnostics**: Medical data can be analyzed directly on local tablets, preserving patient confidentiality.
-- **Interactive Hardware**: Robots and smart appliances process commands in milliseconds without depending on active cloud servers.`,
-    date: getDynamicDate(3),
-    readTime: "5 min read",
-    tags: ["Edge AI", "SLM", "Gemma", "Quantization", "On-Device AI"]
+    id: "blog-yolo-manufacturing",
+    title: "Computer Vision in Heavy Industry: Defect Detection with YOLO v8",
+    summary: "Applying state-of-the-art object detection to high-speed scans of industrial components to increase defect classification accuracy by 22%.",
+    content: `Automating quality inspection is hard: varying lighting, dust, microscopic defects. We applied **YOLO v8** to turbine rotor and compressor inspection.\n\n### Pipeline\n1. Dual thermal + optical cameras at 30 FPS.\n2. Adaptive histogram equalization to normalize reflections.\n3. Custom YOLO v8-medium predicting boxes in <15ms.\n4. Edge deployment via NVIDIA TensorRT on Jetson Orin.\n\n**Wins:** +22% defect detection over legacy filters, real-time feedback, zero interruption.`,
+    date: "Nov 08, 2025", readTime: "6 min", category: "Computer Vision",
+    tags: ["Computer Vision", "YOLO v8", "TensorRT", "Edge AI"],
   },
-  {
-    id: "ai-news-5",
-    title: "Vector Search vs. Graph RAG: Bridging the Structural Knowledge Gap",
-    summary: "An evaluation of Graph RAG pipelines that combine knowledge graphs with semantic embeddings to provide contextual answers for unstructured enterprise data.",
-    content: `Standard RAG pipelines excel at finding specific documents or facts, but fail on holistic questions like 'What are the main theme of these 100 research papers?'. This is because vector search treats chunks independently.
+];
 
-Enter **Graph RAG**: a paradigm shift that integrates structured Knowledge Graphs with semantic search.
-
-### Building the Knowledge Graph
-Graph RAG works by using an LLM to analyze raw documents, extract entities (such as people, technologies, systems), and map their relationships (edges). This creates a structured network representation of the unstructured files.
-
-### Hybrid Query Execution
-When a user queries the database, Graph RAG executes a two-stage retrieval:
-1. **Relational Pathing**: Traverses the Knowledge Graph to retrieve high-level concepts and themes across the entire document set.
-2. **Semantic Retrieval**: Fetches localized raw text chunks via standard vector similarity.
-
-This hybrid approach delivers up to 60% higher completeness in summary responses, ensuring the LLM understands not just the words, but the deep relationships between them.`,
-    date: getDynamicDate(4),
-    readTime: "6 min read",
-    tags: ["Graph RAG", "Knowledge Graphs", "Vector Search", "Neo4j", "Information Retrieval"]
-  }
+export const FAQS = [
+  { q: "What kind of projects do you take on?", a: "Custom AI applications, RAG systems, AI agents & automation, enterprise chatbots, computer vision, and AI strategy consulting for B2B and enterprise clients." },
+  { q: "Do you work remotely / internationally?", a: "Yes. I'm based in Siena, Italy and work with clients across Europe and North America, fully remote or hybrid. I'm a VAT-registered business entity." },
+  { q: "How do engagements typically start?", a: "A free 30-minute discovery call to scope your needs, followed by a proposal with clear deliverables, timeline and pricing." },
+  { q: "What is your typical timeline?", a: "Proofs of concept in 1–3 weeks; production systems in 4–12 weeks depending on scope. I ship in iterative, reviewable milestones." },
 ];
