@@ -6,8 +6,3 @@ coverage/
 *.log
 .env*
 !.env.example
-inquiries.json
-bookings.json
-host_config.json
-core
-*.core
