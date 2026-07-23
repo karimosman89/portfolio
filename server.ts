@@ -16,43 +16,6 @@ const PORT = 3000;
 
 app.use(express.json());
 
-/**
- * Optional email delivery for contact submissions.
- * Configure SMTP via environment variables (see .env.example):
- *   SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL
- * If nodemailer or the SMTP vars are missing, submissions still persist
- * to inquiries.json and the API succeeds gracefully.
- */
-async function sendContactEmail(inquiry: Record<string, any>): Promise<boolean> {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO_EMAIL } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return false;
-  try {
-    // Dynamic import so the app runs even if nodemailer isn't installed.
-    const nodemailer = await import("nodemailer").then((m: any) => m.default || m);
-    const transporter = nodemailer.createTransport({
-      host: SMTP_HOST,
-      port: Number(SMTP_PORT) || 587,
-      secure: Number(SMTP_PORT) === 465,
-      auth: { user: SMTP_USER, pass: SMTP_PASS },
-    });
-    const to = CONTACT_TO_EMAIL || "karim.programmer2020@gmail.com";
-    const rows = Object.entries(inquiry)
-      .map(([k, v]) => `<tr><td style="padding:4px 12px 4px 0;color:#666;font-family:sans-serif;font-size:13px">${k}</td><td style="padding:4px 0;font-family:sans-serif;font-size:13px">${String(v).replace(/\n/g, "<br/>")}</td></tr>`)
-      .join("");
-    await transporter.sendMail({
-      from: `"Portfolio Contact" <${SMTP_USER}>`,
-      to,
-      replyTo: inquiry.email,
-      subject: `New AI project inquiry — ${inquiry.name}${inquiry.company ? " (" + inquiry.company + ")" : ""}`,
-      html: `<h2 style="font-family:sans-serif">New Project Inquiry</h2><table>${rows}</table>`,
-    });
-    return true;
-  } catch (err) {
-    console.error("Email delivery failed (submission still persisted):", err);
-    return false;
-  }
-}
-
 // Lazy-initialized Gemini Client
 let aiClient: GoogleGenAI | null = null;
 
@@ -703,21 +666,6 @@ app.post("/api/chat", async (req, res) => {
       return;
     }
 
-    // Graceful degradation so the RAG demo stays functional without a key.
-    if (!process.env.GEMINI_API_KEY) {
-      res.json({
-        demo: true,
-        text:
-          "**Demo mode** — this assistant is grounded on Karim's CV via Retrieval-Augmented Generation, but no `GEMINI_API_KEY` is set on this deployment.\n\n" +
-          "Highlights from the grounding data:\n" +
-          "- **Senior AI Engineer** specialising in LLM, RAG & multi-agent systems.\n" +
-          "- Impact metrics: **99.9% uptime**, **500+ global users**, **40% latency reduction**, **€2M+ revenue impact**.\n" +
-          "- Based in **Siena, Italy** — open to remote & relocation.\n\n" +
-          "Add `GEMINI_API_KEY` to `.env` to get live, grounded answers.",
-      });
-      return;
-    }
-
     const ai = getGeminiClient();
 
     // Map history to the required content structure
@@ -748,7 +696,7 @@ ${CV_GROUNDING_DATA}
     
     // We can use chat.sendMessage or generateContent with history. Let's use generateContent for simplicity and stability.
     const response = await ai.models.generateContent({
-      model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: formattedContents,
       config: {
         systemInstruction,
@@ -782,7 +730,7 @@ app.post("/api/summarize-chunk", async (req, res) => {
       const end = Math.min(start + chunkSize, text.length);
       const content = text.slice(start, end);
       chunks.push({
-        id: id++,
+        id,
         start,
         end,
         content
@@ -790,29 +738,6 @@ app.post("/api/summarize-chunk", async (req, res) => {
       
       if (end === text.length) break;
       start += (chunkSize - chunkOverlap);
-    }
-
-    const metadata = {
-      originalLength: text.length,
-      numChunks: chunks.length,
-      chunkSize,
-      chunkOverlap
-    };
-
-    // The chunking runs entirely server-side and always works. Only the AI
-    // summary needs a key — degrade gracefully so the demo stays functional.
-    if (!process.env.GEMINI_API_KEY) {
-      const preview = text.replace(/\s+/g, " ").trim().slice(0, 240);
-      res.json({
-        demo: true,
-        summary:
-          `**Demo mode** — chunking ran live (see the ${chunks.length} chunks below). ` +
-          `Configure \`GEMINI_API_KEY\` for a real AI summary.\n\n` +
-          `Preview of input: "${preview}${text.length > 240 ? "…" : ""}"`,
-        chunks,
-        metadata
-      });
-      return;
     }
 
     // Generate AI Summary of the whole text via Gemini
@@ -825,7 +750,7 @@ Keep the output under 3 bullet points or a single powerful paragraph. Focus pure
 `;
 
     const response = await ai.models.generateContent({
-      model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+      model: "gemini-3.5-flash",
       contents: `Please summarize the following text:\n\n${text}`,
       config: {
         systemInstruction: summaryInstructions,
@@ -836,7 +761,12 @@ Keep the output under 3 bullet points or a single powerful paragraph. Focus pure
     res.json({
       summary: response.text || "Unable to generate summary.",
       chunks,
-      metadata
+      metadata: {
+        originalLength: text.length,
+        numChunks: chunks.length,
+        chunkSize,
+        chunkOverlap
+      }
     });
   } catch (error: any) {
     console.error("Error in /api/summarize-chunk:", error);
@@ -879,9 +809,6 @@ app.post("/api/contact", async (req, res) => {
     currentInquiries.push(inquiry);
     fs.writeFileSync(filePath, JSON.stringify(currentInquiries, null, 2), "utf-8");
 
-    // Attempt to forward the inquiry to Karim's inbox (no-op if SMTP not configured).
-    const emailSent = await sendContactEmail(inquiry);
-
     // Generate immediate interactive assessment of their request by Karim's Virtual AI Consultant!
     let aiResponseText = "";
     try {
@@ -908,7 +835,7 @@ Generate a highly professional, technically competent, and warm immediate acknow
 Keep the response strictly formatted in markdown, under 180 words, using bullet points or bold text if necessary. Do not include signature blocks, use a warm and objective advisor tone.
 `;
       const response = await ai.models.generateContent({
-        model: process.env.GEMINI_MODEL || "gemini-2.0-flash",
+        model: "gemini-3.5-flash",
         contents: prompt,
         config: {
           temperature: 0.6,
@@ -923,7 +850,6 @@ Keep the response strictly formatted in markdown, under 180 words, using bullet 
     res.json({
       success: true,
       inquiryId: inquiry.id,
-      emailSent,
       aiAssessment: aiResponseText
     });
   } catch (err: any) {
@@ -1025,23 +951,12 @@ app.post("/api/gemini/analyze-multimodal", async (req, res) => {
       res.status(400).json({ error: "Missing required file (base64) or mimeType" });
       return;
     }
-
-    // Graceful degradation: keep the live demo functional even without a key.
-    if (!process.env.GEMINI_API_KEY) {
-      res.json({
-        demo: true,
-        text:
-          "**Demo mode** — this multimodal vision endpoint is live, but no `GEMINI_API_KEY` is configured on this deployment, so a canned analysis is returned.\n\n" +
-          "In production, Gemini receives the uploaded media (inline base64) and returns a detailed, structured description: detected objects, scene context, text (OCR), colours, and any notable visual patterns. Add `GEMINI_API_KEY` to `.env` to see real analysis.",
-      });
-      return;
-    }
-
     const ai = getGeminiClient();
 
     const isAudio = mimeType.startsWith("audio/");
-    // Use the configured model (defaults to a broadly-available multimodal model).
-    const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+    
+    // Choose model: gemini-3.5-flash for audio transcription, gemini-3.1-pro-preview for images/videos
+    const model = isAudio ? "gemini-3.5-flash" : "gemini-3.1-pro-preview";
 
     const contentPart = {
       inlineData: {
@@ -1051,7 +966,7 @@ app.post("/api/gemini/analyze-multimodal", async (req, res) => {
     };
 
     const textPart = {
-      text: prompt || (isAudio ? "Please transcribe this audio recording word-for-word." : "Please analyze this media content in detail. Describe the objects, scene, any visible text, and notable visual patterns in clear, structured markdown.")
+      text: prompt || (isAudio ? "Please transcribe this audio recording word-for-word." : "Please analyze this media content in detail.")
     };
 
     const response = await ai.models.generateContent({

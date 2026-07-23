@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://karimosman.dev/sitemap.xml
