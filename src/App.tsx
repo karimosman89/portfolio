@@ -24,6 +24,7 @@ import { motion } from 'motion/react';
 import EnterpriseSecurity from './components/EnterpriseSecurity';
 import MiniAgentPlayground from './components/MiniAgentPlayground';
 import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
+import ComputerVisionShowcase from './components/ComputerVisionShowcase';
 
 export default function App() {
   const { t } = useLanguage();
@@ -211,6 +212,9 @@ export default function App() {
 
                 {/* 3.6. Interactive Performance & Cost Matrices */}
                 <InteractiveGraphs />
+
+                {/* 3.7. Computer Vision 2026 POC Projects */}
+                <ComputerVisionShowcase />
               </motion.div>
             )}
 
