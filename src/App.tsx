@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Header from './components/Header';
+import HeaderEnhanced from './components/HeaderEnhanced';
+import AnimatedHeroSection from './components/AnimatedHeroSection';
 import Metrics from './components/Metrics';
 import AIDemos from './components/AIDemos';
 import AIAgentsShowcase from './components/AIAgentsShowcase';
@@ -25,6 +26,7 @@ import EnterpriseSecurity from './components/EnterpriseSecurity';
 import MiniAgentPlayground from './components/MiniAgentPlayground';
 import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
 import ComputerVisionShowcase from './components/ComputerVisionShowcase';
+import AgenticCommandCenter from './components/AgenticCommandCenter';
 
 export default function App() {
   const { t } = useLanguage();
@@ -124,6 +126,9 @@ export default function App() {
       {/* Dynamic programmatic SEO meta manager */}
       <SEOMetadata activeTheme={activeTheme} isDark={isDark} />
 
+      {/* Agentic Command Center (CMK-K) */}
+      <AgenticCommandCenter />
+
       {/* Premium subtle light grid background overlay */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-15 bg-grid-mask" />
@@ -141,12 +146,15 @@ export default function App() {
           className="flex-1"
         >
           {/* 1. Header & Bio Hero Summary */}
-          <Header
+          <HeaderEnhanced
             isDark={isDark}
             toggleDarkMode={toggleDarkMode}
             activeTheme={activeTheme}
             setActiveTheme={setActiveTheme}
           />
+
+          {/* 1.5. Animated Hero Section */}
+          {activeTab === 'overview' && <AnimatedHeroSection />}
 
           {/* TABS NAVIGATION */}
           <div className="sticky top-[65px] z-40 bg-[#fafbfc]/90 dark:bg-zinc-950/90 backdrop-blur-md border-y border-zinc-200/80 dark:border-zinc-800">
