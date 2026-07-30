@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -8,7 +8,6 @@
   --font-display: "Plus Jakarta Sans", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-serif: "Newsreader", Georgia, serif;
-  --font-grotesk: "Space Grotesk", sans-serif;
 }
 
 /* Base custom resets */
@@ -21,19 +20,18 @@ body {
 
 /* Beautiful custom scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: #fafbfc;
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #e4e4e7, #d4d4d8);
+  background: #e4e4e7; /* Zinc 200 */
   border-radius: 9999px;
-  border: 2px solid #fafbfc;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #d4d4d8, #a1a1a6);
+  background: #d4d4d8; /* Zinc 300 */
 }
 
 /* Blueprint Grid background helper */
@@ -99,10 +97,6 @@ body {
   background: radial-gradient(circle, rgba(79, 70, 229, 0.04) 0%, transparent 70%);
 }
 
-/* ==========================================
-   MODERN ANIMATIONS & MOTION GRAPHICS 2026
-   ========================================== */
-
 /* Infinite scrolling marquee */
 @keyframes marquee {
   0% {
@@ -113,130 +107,6 @@ body {
   }
 }
 
-/* Smooth float animation */
-@keyframes float-ambient {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-20px) scale(1.15);
-  }
-}
-
-/* Pulse glow effect */
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-    box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
-  }
-  50% {
-    opacity: 0.8;
-    box-shadow: 0 0 40px rgba(79, 70, 229, 0.6);
-  }
-}
-
-/* Shimmer effect for text */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-/* Slide in from left */
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Slide in from right */
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Slide in from bottom */
-@keyframes slide-in-bottom {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Fade in scale */
-@keyframes fade-in-scale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Bounce animation */
-@keyframes bounce-soft {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Rotate animation */
-@keyframes rotate-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Gradient shift animation */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Neon glow pulse */
-@keyframes neon-glow {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(79, 70, 229, 0.5), 0 0 20px rgba(79, 70, 229, 0.3);
-  }
-  50% {
-    text-shadow: 0 0 20px rgba(79, 70, 229, 0.8), 0 0 40px rgba(79, 70, 229, 0.6);
-  }
-}
-
-/* Laser scan effect */
 @keyframes laserScan {
   0% {
     top: 0%;
@@ -249,9 +119,18 @@ body {
   }
 }
 
-/* Utility classes */
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+
+/* Theme-specific accent volumetric blurs and effects */
+@keyframes float-ambient {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.15);
+  }
 }
 
 .animate-float-slow {
@@ -263,106 +142,12 @@ body {
   animation-delay: 4s;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 0.6s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.6s ease-out;
-}
-
-.animate-slide-in-bottom {
-  animation: slide-in-bottom 0.6s ease-out;
-}
-
-.animate-fade-in-scale {
-  animation: fade-in-scale 0.5s ease-out;
-}
-
-.animate-bounce-soft {
-  animation: bounce-soft 2s ease-in-out infinite;
-}
-
-.animate-rotate-slow {
-  animation: rotate-slow 20s linear infinite;
-}
-
-.animate-gradient-shift {
-  animation: gradient-shift 6s ease infinite;
-  background-size: 200% 200%;
-}
-
-.animate-neon-glow {
-  animation: neon-glow 2s ease-in-out infinite;
-}
-
-/* Stagger animation delays */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-
-/* Smooth transitions */
-.transition-smooth {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.transition-smooth-slow {
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Hover effects */
-.hover-lift {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-.hover-glow {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 30px rgba(79, 70, 229, 0.4);
-}
-
-/* Custom grid mesh */
+/* Custom dynamic grid & background styles according to selected Theme */
 .grid-mesh {
   background-size: 40px 40px;
   background-image: 
     linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-}
-
-/* Bento grid animations */
-.bento-item {
-  animation: fade-in-scale 0.6s ease-out;
-}
-
-.bento-item:nth-child(1) { animation-delay: 0.1s; }
-.bento-item:nth-child(2) { animation-delay: 0.2s; }
-.bento-item:nth-child(3) { animation-delay: 0.3s; }
-.bento-item:nth-child(4) { animation-delay: 0.4s; }
-.bento-item:nth-child(5) { animation-delay: 0.5s; }
-.bento-item:nth-child(6) { animation-delay: 0.6s; }
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
 }
 
 /* ==========================================
@@ -429,7 +214,7 @@ html {
 
   /* 3. Hide Unnecessary Interactive and Layout Elements */
   nav,
-  footer .flex-wrap,
+  footer .flex-wrap, /* Hide scroll-to-top and resume buttons in footer */
   button,
   input,
   textarea,
@@ -446,21 +231,26 @@ html {
   .quick-chat,
   .laser-scan,
   .sys-led,
+  /* Hide interactive, widget-heavy panels that don't print cleanly */
   #interactive-ai-playground,
   #ai-agents-showcase,
   #interactive-ai-graphs,
+  /* Hide background grids and absolute volumetric blurs */
   .bg-grid-pattern,
   .bg-grid-mask,
   .pointer-events-none.fixed,
+  /* Hide the inputs/buttons of the contact form */
   #business-inquiry-desk form,
   #business-inquiry-desk .space-y-4,
   #business-inquiry-desk button,
+  /* Custom utility classes to manually hide things */
   .no-print {
     display: none !important;
   }
 
   /* 4. Formatting Remaining Sections for Executive Presentation */
   
+  /* Split contact card container into a beautifully clean, non-floating layout */
   .lg\:col-span-5 {
     width: 100% !important;
     margin-top: 1.5rem !important;
@@ -471,19 +261,23 @@ html {
     width: 100% !important;
   }
 
+  /* Force single column layout during print or adjust grid columns */
   .grid {
     display: block !important;
   }
 
+  /* Ensure flex rows wrap cleanly and remain visible */
   .flex {
     flex-direction: row !important;
     flex-wrap: wrap !important;
   }
 
+  /* Reset alignment helper column widths */
   .md\:grid-cols-2, .lg\:grid-cols-12, .grid-cols-2 {
     display: block !important;
   }
 
+  /* Metric cards display */
   #metrics-dashboard {
     page-break-inside: avoid;
   }
@@ -502,6 +296,7 @@ html {
     break-inside: avoid;
   }
 
+  /* Experience timeline formatting */
   #career-and-education {
     page-break-inside: auto !important;
   }
@@ -510,6 +305,7 @@ html {
     page-break-inside: auto !important;
   }
 
+  /* Prevent timeline events from breaking across pages */
   #career-and-education .group\/timeline {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -517,6 +313,7 @@ html {
     position: relative !important;
   }
 
+  /* Skills Bento formatting */
   #skills-stack {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -535,6 +332,7 @@ html {
     break-inside: avoid !important;
   }
 
+  /* Publications and Github block */
   #github-and-technical-blogs {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -553,18 +351,23 @@ html {
     break-inside: avoid !important;
   }
 
+  /* Services & sectors list */
   #business-inquiry-desk {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
+  /* Make sure links are displayed textually if they are anchors */
   a[href^="http"]:after {
     content: " (" attr(href) ")" !important;
     font-size: 85% !important;
     color: #666666 !important;
   }
 
+  /* Don't show mailto: and tel: links textually */
   a[href^="mailto:"]:after, a[href^="tel:"]:after {
     content: "" !important;
   }
 }
+
+
