@@ -48,6 +48,32 @@ export interface GithubRepo {
   topics: string[];
 }
 
+export interface PocMetric {
+  label: string;
+  value: string;
+}
+
+export interface PocProject {
+  id: string;
+  title: string;
+  tagline: string;
+  domain: 'vision' | 'genai' | 'agents' | 'multimodal' | 'edge';
+  domainLabel: string;
+  year: string;
+  status: 'Live Demo' | 'Prototype' | 'Research' | 'Production';
+  description: string;
+  problem: string;
+  approach: string;
+  outcome: string;
+  stack: string[];
+  metrics: PocMetric[];
+  image: string;
+  accent: string; // tailwind gradient class fragment e.g. "from-indigo-500 to-violet-500"
+  repoUrl?: string;
+  demoUrl?: string;
+  trending?: boolean;
+}
+
 export interface Message {
   sender: 'user' | 'assistant';
   text: string;

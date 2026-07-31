@@ -150,6 +150,212 @@ body {
     linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
 }
 
+/* ==========================================================================
+   PREMIUM MOTION & FX LIBRARY
+   (inspired by reactbits.dev, animejs.com, originkit.dev)
+   All additive — nothing above is modified.
+   ========================================================================== */
+
+/* --- 1. Animated gradient text (shimmer sweep) --- */
+@keyframes gradient-flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.text-gradient-animated {
+  background-image: linear-gradient(
+    100deg,
+    #6366f1 0%, #8b5cf6 25%, #10b981 50%, #8b5cf6 75%, #6366f1 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-flow 6s ease infinite;
+}
+
+/* --- 2. Shine sweep (hover) used on cards / buttons --- */
+@keyframes shine-sweep {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(220%)  skewX(-18deg); }
+}
+.shine-hover { position: relative; overflow: hidden; }
+.shine-hover::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 55%; height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent, rgba(255, 255, 255, 0.35) 50%, transparent
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.dark .shine-hover::after {
+  background: linear-gradient(
+    100deg,
+    transparent, rgba(129, 140, 248, 0.22) 50%, transparent
+  );
+}
+.shine-hover:hover::after {
+  opacity: 1;
+  animation: shine-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- 3. Conic border-beam (rotating gradient ring) --- */
+@keyframes border-beam-spin {
+  to { transform: rotate(360deg); }
+}
+.border-beam {
+  position: relative;
+  isolation: isolate;
+}
+.border-beam::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #6366f1 40deg,
+    #8b5cf6 80deg,
+    transparent 130deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  animation: border-beam-spin 4s linear infinite;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.border-beam:hover::before { opacity: 1; }
+
+/* --- 4. Spotlight follow (radial glow that tracks --mx / --my) --- */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    500px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(99, 102, 241, 0.13),
+    transparent 42%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* --- 5. Aurora drifting background blobs --- */
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+  33%  { transform: translate3d(4%,-6%,0) scale(1.15) rotate(40deg); }
+  66%  { transform: translate3d(-5%,5%,0) scale(0.92) rotate(-30deg); }
+  100% { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+}
+.animate-aurora { animation: aurora-drift 22s ease-in-out infinite; }
+.animate-aurora-delayed { animation: aurora-drift 28s ease-in-out infinite; animation-delay: 6s; }
+
+/* --- 6. Shimmer skeleton / metric accent bar --- */
+@keyframes shimmer-slide {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer-bar {
+  background: linear-gradient(
+    90deg,
+    rgba(99,102,241,0.10) 0%,
+    rgba(139,92,246,0.55) 50%,
+    rgba(99,102,241,0.10) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-slide 2.4s linear infinite;
+}
+
+/* --- 7. Soft floating (reduced amplitude, for badges/orbit chips) --- */
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+.animate-float-soft { animation: float-soft 5s ease-in-out infinite; }
+
+/* --- 8. Pulse ring (status / live badges) --- */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+  70%  { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.animate-pulse-ring { animation: pulse-ring 2.2s cubic-bezier(0.66,0,0,1) infinite; }
+
+/* --- 9. Scroll reveal helpers (paired with IntersectionObserver) --- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+              transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- 10. Marquee (slower, for logo/tech rails) --- */
+.animate-marquee-slow { animation: marquee 45s linear infinite; }
+.marquee-pause:hover .animate-marquee,
+.marquee-pause:hover .animate-marquee-slow { animation-play-state: paused; }
+
+/* --- 11. Gradient underline grow (nav / links) --- */
+.underline-grow {
+  position: relative;
+}
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  height: 1.5px; width: 0%;
+  background: linear-gradient(90deg, #6366f1, #10b981);
+  transition: width 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.underline-grow:hover::after { width: 100%; }
+
+/* --- 12. Number ticker glow --- */
+.text-glow-indigo {
+  text-shadow: 0 0 22px rgba(99, 102, 241, 0.25);
+}
+
+/* --- 13. Noise / grain overlay for depth --- */
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-animated,
+  .animate-aurora,
+  .animate-aurora-delayed,
+  .shimmer-bar,
+  .animate-float-soft,
+  .animate-pulse-ring,
+  .border-beam::before {
+    animation: none !important;
+  }
+  .reveal-up { opacity: 1; transform: none; transition: none; }
+}
+
 /* ==========================================
    PRINT SPECIFICATION & PDF EXPORT UTILITY
    ========================================== */

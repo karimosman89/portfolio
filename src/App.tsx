@@ -24,6 +24,7 @@ import { motion } from 'motion/react';
 import EnterpriseSecurity from './components/EnterpriseSecurity';
 import MiniAgentPlayground from './components/MiniAgentPlayground';
 import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
+import PocShowcase from './components/PocShowcase';
 
 export default function App() {
   const { t } = useLanguage();
@@ -43,7 +44,10 @@ export default function App() {
     return 'ai-dark';
   });
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'capabilities' | 'experience' | 'contact'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'capabilities' | 'experience' | 'contact'>(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#capabilities') return 'capabilities';
+    return 'overview';
+  });
 
   useEffect(() => {
     const handleSwitchTab = (e: Event) => {
@@ -126,8 +130,8 @@ export default function App() {
       {/* Premium subtle light grid background overlay */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 dark:opacity-15 bg-grid-mask" />
-        <div className={`absolute -top-[30%] -left-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow1}`} />
-        <div className={`absolute -bottom-[30%] -right-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow2}`} />
+        <div className={`animate-aurora absolute -top-[30%] -left-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow1}`} />
+        <div className={`animate-aurora-delayed absolute -bottom-[30%] -right-[10%] h-[70%] w-[70%] rounded-full blur-[140px] transition-all duration-700 ${currentGlows.glow2}`} />
       </div>
 
       <div className="relative flex flex-col min-h-screen z-10">
@@ -160,10 +164,10 @@ export default function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`shrink-0 whitespace-nowrap px-2 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    className={`shrink-0 whitespace-nowrap px-2 py-2 text-sm font-medium border-b-2 transition-all duration-200 ${
                       activeTab === tab.id
                         ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
-                        : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700'
                     }`}
                   >
                     {tab.label}
@@ -201,6 +205,10 @@ export default function App() {
             {activeTab === 'capabilities' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <ArchitecturalBlueprint />
+
+                {/* Flagship POC projects — trending 2026 Computer Vision & AI */}
+                <PocShowcase />
+
                 <MiniAgentPlayground />
                 
                 {/* 3. Rich Interactive Sandboxes */}

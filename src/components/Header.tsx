@@ -230,10 +230,10 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
 
           {/* Center Navigation Links - Minimalist Editorial Styling */}
           <div className="hidden md:flex items-center gap-7 text-[11px] font-mono tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'overview' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">01 / {t('nav.metrics') || 'Metrics'}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'capabilities' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">02 / {t('nav.playground') || 'Playground'}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience') || 'Experience'}</button>
-            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }))} className="cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('hero.hireMe') || 'Contact'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'overview' }))} className="underline-grow cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">01 / {t('nav.metrics') || 'Metrics'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'capabilities' }))} className="underline-grow cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">02 / {t('nav.playground') || 'Playground'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'experience' }))} className="underline-grow cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">03 / {t('nav.experience') || 'Experience'}</button>
+            <button onClick={() => window.dispatchEvent(new CustomEvent('switch-tab', { detail: 'contact' }))} className="underline-grow cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">04 / {t('hero.hireMe') || 'Contact'}</button>
           </div>
 
           {/* Right Action Links */}
@@ -391,7 +391,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             <motion.div variants={itemVariants} className="space-y-4">
               <h1 className="font-display text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white md:text-5.5xl lg:text-6xl leading-none min-h-[160px] sm:min-h-[140px] md:min-h-[190px]">
                 {t('hero.title.part1')} <span className="font-serif italic font-light text-indigo-600 dark:text-indigo-400">{t('hero.title.part2')}</span> <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-500 to-emerald-500 dark:from-indigo-400 dark:via-violet-300 dark:to-emerald-450 drop-shadow-sm font-black uppercase tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl">
+                <span className="text-gradient-animated drop-shadow-sm font-black uppercase tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl">
                   {typedText}
                 </span>
                 <span className="ml-1.5 inline-block h-6 sm:h-8 md:h-11 w-1 bg-indigo-500 dark:bg-indigo-400 animate-pulse align-middle" />
@@ -461,7 +461,7 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-3">
               <button
                 onClick={() => triggerContactTab('calendly')}
-                className="cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-200"
+                className="shine-hover cursor-pointer flex-1 min-w-[140px] inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-mono font-bold uppercase tracking-wider text-sm px-7 py-4 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 hover:-translate-y-0.5 transition-all duration-200"
               >
                 <Calendar size={18} className="animate-pulse" />
                 <span>{t('hero.bookCall')}</span>
@@ -485,7 +485,15 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
             transition={{ duration: 0.65, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5"
           >
-            <div className="relative overflow-hidden rounded border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6.5 shadow-xl shadow-zinc-200/40 dark:shadow-none">
+            <div
+              onMouseMove={(e) => {
+                const el = e.currentTarget;
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+              }}
+              className="spotlight border-beam relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6.5 shadow-xl shadow-zinc-200/40 dark:shadow-none"
+            >
               
               <div className="space-y-6">
                 
