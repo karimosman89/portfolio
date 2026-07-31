@@ -209,7 +209,13 @@ export default function ProjectGallery() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -4 }}
-              className="flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-xs hover:border-indigo-500/30 dark:hover:border-indigo-500/40 hover:shadow-lg hover:shadow-zinc-100/50 dark:hover:shadow-none transition-all duration-300 group"
+              onMouseMove={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+              }}
+              className="spotlight border-beam flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 shadow-xs hover:border-indigo-500/30 dark:hover:border-indigo-500/40 hover:shadow-lg hover:shadow-zinc-100/50 dark:hover:shadow-none transition-all duration-300 group"
             >
               <div className="space-y-4">
                 {/* Header Tag / Icon */}

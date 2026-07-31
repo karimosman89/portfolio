@@ -175,7 +175,13 @@ export default function Metrics() {
               variants={cardVariants}
               whileHover={{ y: -4, borderColor: "rgba(79, 70, 229, 0.2)" }}
               transition={{ duration: 0.2 }}
-              className="group relative overflow-hidden rounded border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-sm shadow-zinc-100/50 dark:shadow-none backdrop-blur-sm transition-all"
+              onMouseMove={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+              }}
+              className="spotlight border-beam group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 p-6 shadow-sm shadow-zinc-100/50 dark:shadow-none backdrop-blur-sm transition-all"
             >
               
               {/* Header inside the card */}
@@ -223,7 +229,7 @@ export default function Metrics() {
 
               {/* Big Core Values */}
               <div className="mt-6 space-y-1">
-                <div className="font-mono text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-all">
+                <div className="font-mono text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:text-glow-indigo transition-all">
                   <AnimatedCounter value={metric.value} />
                 </div>
                 <div className="font-display text-[10px] font-bold tracking-wider text-zinc-500 dark:text-zinc-400 uppercase">
