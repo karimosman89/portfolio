@@ -25,6 +25,8 @@ import EnterpriseSecurity from './components/EnterpriseSecurity';
 import MiniAgentPlayground from './components/MiniAgentPlayground';
 import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
 import PocShowcase from './components/PocShowcase';
+import BusinessValue from './components/BusinessValue';
+import EngagementProcess from './components/EngagementProcess';
 
 export default function App() {
   const { t } = useLanguage();
@@ -199,6 +201,12 @@ export default function App() {
                   </div>
                   <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
                 </section>
+
+                {/* Business value — pain points + outcome-driven offer (for owners/investors) */}
+                <BusinessValue />
+
+                {/* Engagement process, honest timelines & risk-reversal commitment */}
+                <EngagementProcess />
               </motion.div>
             )}
 

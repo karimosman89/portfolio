@@ -292,8 +292,8 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/vlm-inspector.png",
     accent: "from-indigo-500 to-violet-500",
-    repoUrl: "https://github.com/karimosman89",
-    demoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/AssetOpsBench",
+    demoUrl: "https://github.com/karimosman89/Open-Generative-AI"
   },
   {
     id: "gaussian-splat-digital-twin",
@@ -320,7 +320,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/gaussian-splat.png",
     accent: "from-cyan-500 to-blue-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89?tab=repositories"
   },
   {
     id: "egocentric-video-agent",
@@ -347,7 +347,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/egocentric-video.png",
     accent: "from-fuchsia-500 to-purple-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/Open-Generative-AI"
   },
   {
     id: "edge-vision-guardian",
@@ -373,7 +373,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/edge-vision.png",
     accent: "from-emerald-500 to-teal-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89?tab=repositories"
   },
   {
     id: "medical-imaging-copilot",
@@ -400,7 +400,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/medical-imaging.png",
     accent: "from-rose-500 to-pink-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/Open-Generative-AI"
   },
   {
     id: "multi-agent-rag-orchestrator",
