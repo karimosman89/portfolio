@@ -99,10 +99,16 @@ export default function SkillsBento() {
               variants={itemVariants}
               whileHover={{ y: -3, borderColor: "rgba(79, 70, 229, 0.35)" }}
               transition={{ duration: 0.2 }}
-              className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-all"
+              onMouseMove={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+              }}
+              className="spotlight border-beam group rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-all"
             >
               <div className="flex items-center gap-2.5 border-b border-zinc-200 dark:border-zinc-800 pb-4 mb-5">
-                <span className="rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2 text-indigo-600 dark:text-indigo-400">
+                <span className="rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-2 text-indigo-600 dark:text-indigo-400 transition-all duration-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600">
                   <IconComponent size={16} />
                 </span>
                 <h3 className="font-display text-sm font-extrabold text-zinc-850 dark:text-zinc-100 font-sans">

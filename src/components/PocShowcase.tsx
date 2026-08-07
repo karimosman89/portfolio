@@ -8,6 +8,7 @@ import { POC_PROJECTS } from '../data';
 import { PocProject } from '../types';
 import LazyImage from './LazyImage';
 import { useSpotlight } from '../hooks/useScrollReveal';
+import { useLanguage } from '../i18n/LanguageContext';
 
 // Bundle the hero assets through Vite so they resolve in dev & production.
 import imgVlm from '../assets/images/poc/vlm-inspector.webp';
@@ -41,16 +42,17 @@ const STATUS_STYLE: Record<string, string> = {
   'Research': 'bg-fuchsia-50 dark:bg-fuchsia-950/40 text-fuchsia-600 dark:text-fuchsia-400 border-fuchsia-200/60 dark:border-fuchsia-800/40',
 };
 
-const FILTERS: { id: string; label: string }[] = [
-  { id: 'all', label: 'All POCs' },
-  { id: 'vision', label: 'Computer Vision' },
-  { id: 'multimodal', label: 'Vision-Language' },
-  { id: 'agents', label: 'Agentic AI' },
-  { id: 'edge', label: 'Edge AI' },
+const FILTERS: { id: string; labelKey: string; fallback: string }[] = [
+  { id: 'all', labelKey: 'poc.filter.all', fallback: 'All POCs' },
+  { id: 'vision', labelKey: 'poc.filter.vision', fallback: 'Computer Vision' },
+  { id: 'multimodal', labelKey: 'poc.filter.multimodal', fallback: 'Vision-Language' },
+  { id: 'agents', labelKey: 'poc.filter.agents', fallback: 'Agentic AI' },
+  { id: 'edge', labelKey: 'poc.filter.edge', fallback: 'Edge AI' },
 ];
 
 function PocCard({ project, onOpen, index }: { project: PocProject; onOpen: () => void; index: number }) {
   const { ref, onMouseMove } = useSpotlight<HTMLDivElement>();
+  const { t } = useLanguage();
   const DomainIcon = DOMAIN_ICON[project.domain] || Cpu;
 
   return (
@@ -73,6 +75,7 @@ function PocCard({ project, onOpen, index }: { project: PocProject; onOpen: () =
           <LazyImage
             src={IMAGE_MAP[project.image] || project.image}
             alt={project.title}
+            eager
             className="h-full w-full"
             imgClassName="group-hover:scale-[1.06] transition-transform duration-[900ms] ease-out"
           />
@@ -89,7 +92,7 @@ function PocCard({ project, onOpen, index }: { project: PocProject; onOpen: () =
             {project.trending && (
               <span className="inline-flex items-center gap-1 rounded-md border border-white/20 bg-black/40 px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider text-white backdrop-blur-sm">
                 <TrendingUp size={9} className="text-emerald-400" />
-                2026 Trend
+                {t('poc.badge.trend')}
               </span>
             )}
           </div>
@@ -142,7 +145,7 @@ function PocCard({ project, onOpen, index }: { project: PocProject; onOpen: () =
               )}
             </div>
             <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-              Inspect <Eye size={11} />
+              {t('poc.action.inspect')} <Eye size={11} />
             </span>
           </div>
         </div>
@@ -152,6 +155,7 @@ function PocCard({ project, onOpen, index }: { project: PocProject; onOpen: () =
 }
 
 function PocModal({ project, onClose }: { project: PocProject; onClose: () => void }) {
+  const { t } = useLanguage();
   const DomainIcon = DOMAIN_ICON[project.domain] || Cpu;
   return (
     <motion.div
@@ -170,7 +174,7 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
       >
         {/* Hero */}
         <div className="relative aspect-[16/8] w-full overflow-hidden">
-          <LazyImage src={IMAGE_MAP[project.image] || project.image} alt={project.title} className="h-full w-full" />
+          <LazyImage src={IMAGE_MAP[project.image] || project.image} alt={project.title} eager className="h-full w-full" />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent dark:from-zinc-950 dark:via-zinc-950/40" />
           <button
             onClick={onClose}
@@ -214,9 +218,9 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
           {/* Problem / Approach / Outcome */}
           <div className="space-y-4">
             {[
-              { icon: Activity, label: 'The Problem', text: project.problem, tone: 'text-rose-500' },
-              { icon: FlaskConical, label: 'The Approach', text: project.approach, tone: 'text-indigo-500' },
-              { icon: TrendingUp, label: 'The Outcome', text: project.outcome, tone: 'text-emerald-500' },
+              { icon: Activity, label: t('poc.section.problem'), text: project.problem, tone: 'text-rose-500' },
+              { icon: FlaskConical, label: t('poc.section.approach'), text: project.approach, tone: 'text-indigo-500' },
+              { icon: TrendingUp, label: t('poc.section.outcome'), text: project.outcome, tone: 'text-emerald-500' },
             ].map((row) => {
               const RowIcon = row.icon;
               return (
@@ -238,7 +242,7 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
           {/* Stack */}
           <div>
             <div className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
-              Technology Stack
+              {t('poc.section.stack')}
             </div>
             <div className="flex flex-wrap gap-1.5">
               {project.stack.map((s) => (
@@ -258,7 +262,7 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-3 text-xs font-mono font-bold uppercase tracking-wider text-white transition hover:bg-indigo-700"
               >
-                <Eye size={14} /> View Demo <ArrowUpRight size={12} />
+                <Eye size={14} /> {t('poc.action.demo')} <ArrowUpRight size={12} />
               </a>
             )}
             {project.repoUrl && (
@@ -268,7 +272,7 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-5 py-3 text-xs font-mono font-bold uppercase tracking-wider text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900"
               >
-                <Github size={14} /> Source
+                <Github size={14} /> {t('poc.action.source')}
               </a>
             )}
           </div>
@@ -279,6 +283,7 @@ function PocModal({ project, onClose }: { project: PocProject; onClose: () => vo
 }
 
 export default function PocShowcase() {
+  const { t } = useLanguage();
   const [filter, setFilter] = useState('all');
   const [selected, setSelected] = useState<PocProject | null>(null);
 
@@ -294,17 +299,14 @@ export default function PocShowcase() {
         <div>
           <div className="inline-flex items-center gap-1.5 rounded bg-zinc-50 px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-indigo-600 dark:bg-zinc-900 dark:text-indigo-400 border border-zinc-200 dark:border-zinc-800">
             <FlaskConical size={11} className="animate-pulse" />
-            <span>03 / Proof-of-Concept Lab</span>
+            <span>{t('poc.eyebrow')}</span>
           </div>
           <h2 className="mt-2.5 font-display text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
-            Flagship{' '}
-            <span className="text-gradient-animated font-serif italic font-light">POC Projects</span>
+            {t('poc.title.lead')}{' '}
+            <span className="text-gradient-animated font-serif italic font-light">{t('poc.title.accent')}</span>
           </h2>
           <p className="mt-2 max-w-2xl text-sm font-light leading-relaxed text-zinc-500 dark:text-zinc-400">
-            A curated lab of production-grade proof-of-concepts spanning the 2026 frontier of applied
-            Computer Vision & AI — Vision-Language models, 3D Gaussian Splatting, egocentric video
-            understanding, on-device edge perception, and agentic multimodal pipelines. Click any card
-            for the full problem → approach → outcome breakdown.
+            {t('poc.subtitle')}
           </p>
         </div>
       </div>
@@ -321,7 +323,7 @@ export default function PocShowcase() {
                 : 'border-zinc-200 bg-zinc-50/50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/20 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-white'
             }`}
           >
-            {f.label}
+            {t(f.labelKey) === f.labelKey ? f.fallback : t(f.labelKey)}
           </button>
         ))}
       </div>
