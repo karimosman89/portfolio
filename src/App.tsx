@@ -4,7 +4,6 @@ import Metrics from './components/Metrics';
 import AIDemos from './components/AIDemos';
 import AIAgentsShowcase from './components/AIAgentsShowcase';
 import InteractiveGraphs from './components/InteractiveGraphs';
-import ExperienceTimeline from './components/ExperienceTimeline';
 import SkillsBento from './components/SkillsBento';
 import ServicesAndCompanies from './components/ServicesAndCompanies';
 import ProjectGallery from './components/ProjectGallery';
@@ -25,6 +24,8 @@ import EnterpriseSecurity from './components/EnterpriseSecurity';
 import MiniAgentPlayground from './components/MiniAgentPlayground';
 import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
 import PocShowcase from './components/PocShowcase';
+import BusinessValue from './components/BusinessValue';
+import EngagementProcess from './components/EngagementProcess';
 
 export default function App() {
   const { t } = useLanguage();
@@ -158,7 +159,7 @@ export default function App() {
                 {[
                   { id: 'overview', label: 'Overview' },
                   { id: 'capabilities', label: 'AI Capabilities' },
-                  { id: 'experience', label: 'Experience & Skills' },
+                  { id: 'experience', label: 'Solutions & Stack' },
                   { id: 'contact', label: 'Contact' }
                 ].map(tab => (
                   <button
@@ -199,6 +200,12 @@ export default function App() {
                   </div>
                   <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
                 </section>
+
+                {/* Business value — pain points + outcome-driven offer (for owners/investors) */}
+                <BusinessValue />
+
+                {/* Engagement process, honest timelines & risk-reversal commitment */}
+                <EngagementProcess />
               </motion.div>
             )}
 
@@ -224,10 +231,7 @@ export default function App() {
 
             {activeTab === 'experience' && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-                {/* 4. Experience & Careers Timeline */}
-                <ExperienceTimeline />
-
-                {/* 5. Categorized Bento Skills Matrix */}
+                {/* Freelance capability stack (career timeline removed) */}
                 <SkillsBento />
 
                 {/* Enterprise Security Section */}

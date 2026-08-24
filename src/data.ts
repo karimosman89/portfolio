@@ -292,8 +292,8 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/vlm-inspector.png",
     accent: "from-indigo-500 to-violet-500",
-    repoUrl: "https://github.com/karimosman89",
-    demoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/image-classification",
+    demoUrl: "https://github.com/karimosman89/object-detection"
   },
   {
     id: "gaussian-splat-digital-twin",
@@ -320,7 +320,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/gaussian-splat.png",
     accent: "from-cyan-500 to-blue-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/Hunyuan3D-2"
   },
   {
     id: "egocentric-video-agent",
@@ -347,7 +347,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/egocentric-video.png",
     accent: "from-fuchsia-500 to-purple-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/NLP-with-Transformers"
   },
   {
     id: "edge-vision-guardian",
@@ -373,7 +373,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/edge-vision.png",
     accent: "from-emerald-500 to-teal-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/object-detection"
   },
   {
     id: "medical-imaging-copilot",
@@ -400,7 +400,7 @@ export const POC_PROJECTS: PocProject[] = [
     ],
     image: "/poc/medical-imaging.png",
     accent: "from-rose-500 to-pink-600",
-    repoUrl: "https://github.com/karimosman89"
+    repoUrl: "https://github.com/karimosman89/X_Ray_Project"
   },
   {
     id: "multi-agent-rag-orchestrator",
@@ -427,7 +427,174 @@ export const POC_PROJECTS: PocProject[] = [
     image: "/poc/multi-agent-rag.png",
     accent: "from-amber-500 to-orange-600",
     repoUrl: "https://github.com/karimosman89/500-AI-Agents-Projects",
-    demoUrl: "https://github.com/karimosman89/AssetOpsBench"
+    demoUrl: "https://github.com/karimosman89/awesome-llm-apps"
+  },
+  {
+    id: "llmops-eval-platform",
+    title: "LLMOps Evaluation & Guardrail Platform",
+    tagline: "CI for prompts — evals, drift & red-teaming before you ship",
+    domain: "mlops",
+    domainLabel: "LLMOps / Eval Harness",
+    year: "2026",
+    status: "Production",
+    trending: true,
+    description:
+      "A production LLMOps harness that version-controls prompts, runs regression evals on every change, and blocks releases that regress on quality, cost, latency or safety — the CI/CD layer every GenAI team needs in 2026.",
+    problem:
+      "Teams ship prompt and model changes blind: no regression suite, no cost ceiling, no safety gate — so quality silently degrades in production.",
+    approach:
+      "Promptfoo + custom scorers wired into GitHub Actions: golden-set evals, LLM-as-judge scoring, semantic drift detection, jailbreak/red-team probes, and a cost/latency budget that fails the build on regression.",
+    outcome:
+      "Every prompt or model bump is gated by an automated eval report; caught a 12% quality regression pre-release and cut token spend 28% via model-routing rules.",
+    stack: ["Promptfoo", "GitHub Actions", "LLM-as-Judge", "OpenTelemetry", "Python", "Docker"],
+    metrics: [
+      { label: "Eval coverage", value: "100%" },
+      { label: "Token spend", value: "-28%" },
+      { label: "Regressions caught", value: "pre-prod" }
+    ],
+    image: "/poc/llmops-platform.png",
+    accent: "from-sky-500 to-indigo-600",
+    repoUrl: "https://github.com/karimosman89/promptfoo",
+    demoUrl: "https://github.com/karimosman89/awesome-llm-apps"
+  },
+  {
+    id: "autonomous-agent-workforce",
+    title: "Autonomous Agent Workforce",
+    tagline: "Self-directed agents that run real business workflows end-to-end",
+    domain: "agents",
+    domainLabel: "Agentic AI / Automation",
+    year: "2026",
+    status: "Live Demo",
+    trending: true,
+    description:
+      "A team of role-specialized CrewAI agents wired to n8n automations and MCP tools that autonomously handles lead research, outreach drafting, CRM updates and reporting — the #1 thing SMBs are hiring freelancers for in 2026.",
+    problem:
+      "Businesses want AI that *does the work*, not chatbots that answer questions — but wiring LLMs to real tools, memory and guardrails is hard.",
+    approach:
+      "CrewAI role agents (researcher, writer, ops) orchestrated over n8n workflows, with MCP tool servers for CRM/email/search, shared vector memory, and human-approval checkpoints on high-stakes actions.",
+    outcome:
+      "Automated ~70% of a repetitive ops pipeline with a human-in-the-loop gate, freeing a 2-person team for higher-value work.",
+    stack: ["CrewAI", "n8n", "MCP", "LangChain", "Redis", "FastAPI"],
+    metrics: [
+      { label: "Workflow automated", value: "~70%" },
+      { label: "Agent roles", value: "5" },
+      { label: "Tools via MCP", value: "12+" }
+    ],
+    image: "/poc/agent-workforce.png",
+    accent: "from-violet-500 to-fuchsia-600",
+    repoUrl: "https://github.com/karimosman89/500-AI-Agents-Projects",
+    demoUrl: "https://github.com/karimosman89/agency-agents"
+  },
+  {
+    id: "realtime-data-lakehouse",
+    title: "Real-Time Data Engineering Lakehouse",
+    tagline: "Streaming ELT from raw events to analytics-ready tables",
+    domain: "data",
+    domainLabel: "Data Engineering / ELT",
+    year: "2026",
+    status: "Production",
+    trending: true,
+    description:
+      "An end-to-end streaming data platform: ingestion, orchestrated transformations, data-quality contracts and a governed lakehouse feeding BI and ML — the foundation every AI project actually depends on.",
+    problem:
+      "AI initiatives stall on messy, ungoverned data: no lineage, no freshness SLAs, brittle hand-rolled scripts.",
+    approach:
+      "Kafka ingestion → Airflow-orchestrated dbt/ELT → partitioned lakehouse tables with Great-Expectations data contracts, lineage tracking and incremental materializations.",
+    outcome:
+      "Analytics freshness dropped from hours to minutes with enforced quality gates, giving downstream ML reliable, contract-checked features.",
+    stack: ["Apache Airflow", "Kafka", "dbt", "Spark", "Great Expectations", "PostgreSQL"],
+    metrics: [
+      { label: "Data freshness", value: "minutes" },
+      { label: "Quality gates", value: "enforced" },
+      { label: "Pipeline uptime", value: "99.9%" }
+    ],
+    image: "/poc/data-lakehouse.png",
+    accent: "from-emerald-500 to-green-600",
+    repoUrl: "https://github.com/karimosman89/etl-pipeline",
+    demoUrl: "https://github.com/karimosman89/ecommerce-analytics-pipeline"
+  },
+  {
+    id: "cloud-mlops-autopilot",
+    title: "Cloud MLOps Autopilot",
+    tagline: "One-click train → deploy → monitor on Kubernetes",
+    domain: "cloud",
+    domainLabel: "Cloud MLOps / Kubernetes",
+    year: "2026",
+    status: "Production",
+    trending: true,
+    description:
+      "A cloud-native MLOps stack that turns a model repo into an auto-scaling, monitored inference service — CI/CD, containerization, drift alerts and rollback — so teams ship models like software.",
+    problem:
+      "Models die in notebooks. Getting them to reliable, observable, auto-scaling cloud endpoints is where most teams need senior help.",
+    approach:
+      "Dockerized training + serving, Kubernetes with HPA autoscaling, Prometheus/Grafana observability, model registry with versioned rollbacks, and drift monitoring that triggers retraining.",
+    outcome:
+      "Cut model-to-production time from weeks to a day, with automatic scaling under load and drift-triggered retraining.",
+    stack: ["Kubernetes", "Docker", "Prometheus", "Grafana", "MLflow", "GitHub Actions"],
+    metrics: [
+      { label: "Time to prod", value: "weeks→1 day" },
+      { label: "Autoscaling", value: "HPA" },
+      { label: "Drift alerts", value: "live" }
+    ],
+    image: "/poc/llmops-platform.png",
+    accent: "from-blue-500 to-cyan-600",
+    repoUrl: "https://github.com/karimosman89/Cloud_System",
+    demoUrl: "https://github.com/karimosman89/DevOps-Project"
+  },
+  {
+    id: "enterprise-rag-copilot",
+    title: "Enterprise Knowledge RAG Copilot",
+    tagline: "Chat with your company's docs — cited, private, on-brand",
+    domain: "genai",
+    domainLabel: "Generative AI / RAG",
+    year: "2026",
+    status: "Live Demo",
+    trending: true,
+    description:
+      "A private RAG assistant that indexes internal docs, wikis and tickets and answers staff or customer questions with inline citations — the highest-demand GenAI build for SMBs and enterprises alike.",
+    problem:
+      "Knowledge is trapped in scattered PDFs, wikis and Slack; generic chatbots hallucinate and can't cite sources.",
+    approach:
+      "Hybrid (vector + keyword) retrieval over chunked, embedded docs; reranking; grounded generation with mandatory citations; role-based access and a feedback loop for continuous improvement.",
+    outcome:
+      "Answered 80%+ of internal questions with cited sources, cutting support and onboarding time significantly while keeping data private.",
+    stack: ["LangChain", "pgvector", "OpenAI", "Rerankers", "FastAPI", "Streamlit"],
+    metrics: [
+      { label: "Questions resolved", value: "80%+" },
+      { label: "Answers cited", value: "100%" },
+      { label: "Data", value: "stays private" }
+    ],
+    image: "/poc/multi-agent-rag.png",
+    accent: "from-teal-500 to-emerald-600",
+    repoUrl: "https://github.com/karimosman89/awesome-llm-apps",
+    demoUrl: "https://github.com/karimosman89/customer-support-chatbot"
+  },
+  {
+    id: "forecasting-decision-engine",
+    title: "Predictive Forecasting & Decision Engine",
+    tagline: "Time-series ML that turns operational data into decisions",
+    domain: "data",
+    domainLabel: "Data Science / Forecasting",
+    year: "2026",
+    status: "Production",
+    description:
+      "A forecasting stack for demand, energy and churn that pairs modern time-series models with explainability and a decision layer, so business users act on predictions, not just charts.",
+    problem:
+      "Businesses have historical data but no reliable, explainable forecasts to plan inventory, staffing or energy against.",
+    approach:
+      "Feature pipelines + gradient-boosted and deep time-series models (with backtesting), SHAP explainability, and a scenario/what-if decision dashboard.",
+    outcome:
+      "Improved forecast accuracy over the naive baseline and gave planners an explainable, scenario-driven tool instead of a black box.",
+    stack: ["Python", "XGBoost", "Prophet", "SHAP", "pandas", "Power BI"],
+    metrics: [
+      { label: "Forecast error", value: "reduced" },
+      { label: "Explainable", value: "SHAP" },
+      { label: "What-if", value: "scenarios" }
+    ],
+    image: "/poc/data-lakehouse.png",
+    accent: "from-amber-500 to-yellow-600",
+    repoUrl: "https://github.com/karimosman89/energy-consumption-forecasting",
+    demoUrl: "https://github.com/karimosman89/customer-churn-prediction"
   }
 ];
 

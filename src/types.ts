@@ -57,7 +57,7 @@ export interface PocProject {
   id: string;
   title: string;
   tagline: string;
-  domain: 'vision' | 'genai' | 'agents' | 'multimodal' | 'edge';
+  domain: 'vision' | 'genai' | 'agents' | 'multimodal' | 'edge' | 'mlops' | 'data' | 'cloud';
   domainLabel: string;
   year: string;
   status: 'Live Demo' | 'Prototype' | 'Research' | 'Production';
