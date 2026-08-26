@@ -227,7 +227,13 @@ export default function ServicesAndCompanies() {
             key={i}
             whileHover={{ scale: 1.02, y: -4 }}
             transition={{ duration: 0.2 }}
-            className="group relative rounded-xl border border-zinc-200 dark:border-zinc-850 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-750 hover:shadow-md transition duration-300 overflow-hidden"
+            onMouseMove={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              const r = el.getBoundingClientRect();
+              el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+              el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+            }}
+            className="spotlight border-beam group relative rounded-xl border border-zinc-200 dark:border-zinc-850 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between hover:border-zinc-300 dark:hover:border-zinc-750 hover:shadow-md transition duration-300 overflow-hidden"
           >
             {/* Soft background glow */}
             <div className="pointer-events-none absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-indigo-500/[0.015] dark:bg-indigo-500/[0.02] blur-3xl group-hover:scale-125 transition-transform duration-500" />
@@ -280,7 +286,7 @@ export default function ServicesAndCompanies() {
         </div>
 
         {/* Marquee Container */}
-        <div className="relative w-full overflow-hidden py-4 border-y border-zinc-200/50 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/30 select-none">
+        <div className="marquee-pause relative w-full overflow-hidden py-4 border-y border-zinc-200/50 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-950/30 select-none">
           <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white dark:from-zinc-950 to-transparent z-10 pointer-events-none" />
 

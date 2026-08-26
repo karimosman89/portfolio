@@ -100,7 +100,7 @@ export default function ExperienceTimeline() {
                 <motion.div key={exp.company} variants={itemVariants} className="relative group">
                   
                   {/* Timeline node connection */}
-                  <div className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-600 dark:border-indigo-400 group-hover:bg-indigo-600 transition-all duration-300" />
+                  <div className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-white dark:bg-zinc-900 border-2 border-indigo-600 dark:border-indigo-400 group-hover:bg-indigo-600 group-hover:scale-125 group-hover:shadow-[0_0_14px_2px_rgba(99,102,241,0.55)] transition-all duration-300" />
 
                   <div className="space-y-4">
                     {/* Meta tag details */}
@@ -277,7 +277,16 @@ export default function ExperienceTimeline() {
                 const displayDetails = translatedDetails !== `education.${idx}.details` ? translatedDetails : edu.details;
 
                 return (
-                  <div key={edu.degree} className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-5 space-y-3.5">
+                  <div
+                    key={edu.degree}
+                    onMouseMove={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      const r = el.getBoundingClientRect();
+                      el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                      el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+                    }}
+                    className="spotlight border-beam rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-5 space-y-3.5 transition-transform duration-300 hover:-translate-y-0.5"
+                  >
                     <div className="flex justify-between items-start gap-2">
                       <span className="font-mono text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/45 px-2.5 py-0.5 rounded border border-indigo-100 dark:border-indigo-900/40">
                         {edu.period}
@@ -314,7 +323,7 @@ export default function ExperienceTimeline() {
             
             <div className="space-y-3.5">
               {CERTIFICATIONS.map((cert) => (
-                <div key={cert.title} className="flex items-start justify-between gap-4 text-xs rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-3.5 font-sans">
+                <div key={cert.title} className="shine-hover flex items-start justify-between gap-4 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/30 p-3.5 font-sans transition-all duration-300 hover:border-indigo-500/30 dark:hover:border-indigo-500/40 hover:-translate-y-0.5">
                   <div className="space-y-1">
                     <div className="font-bold text-zinc-800 dark:text-zinc-200">{cert.title}</div>
                     <div className="text-zinc-500 dark:text-zinc-400 text-[11px]">{cert.issuer}</div>
