@@ -536,7 +536,7 @@ export const POC_PROJECTS: PocProject[] = [
       { label: "Autoscaling", value: "HPA" },
       { label: "Drift alerts", value: "live" }
     ],
-    image: "/poc/llmops-platform.png",
+    image: "/poc/cloud-mlops.png",
     accent: "from-blue-500 to-cyan-600",
     repoUrl: "https://github.com/karimosman89/Cloud_System",
     demoUrl: "https://github.com/karimosman89/DevOps-Project"
@@ -564,7 +564,7 @@ export const POC_PROJECTS: PocProject[] = [
       { label: "Answers cited", value: "100%" },
       { label: "Data", value: "stays private" }
     ],
-    image: "/poc/multi-agent-rag.png",
+    image: "/poc/rag-copilot.png",
     accent: "from-teal-500 to-emerald-600",
     repoUrl: "https://github.com/karimosman89/awesome-llm-apps",
     demoUrl: "https://github.com/karimosman89/customer-support-chatbot"
@@ -591,7 +591,7 @@ export const POC_PROJECTS: PocProject[] = [
       { label: "Explainable", value: "SHAP" },
       { label: "What-if", value: "scenarios" }
     ],
-    image: "/poc/data-lakehouse.png",
+    image: "/poc/forecasting-engine.png",
     accent: "from-amber-500 to-yellow-600",
     repoUrl: "https://github.com/karimosman89/energy-consumption-forecasting",
     demoUrl: "https://github.com/karimosman89/customer-churn-prediction"

@@ -21,6 +21,9 @@ import imgAgent from '../assets/images/poc/multi-agent-rag.webp';
 import imgLlmops from '../assets/images/poc/llmops-platform.webp';
 import imgWorkforce from '../assets/images/poc/agent-workforce.webp';
 import imgLakehouse from '../assets/images/poc/data-lakehouse.webp';
+import imgCloudMlops from '../assets/images/poc/cloud-mlops.webp';
+import imgRagCopilot from '../assets/images/poc/rag-copilot.webp';
+import imgForecasting from '../assets/images/poc/forecasting-engine.webp';
 
 const IMAGE_MAP: Record<string, string> = {
   '/poc/vlm-inspector.png': imgVlm,
@@ -32,6 +35,9 @@ const IMAGE_MAP: Record<string, string> = {
   '/poc/llmops-platform.png': imgLlmops,
   '/poc/agent-workforce.png': imgWorkforce,
   '/poc/data-lakehouse.png': imgLakehouse,
+  '/poc/cloud-mlops.png': imgCloudMlops,
+  '/poc/rag-copilot.png': imgRagCopilot,
+  '/poc/forecasting-engine.png': imgForecasting,
 };
 
 const DOMAIN_ICON: Record<string, any> = {
