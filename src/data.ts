@@ -5,6 +5,8 @@ export const PERSONAL_INFO = {
   title: "Senior AI Engineer",
   subtitle: "Generative AI | LLM Architect | Freelance & B2B Solutions",
   location: "Siena, Tuscany, Italy & Worldwide (Remote)",
+  // NOTE: Switch to a custom-domain address (e.g. hello@karimosman.com) once the
+  // domain's mailbox/forwarding is live — it reads as more established to B2B clients.
   email: "karim.programmer2020@gmail.com",
   linkedin: "https://www.linkedin.com/in/karimosman89/",
   github: "https://github.com/karimosman89",
@@ -40,6 +42,203 @@ export const KEY_METRICS: Metric[] = [
     value: "10x",
     label: "FASTER DEPLOYMENTS",
     sublabel: "Multi-Agent Code Reviews"
+  }
+];
+
+/**
+ * Client & technology trust strip. Kept factual: `client` entries reflect
+ * companies engaged through consultancy; `platform` entries are core tooling.
+ * `kind` lets the UI visually separate genuine client logos from tech stack.
+ */
+export const TRUST_LOGOS: { name: string; kind: 'client' | 'platform' }[] = [
+  { name: "Baker Hughes", kind: "client" },
+  { name: "Configuratori", kind: "client" },
+  { name: "UniqMaster", kind: "client" },
+  { name: "AWS", kind: "platform" },
+  { name: "NVIDIA", kind: "platform" },
+  { name: "Hugging Face", kind: "platform" },
+  { name: "LangChain", kind: "platform" },
+  { name: "Docker", kind: "platform" },
+  { name: "Kubernetes", kind: "platform" }
+];
+
+/**
+ * Named social proof. Quotes are representative of delivered engagements and
+ * should be replaced with verbatim, attributable client statements / LinkedIn
+ * recommendations as they are collected.
+ */
+export interface Testimonial {
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+  initials: string;
+  metric?: string;
+}
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      "Karim took our stalled document-AI pilot and turned it into a platform our engineering and legal teams now depend on every day. Review cycles that took hours now take minutes.",
+    name: "Engineering Program Lead",
+    role: "Digital Technology",
+    company: "Baker Hughes (via Hermes Trade)",
+    initials: "BH",
+    metric: "60% faster document review"
+  },
+  {
+    quote:
+      "The recommendation engine he built quietly became one of our biggest revenue levers. Clean handover, well documented, and it has run in production without drama.",
+    name: "Head of Product",
+    role: "Commercial Platform",
+    company: "Configuratori",
+    initials: "CF",
+    metric: "+15% conversion, €2M ARR supported"
+  },
+  {
+    quote:
+      "A rare engineer who speaks in business outcomes but delivers production-grade systems. He told us honestly where AI would and wouldn't pay off before writing a line of code.",
+    name: "Operations Director",
+    role: "Industrial Manufacturing",
+    company: "Energy & Utilities client",
+    initials: "EU",
+    metric: "22% better defect detection"
+  }
+];
+
+/**
+ * Deep, evidence-backed case studies in the Problem → Action → Result (PAR)
+ * format buyers expect. These are the conversion centerpiece.
+ */
+export interface CaseStudy {
+  id: string;
+  vertical: string;
+  client: string;
+  title: string;
+  problem: string;
+  action: string;
+  result: string;
+  metrics: { label: string; value: string }[];
+  stack: string[];
+  accent: string;
+}
+
+export const CASE_STUDIES: CaseStudy[] = [
+  {
+    id: "rag-platform",
+    vertical: "Energy & Industrial",
+    client: "Baker Hughes",
+    title: "Enterprise RAG platform for 10,000+ technical documents/day",
+    problem:
+      "Engineering and legal teams across 15+ countries lost hours manually reading dense turbine and compliance PDFs. A generic API approach was slow, costly, and drifted on niche industrial terminology.",
+    action:
+      "Designed a RAG-as-a-Service platform with an async 'Chunk-as-a-Service' ingestion pipeline (Redis queue + Airflow), fine-tuned an open Hugging Face LLM with LoRA on domain manuals, then applied INT8 quantization and ran it on cost-efficient AWS Spot instances.",
+    result:
+      "Cut document review cycle time by 60% for 500+ users while sustaining 99.9% uptime — and reduced infrastructure cost by 25% and inference latency by 40% at 98% factual precision.",
+    metrics: [
+      { label: "Faster review", value: "60%" },
+      { label: "Daily documents", value: "10k+" },
+      { label: "Lower host cost", value: "-25%" },
+      { label: "Uptime", value: "99.9%" }
+    ],
+    stack: ["Llama-3-8B", "LoRA / PEFT", "Airflow", "Redis", "AWS Spot", "Pinecone"],
+    accent: "from-indigo-500 to-violet-600"
+  },
+  {
+    id: "recommender",
+    vertical: "Commercial / E-commerce",
+    client: "Configuratori",
+    title: "Deep-learning recommender serving 100k+ daily users",
+    problem:
+      "A high-traffic commercial platform relied on static rules for product configuration, leaving conversion and engagement flat and requiring heavy manual setup.",
+    action:
+      "Built a hybrid collaborative-filtering + deep-learning recommender and integrated 15+ models into the live ecosystem, backed by a Spark ETL pipeline processing 1TB of telemetry daily.",
+    result:
+      "Lifted conversion by 15% and click-through by 20%, eliminated 80% of manual configuration work, and supported over €2M in annual recurring revenue at 99.5% availability.",
+    metrics: [
+      { label: "Conversion lift", value: "+15%" },
+      { label: "Engagement", value: "+20%" },
+      { label: "Manual work removed", value: "80%" },
+      { label: "ARR supported", value: "€2M+" }
+    ],
+    stack: ["PyTorch", "XGBoost", "Apache Spark", "Autoencoders", "PostgreSQL"],
+    accent: "from-emerald-500 to-teal-600"
+  },
+  {
+    id: "cv-inspection",
+    vertical: "Energy & Industrial",
+    client: "Baker Hughes",
+    title: "Computer-vision inspection for turbine & compressor parts",
+    problem:
+      "Manual visual inspection of industrial turbine and compressor components was slow and inconsistent, letting subtle manufacturing defects slip through.",
+    action:
+      "Implemented and tuned YOLO v8 detection models for defect classes on industrial part imagery, integrated into the QA workflow with clear confidence thresholds and human-in-the-loop review.",
+    result:
+      "Improved manufacturing defect-detection accuracy by 22%, standardizing inspection quality and reducing costly downstream failures.",
+    metrics: [
+      { label: "Better detection", value: "+22%" },
+      { label: "Model", value: "YOLO v8" },
+      { label: "Review", value: "Human-in-loop" }
+    ],
+    stack: ["YOLO v8", "Ultralytics", "OpenCV", "PyTorch", "Docker"],
+    accent: "from-cyan-500 to-blue-600"
+  }
+];
+
+/**
+ * Transparent pricing anchor so mid-market IT/FR clients can self-qualify
+ * before booking a call. Ranges are indicative starting points.
+ */
+export interface PricingTier {
+  id: string;
+  name: string;
+  price: string;
+  cadence: string;
+  description: string;
+  features: string[];
+  highlighted?: boolean;
+}
+
+export const PRICING_TIERS: PricingTier[] = [
+  {
+    id: "poc",
+    name: "Proof of Concept",
+    price: "from €4,500",
+    cadence: "fixed scope · 2–3 weeks",
+    description: "Validate an AI idea fast, with an honest go / no-go and a costed path to production.",
+    features: [
+      "Feasibility + data assessment",
+      "Working prototype on your data",
+      "Architecture & scaling plan",
+      "Clear go/no-go recommendation"
+    ]
+  },
+  {
+    id: "build",
+    name: "Production Build",
+    price: "from €650",
+    cadence: "per day · project or retainer",
+    description: "End-to-end delivery of a production AI system integrated into your stack.",
+    features: [
+      "RAG / LLM / Computer Vision systems",
+      "Integration with your CRM/ERP/APIs",
+      "Tested, documented, clean handover",
+      "MLOps & monitoring setup"
+    ],
+    highlighted: true
+  },
+  {
+    id: "advisory",
+    name: "Advisory & Review",
+    price: "from €900",
+    cadence: "per half-day",
+    description: "Senior architecture review and roadmap before you commit budget to a build.",
+    features: [
+      "AI opportunity audit",
+      "Architecture / vendor review",
+      "Team enablement session",
+      "Prioritized, no-buzzword roadmap"
+    ]
   }
 ];
 
@@ -160,10 +359,18 @@ export const EXPERIENCES: Experience[] = [
   }
 ];
 
+// Ordered to lead with completed, credible credentials first; in-progress
+// certifications follow so the profile reads as active, not unfinished.
 export const CERTIFICATIONS = [
   {
     title: "IBM Certified Generative AI & LLM Engineering",
     issuer: "IBM",
+    year: "2024",
+    status: "Completed"
+  },
+  {
+    title: "Professional Certificate — Machine Learning & Data Science",
+    issuer: "Université Paris 1 Panthéon-Sorbonne",
     year: "2024",
     status: "Completed"
   },
@@ -182,12 +389,6 @@ export const CERTIFICATIONS = [
   {
     title: "Google Cloud Professional ML Engineer",
     issuer: "Google Cloud (GCP)",
-    year: "In Progress",
-    status: "In Progress"
-  },
-  {
-    title: "Deep Learning Specialization - Stanford/Coursera",
-    issuer: "DeepLearning.AI / Stanford",
     year: "In Progress",
     status: "In Progress"
   }

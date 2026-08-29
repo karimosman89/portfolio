@@ -26,6 +26,9 @@ import ArchitecturalBlueprint from './components/ArchitecturalBlueprint';
 import PocShowcase from './components/PocShowcase';
 import BusinessValue from './components/BusinessValue';
 import EngagementProcess from './components/EngagementProcess';
+import Testimonials from './components/Testimonials';
+import CaseStudies from './components/CaseStudies';
+import Pricing from './components/Pricing';
 
 export default function App() {
   const { t } = useLanguage();
@@ -184,6 +187,18 @@ export default function App() {
                 {/* 2. Core Quantitative Impact Metrics */}
                 <Metrics />
 
+                {/* 2.1. Social proof FIRST — named testimonials + client/tech logo strip */}
+                <Testimonials />
+
+                {/* 2.2. Deep PAR case studies — the conversion centerpiece */}
+                <CaseStudies />
+
+                {/* Business value — pain points + outcome-driven offer */}
+                <BusinessValue />
+
+                {/* 2.3. Transparent pricing anchor so clients self-qualify */}
+                <Pricing />
+
                 {/* 2.5. Interactive WebGL AI Specialization Orbit */}
                 <section className="mx-auto max-w-7xl px-6 py-16 md:px-8 border-t border-zinc-200/80 dark:border-zinc-800">
                   <div className="mb-10">
@@ -200,9 +215,6 @@ export default function App() {
                   </div>
                   <AIOrbit3D activeTheme={activeTheme} isDark={isDark} />
                 </section>
-
-                {/* Business value — pain points + outcome-driven offer (for owners/investors) */}
-                <BusinessValue />
 
                 {/* Engagement process, honest timelines & risk-reversal commitment */}
                 <EngagementProcess />

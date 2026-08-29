@@ -144,12 +144,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Hero Header Area
     'hero.availability': 'Available for Freelance Projects, B2B Contracts & Senior AI Roles',
-    'hero.title.part1': 'Engineering',
-    'hero.title.part2': 'reliable',
-    'hero.subtitle': 'Senior Machine Learning Architect with 5+ years of production experience. I design custom LLM-as-a-Service layers, optimize RAG databases, and adapt specialized parameters using Hugging Face PEFT/LoRA.',
+    'hero.niche': 'AI for Energy & Industrial companies',
+    'hero.title.part1': 'Production AI &',
+    'hero.title.part2': 'Computer Vision',
+    'hero.subtitle': 'I help Energy, Industrial & data-heavy companies turn AI prototypes into reliable, revenue-ready systems — RAG platforms, LLM fine-tuning (LoRA), and Computer Vision (YOLO). 5+ years shipping to production for enterprises like Baker Hughes.',
     'hero.location.details': 'Siena, Italy & Global (Remote)',
     'hero.experience.details': '5+ Years Industry Practice',
     'hero.kpi.details': '⚡ -40% Latency / -25% Host Cost',
+    'hero.pricing.hint': 'POC from €4,500 · Build from €650/day',
 
     // B2B Desk Card
     'hero.desk.badge': 'Contractor Desk',
@@ -508,12 +510,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Hero Header Area
     'hero.availability': 'Disponibile per Progetti Freelance, Contratti B2B e Ruoli AI Senior',
-    'hero.title.part1': 'Ingegnerizzazione di',
-    'hero.title.part2': 'affidabile',
-    'hero.subtitle': 'Senior Machine Learning Architect con oltre 5 anni di esperienza in produzione. Progetto layer LLM-as-a-Service personalizzati, ottimizzo database RAG e adatto parametri specializzati tramite Hugging Face PEFT/LoRA.',
+    'hero.niche': 'AI per aziende Energy e Industriali',
+    'hero.title.part1': 'AI in Produzione e',
+    'hero.title.part2': 'Computer Vision',
+    'hero.subtitle': 'Aiuto aziende Energy, Industriali e data-driven a trasformare i prototipi AI in sistemi affidabili e pronti a generare ricavi — piattaforme RAG, fine-tuning di LLM (LoRA) e Computer Vision (YOLO). Oltre 5 anni in produzione per aziende come Baker Hughes.',
     'hero.location.details': 'Siena, Italia e Globale (Remoto)',
     'hero.experience.details': 'Oltre 5 Anni di Pratica nel Settore',
     'hero.kpi.details': '⚡ Latenza -40% / Costi Host -25%',
+    'hero.pricing.hint': 'POC da €4.500 · Sviluppo da €650/giorno',
 
     // B2B Desk Card
     'hero.desk.badge': 'Scrivania del Contractor',
@@ -873,12 +877,14 @@ export const translations: Record<Language, Record<string, string>> = {
 
     // Hero Header Area
     'hero.availability': 'Disponible pour Projets Freelance, Contrats B2B & Rôles IA Senior',
-    'hero.title.part1': 'Ingénierie',
-    'hero.title.part2': 'fiable',
-    'hero.subtitle': 'Architecte senior en Machine Learning avec plus de 5 ans d\'expérience en production. Je conçois des couches LLM-as-a-Service personnalisées, j\'optimise les bases de données RAG et j\'ajuste les paramètres spécialisés via Hugging Face PEFT/LoRA.',
+    'hero.niche': 'IA pour les entreprises Énergie & Industrie',
+    'hero.title.part1': 'IA en Production &',
+    'hero.title.part2': 'Vision par Ordinateur',
+    'hero.subtitle': "J'aide les entreprises de l'Énergie, de l'Industrie et pilotées par la donnée à transformer les prototypes IA en systèmes fiables et générateurs de revenus — plateformes RAG, fine-tuning de LLM (LoRA) et Vision par Ordinateur (YOLO). Plus de 5 ans en production pour des entreprises comme Baker Hughes.",
     'hero.location.details': 'Sienne, Italie & Mondial (À distance)',
     'hero.experience.details': 'Plus de 5 ans de pratique industrielle',
     'hero.kpi.details': '⚡ Latence -40% / Coûts d\'Hébergement -25%',
+    'hero.pricing.hint': 'POC à partir de 4 500 € · Build à partir de 650 €/jour',
 
     // B2B Desk Card
     'hero.desk.badge': 'Bureau du Contractuel',
