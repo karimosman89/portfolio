@@ -387,6 +387,12 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
               <span>{t('hero.availability')}</span>
             </motion.div>
 
+            {/* Niche vertical positioning line — converts far better than generalist */}
+            <motion.div variants={itemVariants} className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+              <span className="h-px w-6 bg-indigo-500/60" />
+              <span className="font-bold">{t('hero.niche')}</span>
+            </motion.div>
+
             {/* Core Display Title - Karpathy & Stripe Editorial Mix */}
             <motion.div variants={itemVariants} className="space-y-4">
               <h1 className="font-display text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-white md:text-5.5xl lg:text-6xl leading-none min-h-[160px] sm:min-h-[140px] md:min-h-[190px]">
@@ -474,6 +480,13 @@ export default function Header({ isDark, toggleDarkMode, activeTheme, setActiveT
                 <Briefcase size={18} className="text-indigo-600 dark:text-indigo-400" />
                 <span>{t('hero.hireMe')}</span>
               </button>
+            </motion.div>
+
+            {/* Transparent pricing anchor — lets mid-market clients self-qualify */}
+            <motion.div variants={itemVariants} className="flex items-center gap-2 text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200/50 dark:border-emerald-800/30 px-2 py-0.5 text-emerald-700 dark:text-emerald-400 font-bold uppercase tracking-wider">
+                <Sparkles size={10} /> {t('hero.pricing.hint')}
+              </span>
             </motion.div>
 
           </motion.div>
